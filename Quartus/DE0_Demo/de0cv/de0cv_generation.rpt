@@ -1,0 +1,27 @@
+Info: Starting: Create block symbol file (.bsf)
+Info: qsys-generate "C:\Users\oribz\OneDrive - Technion\Technion_\Project Mendelson\RV32i-Verilog-master\Quartus\DE0_Demo\de0cv.qsys" --block-symbol-file --output-directory="C:\Users\oribz\OneDrive - Technion\Technion_\Project Mendelson\RV32i-Verilog-master\Quartus\DE0_Demo\de0cv" --family="MAX 10" --part=10M08DAF484C8G
+Progress: Loading DE0_Demo/de0cv.qsys
+Progress: Reading input file
+Progress: Adding clk_0 [clock_source 17.0]
+Progress: Parameterizing module clk_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: qsys-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate "C:\Users\oribz\OneDrive - Technion\Technion_\Project Mendelson\RV32i-Verilog-master\Quartus\DE0_Demo\de0cv.qsys" --synthesis=VERILOG --output-directory="C:\Users\oribz\OneDrive - Technion\Technion_\Project Mendelson\RV32i-Verilog-master\Quartus\DE0_Demo\de0cv\synthesis" --family="MAX 10" --part=10M08DAF484C8G
+Progress: Loading DE0_Demo/de0cv.qsys
+Progress: Reading input file
+Progress: Adding clk_0 [clock_source 17.0]
+Progress: Parameterizing module clk_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: de0cv: Generating de0cv "de0cv" for QUARTUS_SYNTH
+Info: de0cv: Done "de0cv" with 1 modules, 1 files
+Info: qsys-generate succeeded.
+Info: Finished: Create HDL design files for synthesis

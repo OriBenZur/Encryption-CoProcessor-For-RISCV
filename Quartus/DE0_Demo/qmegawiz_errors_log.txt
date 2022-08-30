@@ -1,0 +1,10 @@
+
+
+C:/Users/oribz/OneDrive - Technion/Technion_/Project Mendelson/RV32i-Verilog-master/Quartus/DE0_Demo/PLL.v
+
+Jun 18 02PM:24:57>: Error in CNX file format.
+
+Error messages are listed in file
+C:/Users/oribz/OneDrive - Technion/Technion_/Project Mendelson/RV32i-Verilog-master/Quartus/DE0_Demo/PLL.cnxerr.
+
+Can't create the custom megafunction variation file(s)
