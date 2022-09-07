@@ -4,7 +4,7 @@ JedecChain;
 	DefaultMfr(6E);
 
 	P ActionCode(Cfg)
-		Device PartName(10M50DAF484) Path("C:/Users/oribz/OneDrive - Technion/Technion_/Project Mendelson/RV32i-Verilog-master/Quartus/DE0_Demo/output_files/") File("DE0_top.sof") MfrSpec(OpMask(1));
+		Device PartName(10M50DAF484) Path("C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/output_files/") File("DE0_top.sof") MfrSpec(OpMask(1));
 
 ChainEnd;
 

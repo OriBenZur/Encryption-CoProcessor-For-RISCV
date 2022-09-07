@@ -354,7 +354,7 @@ end
 
 
 `define AI_ADDR_START 32'h020
-`define AI_ADDR_LAST  32'h030
+`define AI_ADDR_LAST  32'h064
 assign ai_accel_select = (addr_mem_data>=`AI_ADDR_START) & (addr_mem_data<=`AI_ADDR_LAST);
 
 

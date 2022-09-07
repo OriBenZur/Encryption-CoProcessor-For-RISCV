@@ -47,10 +47,10 @@ module ai_accel
 
 	 reg [15:0] counter;
 	 
-	 reg [31:0] data_A;
-	 reg [31:0] data_B;
-	 wire [31:0] data_C;
-	 reg [31:0] result;
+	 reg [31:0] key[3:0];
+	 reg [31:0] plaintext[3:0];
+	 wire [31:0] w_cyphertext[3:0];
+	 reg [31:0] cyphertext[3:0];
 
 	 
 	 reg [7:0] in1, in2;

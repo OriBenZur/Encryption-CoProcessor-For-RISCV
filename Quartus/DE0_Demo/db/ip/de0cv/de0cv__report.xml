@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <deploy
- date="2022.08.30.18:07:55"
- outputDirectory="C:/Users/oribz/OneDrive - Technion/Technion_/Project Mendelson/RV32i-Verilog-master/Quartus/DE0_Demo/db/ip/de0cv/">
+ date="2022.09.03.13:58:52"
+ outputDirectory="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/ip/de0cv/">
  <perimeter>
   <parameter
      name="AUTO_GENERATION_ID"
@@ -65,13 +65,13 @@
  </perimeter>
  <entity
    path=""
-   parameterizationKey="de0cv:1.0:AUTO_CLK_CLOCK_DOMAIN=-1,AUTO_CLK_CLOCK_RATE=-1,AUTO_CLK_RESET_DOMAIN=-1,AUTO_DEVICE=10M50DAF484C7G,AUTO_DEVICE_FAMILY=MAX 10,AUTO_DEVICE_SPEEDGRADE=7,AUTO_GENERATION_ID=1661872073,AUTO_UNIQUE_ID=(clock_source:17.0:clockFrequency=50000000,clockFrequencyKnown=true,inputClockFrequency=0,resetSynchronousEdges=NONE)"
+   parameterizationKey="de0cv:1.0:AUTO_CLK_CLOCK_DOMAIN=-1,AUTO_CLK_CLOCK_RATE=-1,AUTO_CLK_RESET_DOMAIN=-1,AUTO_DEVICE=10M50DAF484C7G,AUTO_DEVICE_FAMILY=MAX 10,AUTO_DEVICE_SPEEDGRADE=7,AUTO_GENERATION_ID=1662202730,AUTO_UNIQUE_ID=(clock_source:17.0:clockFrequency=50000000,clockFrequencyKnown=true,inputClockFrequency=0,resetSynchronousEdges=NONE)"
    instancePathKey="de0cv"
    kind="de0cv"
    version="1.0"
    name="de0cv">
   <parameter name="AUTO_CLK_CLOCK_RATE" value="-1" />
-  <parameter name="AUTO_GENERATION_ID" value="1661872073" />
+  <parameter name="AUTO_GENERATION_ID" value="1662202730" />
   <parameter name="AUTO_DEVICE" value="10M50DAF484C7G" />
   <parameter name="AUTO_DEVICE_FAMILY" value="MAX 10" />
   <parameter name="AUTO_CLK_RESET_DOMAIN" value="-1" />
@@ -80,13 +80,13 @@
   <parameter name="AUTO_DEVICE_SPEEDGRADE" value="7" />
   <generatedFiles>
    <file
-       path="C:/Users/oribz/OneDrive - Technion/Technion_/Project Mendelson/RV32i-Verilog-master/Quartus/DE0_Demo/db/ip/de0cv/de0cv.v"
+       path="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/ip/de0cv/de0cv.v"
        type="VERILOG" />
   </generatedFiles>
   <childGeneratedFiles/>
   <sourceFiles>
    <file
-       path="C:/Users/oribz/OneDrive - Technion/Technion_/Project Mendelson/RV32i-Verilog-master/Quartus/DE0_Demo/de0cv.qsys" />
+       path="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/de0cv.qsys" />
   </sourceFiles>
   <childSourceFiles/>
   <messages>
