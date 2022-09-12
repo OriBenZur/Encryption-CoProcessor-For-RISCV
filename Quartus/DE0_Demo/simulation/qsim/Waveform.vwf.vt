@@ -19,7 +19,7 @@
 // the top level entity of the current Quartus project .The user can use this   
 // testbench to simulate his design using a third-party simulation tool .       
 // *****************************************************************************
-// Generated on "09/12/2022 01:45:41"
+// Generated on "09/12/2022 18:52:28"
                                                                                 
 // Verilog Test Bench (with test vectors) for design :                          ai_accel
 // 
@@ -54,7 +54,7 @@ ai_accel i1 (
 );
 initial 
 begin 
-#1000000 $finish;
+#200000 $finish;
 end 
 // addr[ 31 ]
 initial
@@ -186,6 +186,8 @@ initial
 begin
 	addr[6] = 1'b0;
 	addr[6] = #40000 1'b1;
+	addr[6] = #56000 1'b0;
+	addr[6] = #16000 1'b1;
 end 
 // addr[ 5 ]
 initial
@@ -195,13 +197,15 @@ begin
 	addr[5] = #4000 1'b0;
 	addr[5] = #4000 1'b1;
 	addr[5] = #24000 1'b0;
+	addr[5] = #56000 1'b1;
+	addr[5] = #16000 1'b0;
 end 
 // addr[ 4 ]
 initial
 begin
 	addr[4] = 1'b0;
 	addr[4] = #24000 1'b1;
-	addr[4] = #16000 1'b0;
+	addr[4] = #12000 1'b0;
 end 
 // addr[ 3 ]
 initial
@@ -210,8 +214,10 @@ begin
 	addr[3] = #16000 1'b1;
 	addr[3] = #8000 1'b0;
 	addr[3] = #8000 1'b1;
-	addr[3] = #8000 1'b0;
-	addr[3] = #8000 1'b1;
+	addr[3] = #4000 1'b0;
+	addr[3] = #12000 1'b1;
+	addr[3] = #48000 1'b0;
+	addr[3] = #16000 1'b1;
 end 
 // addr[ 2 ]
 initial
@@ -221,9 +227,7 @@ begin
 	addr[2] = #4000 1'b0;
 	addr[2] = #4000 1'b1;
 	addr[2] = #4000 1'b0;
-	addr[2] = #4000 1'b1;
-	addr[2] = #4000 1'b0;
-	addr[2] = #4000 1'b1;
+	addr[2] = #12000 1'b1;
 	addr[2] = #4000 1'b0;
 end 
 // addr[ 1 ]
@@ -292,7 +296,7 @@ end
 initial
 begin
 	data_in[24] = 1'b0;
-	data_in[24] = #8000 1'b1;
+	data_in[24] = #16000 1'b1;
 	data_in[24] = #4000 1'b0;
 end 
 // data_in[ 23 ]
@@ -336,7 +340,7 @@ end
 initial
 begin
 	data_in[16] = 1'b0;
-	data_in[16] = #8000 1'b1;
+	data_in[16] = #16000 1'b1;
 	data_in[16] = #4000 1'b0;
 end 
 // data_in[ 15 ]
@@ -380,7 +384,7 @@ end
 initial
 begin
 	data_in[8] = 1'b0;
-	data_in[8] = #8000 1'b1;
+	data_in[8] = #16000 1'b1;
 	data_in[8] = #4000 1'b0;
 end 
 // data_in[ 7 ]
@@ -424,7 +428,9 @@ end
 initial
 begin
 	data_in[0] = 1'b0;
-	data_in[0] = #8000 1'b1;
+	data_in[0] = #16000 1'b1;
+	data_in[0] = #4000 1'b0;
+	data_in[0] = #16000 1'b1;
 	data_in[0] = #4000 1'b0;
 end 
 

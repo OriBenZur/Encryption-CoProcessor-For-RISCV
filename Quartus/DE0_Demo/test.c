@@ -17,18 +17,18 @@
 int main(){
 	int i = 0;
 	int* leds = (int*)0x14;
-	int* accel_ctrl_ptr = (int *)ACCEL_CTRL;
+	volatile int* accel_ctrl_ptr = (int *)ACCEL_CTRL;
 	int* accel_perf_ctr = (int *)ACCEL_PERF_COUNTER;
 	int* accel_data_a_ptr = (int *)ACCEL_A;
 	int* accel_data_b_ptr = (int *)ACCEL_B;
 	int* accel_data_c_ptr = (int *)ACCEL_C;
-	*accel_data_c_ptr = 0x1234
 	*accel_data_a_ptr = 0x01010101;
 	*accel_data_b_ptr = 0x02020202;
 	*accel_ctrl_ptr = 0x00000001; 
-	PRINT(SEVSEG, *accel_data_c_ptr);
-	while (*accel_ctrl_ptr != (1 << 31) + 1);
-	PRINT(SEVSEG, *accel_data_c_ptr);
+	PRINT(LEDS, 4);
+	// while (*accel_ctrl_ptr != 0x80000000) PRINT(SEVSEG, *accel_ctrl_ptr);
+	PRINT(LEDS, 2);
+	PRINT(SEVSEG, *accel_ctrl_ptr >> 24);
 	// PRINT(LEDS, *accel_ctrl_ptr);
 	// PRINT(SEVSEG, *accel_perf_ctr);
 

@@ -1,16 +1,16 @@
-Analysis & Synthesis Status : Successful - Mon Sep 12 01:42:14 2022
+Analysis & Synthesis Status : Successful - Mon Sep 12 23:52:34 2022
 Quartus Prime Version : 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 Revision Name : DE0_top
-Top-level Entity Name : ai_accel
+Top-level Entity Name : DE0_top
 Family : MAX 10
-Total logic elements : 624
-    Total combinational functions : 368
-    Dedicated logic registers : 306
-Total registers : 306
-Total pins : 116
+Total logic elements : 19,954
+    Total combinational functions : 10,559
+    Dedicated logic registers : 9,751
+Total registers : 9751
+Total pins : 66
 Total virtual pins : 0
 Total memory bits : 0
 Embedded Multiplier 9-bit elements : 1
-Total PLLs : 0
+Total PLLs : 1
 UFM blocks : 0
 ADC blocks : 0

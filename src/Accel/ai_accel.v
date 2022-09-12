@@ -80,7 +80,7 @@ module ai_accel
 		endcase
 	 end
 	 
-	 assign go_bit_in = (wr_en & accel_select & (addr[6:2] == 5'b0000));
+	 assign go_bit_in = (wr_en & accel_select & (addr[6:2] == 5'd0008));
 	
 	 always @(posedge clk or negedge rst_n)
 		if(~rst_n) go_bit <= 1'b0;
@@ -97,8 +97,8 @@ module ai_accel
 		else begin
 			if (wr_en & accel_select) begin
 				for (i = 0; i < 4; i = i + 1) begin
-					key[i] <= (addr[6:2] == i + 2) ? data_in : key[i];
-					plaintext[i] <= (addr[6:2] == i + 6) ? data_in : plaintext[i];
+					key[i] <= (addr[6:2] == i + 10) ? data_in : key[i];
+					plaintext[i] <= (addr[6:2] == i + 14) ? data_in : plaintext[i];
 				end
 				// key[1] <= (addr[6:2] == 5'd003) ? data_in : key[1];
 				// key[2] <= (addr[6:2] == 5'd004) ? data_in : key[2];
@@ -148,9 +148,9 @@ module ai_accel
 	always @* begin
 		case(counter[3:0])
 		4'd0: cyphertext_in[0] = {cyphertext[0][31:8], out};
-		4'd0: cyphertext_in[0] = {cyphertext[0][31:16], out, cyphertext[0][7:0]};
-		4'd0: cyphertext_in[0] = {cyphertext[0][31:24], out, cyphertext[0][15:0]};
-		4'd0: cyphertext_in[0] = {out, cyphertext[0][24:0]};
+		4'd1: cyphertext_in[0] = {cyphertext[0][31:16], out, cyphertext[0][7:0]};
+		4'd2: cyphertext_in[0] = {cyphertext[0][31:24], out, cyphertext[0][15:0]};
+		4'd3: cyphertext_in[0] = {out, cyphertext[0][24:0]};
 		default: cyphertext_in[0] = cyphertext_in[0];
 		endcase
 	end

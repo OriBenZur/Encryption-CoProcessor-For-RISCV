@@ -4,359 +4,231 @@
 			"name" : "Top",
 			"pins" : [
 				{
-					"name" : "ctr[0]",
+					"name" : "HEX0[0]",
 					"strict" : false
 				},
 				{
-					"name" : "ctr[1]",
+					"name" : "HEX0[1]",
 					"strict" : false
 				},
 				{
-					"name" : "ctr[2]",
+					"name" : "HEX0[2]",
 					"strict" : false
 				},
 				{
-					"name" : "ctr[3]",
+					"name" : "HEX0[3]",
 					"strict" : false
 				},
 				{
-					"name" : "ctr[4]",
+					"name" : "HEX0[4]",
 					"strict" : false
 				},
 				{
-					"name" : "ctr[5]",
+					"name" : "HEX0[5]",
 					"strict" : false
 				},
 				{
-					"name" : "ctr[6]",
+					"name" : "HEX0[6]",
 					"strict" : false
 				},
 				{
-					"name" : "ctr[7]",
+					"name" : "HEX1[0]",
 					"strict" : false
 				},
 				{
-					"name" : "ctr[8]",
+					"name" : "HEX1[1]",
 					"strict" : false
 				},
 				{
-					"name" : "ctr[9]",
+					"name" : "HEX1[2]",
 					"strict" : false
 				},
 				{
-					"name" : "ctr[10]",
+					"name" : "HEX1[3]",
 					"strict" : false
 				},
 				{
-					"name" : "ctr[11]",
+					"name" : "HEX1[4]",
 					"strict" : false
 				},
 				{
-					"name" : "ctr[12]",
+					"name" : "HEX1[5]",
 					"strict" : false
 				},
 				{
-					"name" : "ctr[13]",
+					"name" : "HEX1[6]",
 					"strict" : false
 				},
 				{
-					"name" : "ctr[14]",
+					"name" : "HEX2[0]",
 					"strict" : false
 				},
 				{
-					"name" : "ctr[15]",
+					"name" : "HEX2[1]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[0]",
+					"name" : "HEX2[2]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[1]",
+					"name" : "HEX2[3]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[2]",
+					"name" : "HEX2[4]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[3]",
+					"name" : "HEX2[5]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[4]",
+					"name" : "HEX2[6]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[5]",
+					"name" : "HEX3[0]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[6]",
+					"name" : "HEX3[1]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[7]",
+					"name" : "HEX3[2]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[8]",
+					"name" : "HEX3[3]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[9]",
+					"name" : "HEX3[4]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[10]",
+					"name" : "HEX3[5]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[11]",
+					"name" : "HEX3[6]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[12]",
+					"name" : "HEX4[0]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[13]",
+					"name" : "HEX4[1]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[14]",
+					"name" : "HEX4[2]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[15]",
+					"name" : "HEX4[3]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[16]",
+					"name" : "HEX4[4]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[17]",
+					"name" : "HEX4[5]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[18]",
+					"name" : "HEX4[6]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[19]",
+					"name" : "HEX5[0]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[20]",
+					"name" : "HEX5[1]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[21]",
+					"name" : "HEX5[2]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[22]",
+					"name" : "HEX5[3]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[23]",
+					"name" : "HEX5[4]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[24]",
+					"name" : "HEX5[5]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[25]",
+					"name" : "HEX5[6]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[26]",
+					"name" : "LEDR[0]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[27]",
+					"name" : "LEDR[1]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[28]",
+					"name" : "LEDR[2]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[29]",
+					"name" : "LEDR[3]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[30]",
+					"name" : "LEDR[4]",
 					"strict" : false
 				},
 				{
-					"name" : "data_out[31]",
+					"name" : "LEDR[5]",
 					"strict" : false
 				},
 				{
-					"name" : "addr[5]",
+					"name" : "LEDR[6]",
 					"strict" : false
 				},
 				{
-					"name" : "addr[6]",
+					"name" : "LEDR[7]",
 					"strict" : false
 				},
 				{
-					"name" : "addr[3]",
+					"name" : "LEDR[8]",
 					"strict" : false
 				},
 				{
-					"name" : "addr[2]",
+					"name" : "LEDR[9]",
 					"strict" : false
 				},
 				{
-					"name" : "addr[4]",
+					"name" : "SW[2]",
 					"strict" : false
 				},
 				{
-					"name" : "clk",
+					"name" : "SW[1]",
 					"strict" : false
 				},
 				{
-					"name" : "rst_n",
+					"name" : "SW[0]",
 					"strict" : false
 				},
 				{
-					"name" : "wr_en",
+					"name" : "ORG_KEY[0]",
 					"strict" : false
 				},
 				{
-					"name" : "accel_select",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[0]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[1]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[2]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[3]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[4]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[5]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[6]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[7]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[8]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[9]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[10]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[11]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[12]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[13]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[14]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[15]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[16]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[17]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[18]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[19]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[20]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[21]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[22]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[23]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[24]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[25]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[26]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[27]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[28]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[29]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[30]",
-					"strict" : false
-				},
-				{
-					"name" : "data_in[31]",
+					"name" : "ORG_KEY[1]",
 					"strict" : false
 				}
 			]

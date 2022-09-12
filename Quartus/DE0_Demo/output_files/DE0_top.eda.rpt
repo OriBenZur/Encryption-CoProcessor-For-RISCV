@@ -1,5 +1,5 @@
 EDA Netlist Writer report for DE0_top
-Mon Sep 12 01:45:42 2022
+Mon Sep 12 18:52:29 2022
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -37,7 +37,7 @@ agreement for further details.
 +-------------------------------------------------------------------+
 ; EDA Netlist Writer Summary                                        ;
 +---------------------------+---------------------------------------+
-; EDA Netlist Writer Status ; Successful - Mon Sep 12 01:45:42 2022 ;
+; EDA Netlist Writer Status ; Successful - Mon Sep 12 18:52:29 2022 ;
 ; Revision Name             ; DE0_top                               ;
 ; Top-level Entity Name     ; ai_accel                              ;
 ; Family                    ; MAX 10                                ;
@@ -95,13 +95,13 @@ Info: Running Quartus Prime EDA Netlist Writer
     Info: devices manufactured by Intel and sold by Intel or its 
     Info: authorized distributors.  Please refer to the applicable 
     Info: agreement for further details.
-    Info: Processing started: Mon Sep 12 01:45:41 2022
+    Info: Processing started: Mon Sep 12 18:52:28 2022
 Info: Command: quartus_eda --write_settings_files=off --simulation=on --functional=on --flatten_buses=off --tool=modelsim_oem --format=verilog --output_directory="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim/" DE0_top -c DE0_top
 Info (119006): Selected device 10M50DAF484C7G for design "DE0_top"
 Info (204019): Generated file DE0_top.vo in folder "C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim//" for EDA simulation tool
 Info: Quartus Prime EDA Netlist Writer was successful. 0 errors, 0 warnings
     Info: Peak virtual memory: 4643 megabytes
-    Info: Processing ended: Mon Sep 12 01:45:42 2022
+    Info: Processing ended: Mon Sep 12 18:52:29 2022
     Info: Elapsed time: 00:00:01
     Info: Total CPU time (on all processors): 00:00:01
 
