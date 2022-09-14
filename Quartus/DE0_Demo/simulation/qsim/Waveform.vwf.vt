@@ -19,15 +19,15 @@
 // the top level entity of the current Quartus project .The user can use this   
 // testbench to simulate his design using a third-party simulation tool .       
 // *****************************************************************************
-// Generated on "09/12/2022 18:52:28"
+// Generated on "09/13/2022 19:19:29"
                                                                                 
-// Verilog Test Bench (with test vectors) for design :                          ai_accel
+// Verilog Test Bench (with test vectors) for design :                          encryptor
 // 
 // Simulation tool : 3rd Party
 // 
 
 `timescale 1 ps/ 1 ps
-module ai_accel_vlg_vec_tst();
+module encryptor_vlg_vec_tst();
 // constants                                           
 // general purpose registers
 reg accel_select;
@@ -41,7 +41,7 @@ wire [15:0] ctr;
 wire [31:0] data_out;
 
 // assign statements (if any)                          
-ai_accel i1 (
+encryptor i1 (
 // port map - connection between master ports and signals/registers   
 	.accel_select(accel_select),
 	.addr(addr),
@@ -54,7 +54,21 @@ ai_accel i1 (
 );
 initial 
 begin 
-#200000 $finish;
+#1000000 $finish;
+end 
+
+// clk
+always
+begin
+	clk = 1'b0;
+	clk = #5000 1'b1;
+	#5000;
+end 
+
+// accel_select
+initial
+begin
+	accel_select = 1'b1;
 end 
 // addr[ 31 ]
 initial
@@ -185,50 +199,32 @@ end
 initial
 begin
 	addr[6] = 1'b0;
-	addr[6] = #40000 1'b1;
-	addr[6] = #56000 1'b0;
-	addr[6] = #16000 1'b1;
 end 
 // addr[ 5 ]
 initial
 begin
 	addr[5] = 1'b0;
-	addr[5] = #8000 1'b1;
-	addr[5] = #4000 1'b0;
-	addr[5] = #4000 1'b1;
+	addr[5] = #32000 1'b1;
 	addr[5] = #24000 1'b0;
-	addr[5] = #56000 1'b1;
-	addr[5] = #16000 1'b0;
 end 
 // addr[ 4 ]
 initial
 begin
 	addr[4] = 1'b0;
-	addr[4] = #24000 1'b1;
-	addr[4] = #12000 1'b0;
+	addr[4] = #44000 1'b1;
+	addr[4] = #24000 1'b0;
 end 
 // addr[ 3 ]
 initial
 begin
 	addr[3] = 1'b0;
-	addr[3] = #16000 1'b1;
-	addr[3] = #8000 1'b0;
-	addr[3] = #8000 1'b1;
-	addr[3] = #4000 1'b0;
-	addr[3] = #12000 1'b1;
-	addr[3] = #48000 1'b0;
-	addr[3] = #16000 1'b1;
+	addr[3] = #32000 1'b1;
+	addr[3] = #36000 1'b0;
 end 
 // addr[ 2 ]
 initial
 begin
 	addr[2] = 1'b0;
-	addr[2] = #20000 1'b1;
-	addr[2] = #4000 1'b0;
-	addr[2] = #4000 1'b1;
-	addr[2] = #4000 1'b0;
-	addr[2] = #12000 1'b1;
-	addr[2] = #4000 1'b0;
 end 
 // addr[ 1 ]
 initial
@@ -239,21 +235,6 @@ end
 initial
 begin
 	addr[0] = 1'b0;
-end 
-
-// accel_select
-initial
-begin
-	accel_select = 1'b0;
-	accel_select = #8000 1'b1;
-end 
-
-// clk
-always
-begin
-	clk = 1'b0;
-	clk = #2000 1'b1;
-	#2000;
 end 
 // data_in[ 31 ]
 initial
@@ -284,20 +265,20 @@ end
 initial
 begin
 	data_in[26] = 1'b0;
+	data_in[26] = #32000 1'b1;
+	data_in[26] = #12000 1'b0;
 end 
 // data_in[ 25 ]
 initial
 begin
 	data_in[25] = 1'b0;
-	data_in[25] = #32000 1'b1;
-	data_in[25] = #4000 1'b0;
+	data_in[25] = #44000 1'b1;
+	data_in[25] = #12000 1'b0;
 end 
 // data_in[ 24 ]
 initial
 begin
 	data_in[24] = 1'b0;
-	data_in[24] = #16000 1'b1;
-	data_in[24] = #4000 1'b0;
 end 
 // data_in[ 23 ]
 initial
@@ -334,14 +315,14 @@ initial
 begin
 	data_in[17] = 1'b0;
 	data_in[17] = #32000 1'b1;
-	data_in[17] = #4000 1'b0;
+	data_in[17] = #24000 1'b0;
 end 
 // data_in[ 16 ]
 initial
 begin
 	data_in[16] = 1'b0;
-	data_in[16] = #16000 1'b1;
-	data_in[16] = #4000 1'b0;
+	data_in[16] = #32000 1'b1;
+	data_in[16] = #12000 1'b0;
 end 
 // data_in[ 15 ]
 initial
@@ -378,14 +359,12 @@ initial
 begin
 	data_in[9] = 1'b0;
 	data_in[9] = #32000 1'b1;
-	data_in[9] = #4000 1'b0;
+	data_in[9] = #24000 1'b0;
 end 
 // data_in[ 8 ]
 initial
 begin
 	data_in[8] = 1'b0;
-	data_in[8] = #16000 1'b1;
-	data_in[8] = #4000 1'b0;
 end 
 // data_in[ 7 ]
 initial
@@ -421,32 +400,33 @@ end
 initial
 begin
 	data_in[1] = 1'b0;
-	data_in[1] = #32000 1'b1;
-	data_in[1] = #4000 1'b0;
+	data_in[1] = #44000 1'b1;
+	data_in[1] = #12000 1'b0;
 end 
 // data_in[ 0 ]
 initial
 begin
 	data_in[0] = 1'b0;
-	data_in[0] = #16000 1'b1;
-	data_in[0] = #4000 1'b0;
-	data_in[0] = #16000 1'b1;
-	data_in[0] = #4000 1'b0;
+	data_in[0] = #32000 1'b1;
+	data_in[0] = #12000 1'b0;
+	data_in[0] = #12000 1'b1;
+	data_in[0] = #12000 1'b0;
 end 
 
 // rst_n
 initial
 begin
-	rst_n = 1'b0;
-	rst_n = #8000 1'b1;
+	rst_n = 1'b1;
+	rst_n = #16000 1'b0;
+	rst_n = #16000 1'b1;
 end 
 
 // wr_en
 initial
 begin
 	wr_en = 1'b0;
-	wr_en = #8000 1'b1;
-	wr_en = #40000 1'b0;
+	wr_en = #32000 1'b1;
+	wr_en = #36000 1'b0;
 end 
 endmodule
 

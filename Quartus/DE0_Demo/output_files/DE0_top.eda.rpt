@@ -1,5 +1,5 @@
 EDA Netlist Writer report for DE0_top
-Mon Sep 12 18:52:29 2022
+Thu Sep 15 01:30:55 2022
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -37,9 +37,9 @@ agreement for further details.
 +-------------------------------------------------------------------+
 ; EDA Netlist Writer Summary                                        ;
 +---------------------------+---------------------------------------+
-; EDA Netlist Writer Status ; Successful - Mon Sep 12 18:52:29 2022 ;
+; EDA Netlist Writer Status ; Successful - Thu Sep 15 01:30:55 2022 ;
 ; Revision Name             ; DE0_top                               ;
-; Top-level Entity Name     ; ai_accel                              ;
+; Top-level Entity Name     ; DE0_top                               ;
 ; Family                    ; MAX 10                                ;
 ; Simulation Files Creation ; Successful                            ;
 +---------------------------+---------------------------------------+
@@ -51,7 +51,8 @@ agreement for further details.
 ; Option                                                                                            ; Setting                   ;
 +---------------------------------------------------------------------------------------------------+---------------------------+
 ; Tool Name                                                                                         ; ModelSim-Altera (Verilog) ;
-; Generate functional simulation netlist                                                            ; On                        ;
+; Generate functional simulation netlist                                                            ; Off                       ;
+; Time scale                                                                                        ; 1 ps                      ;
 ; Truncate long hierarchy paths                                                                     ; Off                       ;
 ; Map illegal HDL characters                                                                        ; Off                       ;
 ; Flatten buses into individual nodes                                                               ; Off                       ;
@@ -66,13 +67,13 @@ agreement for further details.
 +---------------------------------------------------------------------------------------------------+---------------------------+
 
 
-+-----------------------------------------------------------------------------------------+
-; Simulation Generated Files                                                              ;
-+-----------------------------------------------------------------------------------------+
-; Generated Files                                                                         ;
-+-----------------------------------------------------------------------------------------+
-; C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim//DE0_top.vo ;
-+-----------------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------------------+
+; Simulation Generated Files                                                                 ;
++--------------------------------------------------------------------------------------------+
+; Generated Files                                                                            ;
++--------------------------------------------------------------------------------------------+
+; C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/modelsim/DE0_top.vo ;
++--------------------------------------------------------------------------------------------+
 
 
 +-----------------------------+
@@ -81,28 +82,15 @@ agreement for further details.
 Info: *******************************************************************
 Info: Running Quartus Prime EDA Netlist Writer
     Info: Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
-    Info: Copyright (C) 2017  Intel Corporation. All rights reserved.
-    Info: Your use of Intel Corporation's design tools, logic functions 
-    Info: and other software and tools, and its AMPP partner logic 
-    Info: functions, and any output files from any of the foregoing 
-    Info: (including device programming or simulation files), and any 
-    Info: associated documentation or information are expressly subject 
-    Info: to the terms and conditions of the Intel Program License 
-    Info: Subscription Agreement, the Intel Quartus Prime License Agreement,
-    Info: the Intel MegaCore Function License Agreement, or other 
-    Info: applicable license agreement, including, without limitation, 
-    Info: that your use is for the sole purpose of programming logic 
-    Info: devices manufactured by Intel and sold by Intel or its 
-    Info: authorized distributors.  Please refer to the applicable 
-    Info: agreement for further details.
-    Info: Processing started: Mon Sep 12 18:52:28 2022
-Info: Command: quartus_eda --write_settings_files=off --simulation=on --functional=on --flatten_buses=off --tool=modelsim_oem --format=verilog --output_directory="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim/" DE0_top -c DE0_top
-Info (119006): Selected device 10M50DAF484C7G for design "DE0_top"
-Info (204019): Generated file DE0_top.vo in folder "C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim//" for EDA simulation tool
-Info: Quartus Prime EDA Netlist Writer was successful. 0 errors, 0 warnings
-    Info: Peak virtual memory: 4643 megabytes
-    Info: Processing ended: Mon Sep 12 18:52:29 2022
-    Info: Elapsed time: 00:00:01
-    Info: Total CPU time (on all processors): 00:00:01
+    Info: Processing started: Thu Sep 15 01:30:49 2022
+Info: Command: quartus_eda --read_settings_files=off --write_settings_files=off DE0_top -c DE0_top
+Critical Warning (138067): Current license file does not support incremental compilation. The Quartus Prime software removes all the user-specified design partitions in the design automatically.
+Warning (10905): Generated the EDA functional simulation netlist because it is the only supported netlist type for this device.
+Info (204019): Generated file DE0_top.vo in folder "C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/modelsim/" for EDA simulation tool
+Info: Quartus Prime EDA Netlist Writer was successful. 0 errors, 2 warnings
+    Info: Peak virtual memory: 4806 megabytes
+    Info: Processing ended: Thu Sep 15 01:30:55 2022
+    Info: Elapsed time: 00:00:06
+    Info: Total CPU time (on all processors): 00:00:05
 
 

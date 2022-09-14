@@ -358,7 +358,7 @@ end
 assign ai_accel_select = (addr_mem_data>=`AI_ADDR_START) & (addr_mem_data<=`AI_ADDR_LAST);
 
 
-ai_accel ai_accelerator
+encryptor ai_accelerator
 (
         .rst_n(reset_n),
         .clk(clock_to_core),

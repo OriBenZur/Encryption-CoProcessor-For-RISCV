@@ -60,10 +60,10 @@ always @* begin
 	if (is_branch_i) begin
 		if (is_conditional_i) begin
 		    case (BR_op_i)
-				BR_EQ: offset = (ALU_zero_i === 1'd1)? imm_i: {{DATA_WIDTH-3{1'b0}},1'b0,2'b00};       
-				BR_NE: offset = (ALU_zero_i === 1'd0)? imm_i: {{DATA_WIDTH-3{1'b0}},1'b0,2'b00};
-				BR_LT: offset = (ALU_zero_i === 1'd0)? imm_i: {{DATA_WIDTH-3{1'b0}},1'b0,2'b00};
-				BR_GE: offset = (ALU_zero_i === 1'd1)? imm_i: {{DATA_WIDTH-3{1'b0}},1'b0,2'b00}; 
+				BR_EQ: offset = (ALU_zero_i === 1'd1)? imm_i: {{DATA_WIDTH-3{1'b0}},1'b1,2'b00};       
+				BR_NE: offset = (ALU_zero_i === 1'd0)? imm_i: {{DATA_WIDTH-3{1'b0}},1'b1,2'b00};
+				BR_LT: offset = (ALU_zero_i === 1'd0)? imm_i: {{DATA_WIDTH-3{1'b0}},1'b1,2'b00};
+				BR_GE: offset = (ALU_zero_i === 1'd1)? imm_i: {{DATA_WIDTH-3{1'b0}},1'b1,2'b00}; 
 			endcase
 			new_pc_o = new_pc;
 		end

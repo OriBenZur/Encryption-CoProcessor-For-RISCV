@@ -1,3 +1,2 @@
 v1
-DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,ai_accel:ai_accelerator|multiplier:mul|lpm_mult:Mult0|mult_0ls:auto_generated|mac_out2,
-PORT_SWAPPING,PORT_SWAPPING_FINISHED,ai_accel:ai_accelerator|multiplier:mul|lpm_mult:Mult0|mult_0ls:auto_generated|mac_mult1,
+PORT_SWAPPING,PORT_SWAPPING_FINISHED,encryptor:ai_accelerator|multiplier:mul|lpm_mult:Mult0|mult_0ls:auto_generated|mac_mult1,

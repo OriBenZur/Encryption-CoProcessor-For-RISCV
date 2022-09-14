@@ -1,16 +1,16 @@
-Analysis & Synthesis Status : Successful - Mon Sep 12 23:52:34 2022
+Analysis & Elaboration Status : Successful - Thu Sep 15 02:21:05 2022
 Quartus Prime Version : 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 Revision Name : DE0_top
-Top-level Entity Name : DE0_top
+Top-level Entity Name : key_expander
 Family : MAX 10
-Total logic elements : 19,954
-    Total combinational functions : 10,559
-    Dedicated logic registers : 9,751
-Total registers : 9751
-Total pins : 66
-Total virtual pins : 0
-Total memory bits : 0
-Embedded Multiplier 9-bit elements : 1
-Total PLLs : 1
-UFM blocks : 0
-ADC blocks : 0
+Total logic elements : N/A until Partition Merge
+    Total combinational functions : N/A until Partition Merge
+    Dedicated logic registers : N/A until Partition Merge
+Total registers : N/A until Partition Merge
+Total pins : N/A until Partition Merge
+Total virtual pins : N/A until Partition Merge
+Total memory bits : N/A until Partition Merge
+Embedded Multiplier 9-bit elements : N/A until Partition Merge
+Total PLLs : N/A until Partition Merge
+UFM blocks : N/A until Partition Merge
+ADC blocks : N/A until Partition Merge

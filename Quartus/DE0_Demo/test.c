@@ -9,6 +9,9 @@
 #define ACCEL_B (ACCEL_A + 16)
 #define ACCEL_C (ACCEL_B + 16)
 
+#define ACCEL_GO 0x1
+#define ACCEL_DONE 0x80000000
+
 
 #define PRINT(i, j) *((int *)(i)) = (j)
 #define STOP while(1)
@@ -22,16 +25,15 @@ int main(){
 	int* accel_data_a_ptr = (int *)ACCEL_A;
 	int* accel_data_b_ptr = (int *)ACCEL_B;
 	int* accel_data_c_ptr = (int *)ACCEL_C;
+	char c = 0;
+	unsigned int t = 0;
+	PRINT(LEDS, 1);
 	*accel_data_a_ptr = 0x01010101;
-	*accel_data_b_ptr = 0x02020202;
-	*accel_ctrl_ptr = 0x00000001; 
-	PRINT(LEDS, 4);
-	// while (*accel_ctrl_ptr != 0x80000000) PRINT(SEVSEG, *accel_ctrl_ptr);
+	*accel_data_b_ptr = 0x04030201;
+	*accel_ctrl_ptr = ACCEL_GO;
+	while (*accel_ctrl_ptr != ACCEL_DONE);
+	PRINT(SEVSEG, *accel_data_c_ptr);
 	PRINT(LEDS, 2);
-	PRINT(SEVSEG, *accel_ctrl_ptr >> 24);
-	// PRINT(LEDS, *accel_ctrl_ptr);
-	// PRINT(SEVSEG, *accel_perf_ctr);
-
 	// while(i<49){
 	// 	PRINT(LEDS, i);
 	// 	i++;

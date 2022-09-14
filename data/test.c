@@ -26,8 +26,8 @@ int main(){
 	*accel_data_a_ptr = 0x00000105;
 	*accel_data_b_ptr = 0x00000804;
 	*accel_ctrl_ptr = 0x00000001; 
-	PRINT(SEVSEG, *accel_data_c_ptr);
 	PRINT(SEVSEG, *accel_perf_ctr);
+	PRINT(SEVSEG, *accel_data_c_ptr);
 
 	while(i<49){
 		PRINT(LEDS, i);
