@@ -1,6 +1,5 @@
 `timescale 1ns/1ps
 
-
 module multiplier
 (
 	input logic [7:0] a,
@@ -31,118 +30,136 @@ module encryptor
 	logic done_bit_in;
 
 	logic [15:0] counter;
+	logic [13:0] round_counter;
+	byte rc, rc_d;
 	
 	logic [31:0] key[3:0];
-	logic [31:0] expanded_key[3:0];
+	logic [31:0] key_o;
 	logic [31:0] plaintext[3:0];
 	logic [31:0] cyphertext[3:0];
+	integer i;
+	// logic [31:0] cyphertext_in[3:0];
 
 	
-	logic [7:0] in1, in2;
-	logic[7:0] out;
+	// logic [7:0] in1, in2;
+	// logic[7:0] out;
 
 	assign ctr = counter;
+	assign round_counter = counter / 4;
+	assign go_bit_in = (wr_en & accel_select & (addr[6:2] == 5'd0008));
 	
-	integer i;
+	key_expander key_scheduler
+	(
+		.rst_n(rst_n), // Reset Neg
+		.clk(clk), // Clk
+		.i(counter),
+		.key_i_1(key[3]),
+		.key_N_i(key[0]),
+		.rc_i(rc_d),
+		.rc_out(rc),
+		.key_out(key_o)
+	);
 	
-	always @(addr[6:2], key, plaintext, cyphertext, counter, done_bit, go_bit, counter) begin
-	case(addr[6:2])
-	5'd008: data_out = {done_bit, 30'b0, go_bit};
-	5'd009: data_out = {16'b0, counter}; 
-	5'd010: data_out = key[0];
-	5'd011: data_out = key[1];
-	5'd012: data_out = key[2];
-	5'd013: data_out = key[3];
-	5'd014: data_out = plaintext[0];
-	5'd015: data_out = plaintext[1];
-	5'd016: data_out = plaintext[2];
-	5'd017: data_out = plaintext[3];
-	5'd018: data_out = cyphertext[0];
-	5'd019: data_out = cyphertext[1];
-	5'd020: data_out = cyphertext[2];
-	5'd021: data_out = cyphertext[3];
-	default: data_out = 32'b0;
-	endcase
+	// always_ff@(addr[6:2], key, plaintext, cyphertext, counter, done_bit, go_bit, counter) begin
+	always_comb begin
+		case(addr[6:2])
+		5'd008: data_out = {done_bit, 30'b0, go_bit};
+		5'd009: data_out = {16'b0, counter}; 
+		5'd010: data_out = key[0];
+		5'd011: data_out = key[1];
+		5'd012: data_out = key[2];
+		5'd013: data_out = key[3];
+		5'd014: data_out = plaintext[0];
+		5'd015: data_out = plaintext[1];
+		5'd016: data_out = plaintext[2];
+		5'd017: data_out = plaintext[3];
+		5'd018: data_out = cyphertext[0];
+		5'd019: data_out = cyphertext[1];
+		5'd020: data_out = cyphertext[2];
+		5'd021: data_out = cyphertext[3];
+		default: data_out = 32'b0;
+		endcase
 	end
 	
-	assign go_bit_in = (wr_en & accel_select & (addr[6:2] == 5'd0008));
 
-	always @(posedge clk or negedge rst_n)
+	always@(posedge clk or negedge rst_n) begin
 	if(~rst_n) go_bit <= 1'b0;
 	else go_bit <=  go_bit_in ? 1'b1 : 1'b0;
-	
-	always @(posedge clk or negedge rst_n) begin
-	counter <= go_bit_in? 16'h00 : done_bit_in ? counter : counter +16'h01;
-	if(~rst_n) begin
-		counter <= 16'b0;
-		for (i = 0; i < 4; i = i+1) begin
-			key[i] <= 32'b0;
-			plaintext[i] <= 32'b0;
-		end
-	end
-	else if (wr_en & accel_select) begin
-		for (i = 0; i < 4; i = i + 1) begin
-			key[i] <= (addr[6:2] == i + 10) ? data_in : key[i];
-			plaintext[i] <= (addr[6:2] == i + 14) ? data_in : plaintext[i];
-		end
-	end
-	else begin
-		for (i = 0; i < 4; i = i + 1) begin
-			key[i] <= key[i];
-			plaintext[i] <= plaintext[i];
-		end
-	end
 	end
 	
-		
-	always @(key, counter) begin
-		case(counter)
-		16'd0: 	in1 <= key[0][7:0];
-		16'd1:	in1 <= key[0][15:8];
-		16'd2: 	in1 <= key[0][23:16];
-		16'd3:	in1 <= key[0][31:24];
-		default: in1 <= key[0][7:0];
-		endcase
+	always@(posedge clk or negedge rst_n) begin
+		if(~rst_n) begin
+			counter <= 16'b0;
+			rc_d <= 0;
+			for (i = 0; i < 4; i = i+1) begin
+				key[i] <= 32'b0;
+				plaintext[i] <= 32'b0;
+			end
+		end
+		else begin
+			counter <= go_bit_in? 16'h00 : done_bit_in ? counter : counter +16'h01;
+			rc_d <= rc_d;
+			for (i = 0; i < 4; i = i + 1) begin
+				plaintext[i] <= plaintext[i];
+				key[i] <= key[i];
+			end
+			if (wr_en & accel_select) begin
+				for (i = 0; i < 4; i = i + 1) begin
+					key[i] <= (addr[6:2] == i + 10) ? data_in : key[i];
+					plaintext[i] <= (addr[6:2] == i + 14) ? data_in : plaintext[i];
+				end
+			end
+			else if (counter > 0) begin
+				for (i = 1; i < 4; i = i + 1) key[i-1] <= key[i];
+				key[3] <= key_o;
+				rc_d <= rc;
+			end
+		end
 	end
+	
 
-	always @(plaintext, counter) begin
-		case(counter)
-		16'd0: 	in2 <= plaintext[0][7:0];
-		16'd1:	in2 <= plaintext[0][15:8];
-		16'd2:	in2 <= plaintext[0][23:16];
-		16'd3:	in2 <= plaintext[0][31:24];
-		default: in2 <= plaintext[0][7:0];
-		endcase
+	always@(posedge clk or negedge rst_n) begin
+	if (~rst_n)
+		for (i = 0; i < 4; i = i + 1) cyphertext[i] <= 0;
+	else if (counter % 4 != 0);
+	else if (round_counter == 0)
+		for (i = 0; i < 4; i = i + 1) cyphertext[i] <= plaintext[i] ^ key[i];
+	else if (round_counter < 10) begin
+		cyphertext[0] <= A0[cyphertext[0][7:0]]^A1[cyphertext[1][15:8]]^A2[cyphertext[2][23:16]]^A3[cyphertext[3][31:24]]^key[0];
+		cyphertext[1] <= A0[cyphertext[1][7:0]]^A1[cyphertext[2][15:8]]^A2[cyphertext[3][23:16]]^A3[cyphertext[0][31:24]]^key[1];
+		cyphertext[2] <= A0[cyphertext[2][7:0]]^A1[cyphertext[3][15:8]]^A2[cyphertext[0][15:8]]^A3[cyphertext[1][31:24]]^key[2];
+		cyphertext[3] <= A0[cyphertext[3][7:0]]^A1[cyphertext[0][15:8]]^A2[cyphertext[1][23:16]]^A3[cyphertext[2][31:24]]^key[3];
+	end
+	else begin//if (round_counter == 10) begin
+		cyphertext[0] <= (s_box[cyphertext[0][7:0]] << 24) ^ {8'b0, (s_box[cyphertext[1][15:8]] << 16)} ^ {16'b0, (s_box[cyphertext[2][23:16]] << 8)} ^ {24'b0, s_box[cyphertext[3][31:24]]} ^ key[0];
+		cyphertext[1] <= (s_box[cyphertext[1][7:0]] << 24) ^ {8'b0, (s_box[cyphertext[2][15:8]] << 16)} ^ {16'b0, (s_box[cyphertext[3][23:16]] << 8)} ^ {24'b0, s_box[cyphertext[0][31:24]]} ^ key[1];
+		cyphertext[2] <= (s_box[cyphertext[2][7:0]] << 24) ^ {8'b0, (s_box[cyphertext[3][15:8]] << 16)} ^ {16'b0, (s_box[cyphertext[0][15:8]] << 8)} ^ {24'b0, s_box[cyphertext[1][31:24]]} ^ key[2];
+		cyphertext[3] <= (s_box[cyphertext[3][7:0]] << 24) ^ {8'b0, (s_box[cyphertext[0][15:8]] << 16)} ^ {16'b0, (s_box[cyphertext[1][23:16]] << 8)} ^ {24'b0, s_box[cyphertext[2][31:24]]} ^ key[3];
+	end
 	end
 	
-	
-	multiplier mul(.a(in1), .b(in2), .c(out));
-	
-	logic [31:0] cyphertext_in[3:0];
 
-	always_comb begin
-	case(counter[3:0])
-		4'd0: cyphertext_in[0] = {cyphertext[0][31:8], out};
-		4'd1: cyphertext_in[0] = {cyphertext[0][31:16], out, cyphertext[0][7:0]};
-		4'd2: cyphertext_in[0] = {cyphertext[0][31:24], out, cyphertext[0][15:0]};
-		4'd3: cyphertext_in[0] = {out, cyphertext[0][23:0]};
-		default: cyphertext_in[0] = cyphertext_in[0];
-		endcase
-	end	 
+	// always_comb begin
+	// case(counter[3:0])
+	// 	4'd0: cyphertext_in[0] = {cyphertext[0][31:8], out};
+	// 	4'd1: cyphertext_in[0] = {cyphertext[0][31:16], out, cyphertext[0][7:0]};
+	// 	4'd2: cyphertext_in[0] = {cyphertext[0][31:24], out, cyphertext[0][15:0]};
+	// 	4'd3: cyphertext_in[0] = {out, cyphertext[0][23:0]};
+	// 	default: cyphertext_in[0] = cyphertext_in[0];
+	// 	endcase
+	// end	 
 							
-	always @(posedge clk or negedge rst_n)
-		if(~rst_n) cyphertext[0] <= 32'h0;
-		else cyphertext[0] <= cyphertext_in[0];
+	// always_ff@(posedge clk or negedge rst_n)
+	// 	if(~rst_n) cyphertext[0] <= 32'h0;
+	// 	else cyphertext[0] <= cyphertext_in[0];
 			
-	assign done_bit_in = (counter == 16'd4);
+	assign done_bit_in = (counter == 16'd48);
 	
-	always @(posedge clk or negedge rst_n)
+	always@(posedge clk or negedge rst_n)
 		if(~rst_n) done_bit <= 1'b0;
 		else done_bit <= go_bit_in ? 1'b0 : done_bit_in;
-	 
-endmodule
 
-/*
+
 localparam byte s_box [0:255] = '{
     8'h63, 8'h7C, 8'h77, 8'h7B, 8'hF2, 8'h6B, 8'h6F, 8'hC5, 8'h30, 8'h01, 8'h67, 8'h2B, 8'hFE, 8'hD7, 8'hAB, 8'h76,
     8'hCA, 8'h82, 8'hC9, 8'h7D, 8'hFA, 8'h59, 8'h47, 8'hF0, 8'hAD, 8'hD4, 8'hA2, 8'hAF, 8'h9C, 8'hA4, 8'h72, 8'hC0,
@@ -163,166 +180,143 @@ localparam byte s_box [0:255] = '{
     };
 
 localparam int A0 [0:255] = '{
-	0xc66363a5, 0xf87c7c84, 0xee777799, 0xf67b7b8d, 0xfff2f20d, 0xd66b6bbd, 0xde6f6fb1, 0x91c5c554,
-	0x60303050, 0x02010103, 0xce6767a9, 0x562b2b7d, 0xe7fefe19, 0xb5d7d762, 0x4dababe6, 0xec76769a,
-	0x8fcaca45, 0x1f82829d, 0x89c9c940, 0xfa7d7d87, 0xeffafa15, 0xb25959eb, 0x8e4747c9, 0xfbf0f00b,
-	0x41adadec, 0xb3d4d467, 0x5fa2a2fd, 0x45afafea, 0x239c9cbf, 0x53a4a4f7, 0xe4727296, 0x9bc0c05b,
-	0x75b7b7c2, 0xe1fdfd1c, 0x3d9393ae, 0x4c26266a, 0x6c36365a, 0x7e3f3f41, 0xf5f7f702, 0x83cccc4f,
-	0x6834345c, 0x51a5a5f4, 0xd1e5e534, 0xf9f1f108, 0xe2717193, 0xabd8d873, 0x62313153, 0x2a15153f,
-	0x0804040c, 0x95c7c752, 0x46232365, 0x9dc3c35e, 0x30181828, 0x379696a1, 0x0a05050f, 0x2f9a9ab5,
-	0x0e070709, 0x24121236, 0x1b80809b, 0xdfe2e23d, 0xcdebeb26, 0x4e272769, 0x7fb2b2cd, 0xea75759f,
-	0x1209091b, 0x1d83839e, 0x582c2c74, 0x341a1a2e, 0x361b1b2d, 0xdc6e6eb2, 0xb45a5aee, 0x5ba0a0fb,
-	0xa45252f6, 0x763b3b4d, 0xb7d6d661, 0x7db3b3ce, 0x5229297b, 0xdde3e33e, 0x5e2f2f71, 0x13848497,
-	0xa65353f5, 0xb9d1d168, 0x00000000, 0xc1eded2c, 0x40202060, 0xe3fcfc1f, 0x79b1b1c8, 0xb65b5bed,
-	0xd46a6abe, 0x8dcbcb46, 0x67bebed9, 0x7239394b, 0x944a4ade, 0x984c4cd4, 0xb05858e8, 0x85cfcf4a,
-	0xbbd0d06b, 0xc5efef2a, 0x4faaaae5, 0xedfbfb16, 0x864343c5, 0x9a4d4dd7, 0x66333355, 0x11858594,
-	0x8a4545cf, 0xe9f9f910, 0x04020206, 0xfe7f7f81, 0xa05050f0, 0x783c3c44, 0x259f9fba, 0x4ba8a8e3,
-	0xa25151f3, 0x5da3a3fe, 0x804040c0, 0x058f8f8a, 0x3f9292ad, 0x219d9dbc, 0x70383848, 0xf1f5f504,
-	0x63bcbcdf, 0x77b6b6c1, 0xafdada75, 0x42212163, 0x20101030, 0xe5ffff1a, 0xfdf3f30e, 0xbfd2d26d,
-	0x81cdcd4c, 0x180c0c14, 0x26131335, 0xc3ecec2f, 0xbe5f5fe1, 0x359797a2, 0x884444cc, 0x2e171739,
-	0x93c4c457, 0x55a7a7f2, 0xfc7e7e82, 0x7a3d3d47, 0xc86464ac, 0xba5d5de7, 0x3219192b, 0xe6737395,
-	0xc06060a0, 0x19818198, 0x9e4f4fd1, 0xa3dcdc7f, 0x44222266, 0x542a2a7e, 0x3b9090ab, 0x0b888883,
-	0x8c4646ca, 0xc7eeee29, 0x6bb8b8d3, 0x2814143c, 0xa7dede79, 0xbc5e5ee2, 0x160b0b1d, 0xaddbdb76,
-	0xdbe0e03b, 0x64323256, 0x743a3a4e, 0x140a0a1e, 0x924949db, 0x0c06060a, 0x4824246c, 0xb85c5ce4,
-	0x9fc2c25d, 0xbdd3d36e, 0x43acacef, 0xc46262a6, 0x399191a8, 0x319595a4, 0xd3e4e437, 0xf279798b,
-	0xd5e7e732, 0x8bc8c843, 0x6e373759, 0xda6d6db7, 0x018d8d8c, 0xb1d5d564, 0x9c4e4ed2, 0x49a9a9e0,
-	0xd86c6cb4, 0xac5656fa, 0xf3f4f407, 0xcfeaea25, 0xca6565af, 0xf47a7a8e, 0x47aeaee9, 0x10080818,
-	0x6fbabad5, 0xf0787888, 0x4a25256f, 0x5c2e2e72, 0x381c1c24, 0x57a6a6f1, 0x73b4b4c7, 0x97c6c651,
-	0xcbe8e823, 0xa1dddd7c, 0xe874749c, 0x3e1f1f21, 0x964b4bdd, 0x61bdbddc, 0x0d8b8b86, 0x0f8a8a85,
-	0xe0707090, 0x7c3e3e42, 0x71b5b5c4, 0xcc6666aa, 0x904848d8, 0x06030305, 0xf7f6f601, 0x1c0e0e12,
-	0xc26161a3, 0x6a35355f, 0xae5757f9, 0x69b9b9d0, 0x17868691, 0x99c1c158, 0x3a1d1d27, 0x279e9eb9,
-	0xd9e1e138, 0xebf8f813, 0x2b9898b3, 0x22111133, 0xd26969bb, 0xa9d9d970, 0x078e8e89, 0x339494a7,
-	0x2d9b9bb6, 0x3c1e1e22, 0x15878792, 0xc9e9e920, 0x87cece49, 0xaa5555ff, 0x50282878, 0xa5dfdf7a,
-	0x038c8c8f, 0x59a1a1f8, 0x09898980, 0x1a0d0d17, 0x65bfbfda, 0xd7e6e631, 0x844242c6, 0xd06868b8,
-	0x824141c3, 0x299999b0, 0x5a2d2d77, 0x1e0f0f11, 0x7bb0b0cb, 0xa85454fc, 0x6dbbbbd6, 0x2c16163a
+	32'hc66363a5, 32'hf87c7c84, 32'hee777799, 32'hf67b7b8d, 32'hfff2f20d, 32'hd66b6bbd, 32'hde6f6fb1, 32'h91c5c554,
+	32'h60303050, 32'h02010103, 32'hce6767a9, 32'h562b2b7d, 32'he7fefe19, 32'hb5d7d762, 32'h4dababe6, 32'hec76769a,
+	32'h8fcaca45, 32'h1f82829d, 32'h89c9c940, 32'hfa7d7d87, 32'heffafa15, 32'hb25959eb, 32'h8e4747c9, 32'hfbf0f00b,
+	32'h41adadec, 32'hb3d4d467, 32'h5fa2a2fd, 32'h45afafea, 32'h239c9cbf, 32'h53a4a4f7, 32'he4727296, 32'h9bc0c05b,
+	32'h75b7b7c2, 32'he1fdfd1c, 32'h3d9393ae, 32'h4c26266a, 32'h6c36365a, 32'h7e3f3f41, 32'hf5f7f702, 32'h83cccc4f,
+	32'h6834345c, 32'h51a5a5f4, 32'hd1e5e534, 32'hf9f1f108, 32'he2717193, 32'habd8d873, 32'h62313153, 32'h2a15153f,
+	32'h0804040c, 32'h95c7c752, 32'h46232365, 32'h9dc3c35e, 32'h30181828, 32'h379696a1, 32'h0a05050f, 32'h2f9a9ab5,
+	32'h0e070709, 32'h24121236, 32'h1b80809b, 32'hdfe2e23d, 32'hcdebeb26, 32'h4e272769, 32'h7fb2b2cd, 32'hea75759f,
+	32'h1209091b, 32'h1d83839e, 32'h582c2c74, 32'h341a1a2e, 32'h361b1b2d, 32'hdc6e6eb2, 32'hb45a5aee, 32'h5ba0a0fb,
+	32'ha45252f6, 32'h763b3b4d, 32'hb7d6d661, 32'h7db3b3ce, 32'h5229297b, 32'hdde3e33e, 32'h5e2f2f71, 32'h13848497,
+	32'ha65353f5, 32'hb9d1d168, 32'h00000000, 32'hc1eded2c, 32'h40202060, 32'he3fcfc1f, 32'h79b1b1c8, 32'hb65b5bed,
+	32'hd46a6abe, 32'h8dcbcb46, 32'h67bebed9, 32'h7239394b, 32'h944a4ade, 32'h984c4cd4, 32'hb05858e8, 32'h85cfcf4a,
+	32'hbbd0d06b, 32'hc5efef2a, 32'h4faaaae5, 32'hedfbfb16, 32'h864343c5, 32'h9a4d4dd7, 32'h66333355, 32'h11858594,
+	32'h8a4545cf, 32'he9f9f910, 32'h04020206, 32'hfe7f7f81, 32'ha05050f0, 32'h783c3c44, 32'h259f9fba, 32'h4ba8a8e3,
+	32'ha25151f3, 32'h5da3a3fe, 32'h804040c0, 32'h058f8f8a, 32'h3f9292ad, 32'h219d9dbc, 32'h70383848, 32'hf1f5f504,
+	32'h63bcbcdf, 32'h77b6b6c1, 32'hafdada75, 32'h42212163, 32'h20101030, 32'he5ffff1a, 32'hfdf3f30e, 32'hbfd2d26d,
+	32'h81cdcd4c, 32'h180c0c14, 32'h26131335, 32'hc3ecec2f, 32'hbe5f5fe1, 32'h359797a2, 32'h884444cc, 32'h2e171739,
+	32'h93c4c457, 32'h55a7a7f2, 32'hfc7e7e82, 32'h7a3d3d47, 32'hc86464ac, 32'hba5d5de7, 32'h3219192b, 32'he6737395,
+	32'hc06060a0, 32'h19818198, 32'h9e4f4fd1, 32'ha3dcdc7f, 32'h44222266, 32'h542a2a7e, 32'h3b9090ab, 32'h0b888883,
+	32'h8c4646ca, 32'hc7eeee29, 32'h6bb8b8d3, 32'h2814143c, 32'ha7dede79, 32'hbc5e5ee2, 32'h160b0b1d, 32'haddbdb76,
+	32'hdbe0e03b, 32'h64323256, 32'h743a3a4e, 32'h140a0a1e, 32'h924949db, 32'h0c06060a, 32'h4824246c, 32'hb85c5ce4,
+	32'h9fc2c25d, 32'hbdd3d36e, 32'h43acacef, 32'hc46262a6, 32'h399191a8, 32'h319595a4, 32'hd3e4e437, 32'hf279798b,
+	32'hd5e7e732, 32'h8bc8c843, 32'h6e373759, 32'hda6d6db7, 32'h018d8d8c, 32'hb1d5d564, 32'h9c4e4ed2, 32'h49a9a9e0,
+	32'hd86c6cb4, 32'hac5656fa, 32'hf3f4f407, 32'hcfeaea25, 32'hca6565af, 32'hf47a7a8e, 32'h47aeaee9, 32'h10080818,
+	32'h6fbabad5, 32'hf0787888, 32'h4a25256f, 32'h5c2e2e72, 32'h381c1c24, 32'h57a6a6f1, 32'h73b4b4c7, 32'h97c6c651,
+	32'hcbe8e823, 32'ha1dddd7c, 32'he874749c, 32'h3e1f1f21, 32'h964b4bdd, 32'h61bdbddc, 32'h0d8b8b86, 32'h0f8a8a85,
+	32'he0707090, 32'h7c3e3e42, 32'h71b5b5c4, 32'hcc6666aa, 32'h904848d8, 32'h06030305, 32'hf7f6f601, 32'h1c0e0e12,
+	32'hc26161a3, 32'h6a35355f, 32'hae5757f9, 32'h69b9b9d0, 32'h17868691, 32'h99c1c158, 32'h3a1d1d27, 32'h279e9eb9,
+	32'hd9e1e138, 32'hebf8f813, 32'h2b9898b3, 32'h22111133, 32'hd26969bb, 32'ha9d9d970, 32'h078e8e89, 32'h339494a7,
+	32'h2d9b9bb6, 32'h3c1e1e22, 32'h15878792, 32'hc9e9e920, 32'h87cece49, 32'haa5555ff, 32'h50282878, 32'ha5dfdf7a,
+	32'h038c8c8f, 32'h59a1a1f8, 32'h09898980, 32'h1a0d0d17, 32'h65bfbfda, 32'hd7e6e631, 32'h844242c6, 32'hd06868b8,
+	32'h824141c3, 32'h299999b0, 32'h5a2d2d77, 32'h1e0f0f11, 32'h7bb0b0cb, 32'ha85454fc, 32'h6dbbbbd6, 32'h2c16163a
 	};
 
 localparam int A1 [0:255] = '{
-	0xa5c66363, 0x84f87c7c, 0x99ee7777, 0x8df67b7b, 0x0dfff2f2, 0xbdd66b6b, 0xb1de6f6f, 0x5491c5c5,
-	0x50603030, 0x03020101, 0xa9ce6767, 0x7d562b2b, 0x19e7fefe, 0x62b5d7d7, 0xe64dabab, 0x9aec7676,
-	0x458fcaca, 0x9d1f8282, 0x4089c9c9, 0x87fa7d7d, 0x15effafa, 0xebb25959, 0xc98e4747, 0x0bfbf0f0,
-	0xec41adad, 0x67b3d4d4, 0xfd5fa2a2, 0xea45afaf, 0xbf239c9c, 0xf753a4a4, 0x96e47272, 0x5b9bc0c0,
-	0xc275b7b7, 0x1ce1fdfd, 0xae3d9393, 0x6a4c2626, 0x5a6c3636, 0x417e3f3f, 0x02f5f7f7, 0x4f83cccc,
-	0x5c683434, 0xf451a5a5, 0x34d1e5e5, 0x08f9f1f1, 0x93e27171, 0x73abd8d8, 0x53623131, 0x3f2a1515,
-	0x0c080404, 0x5295c7c7, 0x65462323, 0x5e9dc3c3, 0x28301818, 0xa1379696, 0x0f0a0505, 0xb52f9a9a,
-	0x090e0707, 0x36241212, 0x9b1b8080, 0x3ddfe2e2, 0x26cdebeb, 0x694e2727, 0xcd7fb2b2, 0x9fea7575,
-	0x1b120909, 0x9e1d8383, 0x74582c2c, 0x2e341a1a, 0x2d361b1b, 0xb2dc6e6e, 0xeeb45a5a, 0xfb5ba0a0,
-	0xf6a45252, 0x4d763b3b, 0x61b7d6d6, 0xce7db3b3, 0x7b522929, 0x3edde3e3, 0x715e2f2f, 0x97138484,
-	0xf5a65353, 0x68b9d1d1, 0x00000000, 0x2cc1eded, 0x60402020, 0x1fe3fcfc, 0xc879b1b1, 0xedb65b5b,
-	0xbed46a6a, 0x468dcbcb, 0xd967bebe, 0x4b723939, 0xde944a4a, 0xd4984c4c, 0xe8b05858, 0x4a85cfcf,
-	0x6bbbd0d0, 0x2ac5efef, 0xe54faaaa, 0x16edfbfb, 0xc5864343, 0xd79a4d4d, 0x55663333, 0x94118585,
-	0xcf8a4545, 0x10e9f9f9, 0x06040202, 0x81fe7f7f, 0xf0a05050, 0x44783c3c, 0xba259f9f, 0xe34ba8a8,
-	0xf3a25151, 0xfe5da3a3, 0xc0804040, 0x8a058f8f, 0xad3f9292, 0xbc219d9d, 0x48703838, 0x04f1f5f5,
-	0xdf63bcbc, 0xc177b6b6, 0x75afdada, 0x63422121, 0x30201010, 0x1ae5ffff, 0x0efdf3f3, 0x6dbfd2d2,
-	0x4c81cdcd, 0x14180c0c, 0x35261313, 0x2fc3ecec, 0xe1be5f5f, 0xa2359797, 0xcc884444, 0x392e1717,
-	0x5793c4c4, 0xf255a7a7, 0x82fc7e7e, 0x477a3d3d, 0xacc86464, 0xe7ba5d5d, 0x2b321919, 0x95e67373,
-	0xa0c06060, 0x98198181, 0xd19e4f4f, 0x7fa3dcdc, 0x66442222, 0x7e542a2a, 0xab3b9090, 0x830b8888,
-	0xca8c4646, 0x29c7eeee, 0xd36bb8b8, 0x3c281414, 0x79a7dede, 0xe2bc5e5e, 0x1d160b0b, 0x76addbdb,
-	0x3bdbe0e0, 0x56643232, 0x4e743a3a, 0x1e140a0a, 0xdb924949, 0x0a0c0606, 0x6c482424, 0xe4b85c5c,
-	0x5d9fc2c2, 0x6ebdd3d3, 0xef43acac, 0xa6c46262, 0xa8399191, 0xa4319595, 0x37d3e4e4, 0x8bf27979,
-	0x32d5e7e7, 0x438bc8c8, 0x596e3737, 0xb7da6d6d, 0x8c018d8d, 0x64b1d5d5, 0xd29c4e4e, 0xe049a9a9,
-	0xb4d86c6c, 0xfaac5656, 0x07f3f4f4, 0x25cfeaea, 0xafca6565, 0x8ef47a7a, 0xe947aeae, 0x18100808,
-	0xd56fbaba, 0x88f07878, 0x6f4a2525, 0x725c2e2e, 0x24381c1c, 0xf157a6a6, 0xc773b4b4, 0x5197c6c6,
-	0x23cbe8e8, 0x7ca1dddd, 0x9ce87474, 0x213e1f1f, 0xdd964b4b, 0xdc61bdbd, 0x860d8b8b, 0x850f8a8a,
-	0x90e07070, 0x427c3e3e, 0xc471b5b5, 0xaacc6666, 0xd8904848, 0x05060303, 0x01f7f6f6, 0x121c0e0e,
-	0xa3c26161, 0x5f6a3535, 0xf9ae5757, 0xd069b9b9, 0x91178686, 0x5899c1c1, 0x273a1d1d, 0xb9279e9e,
-	0x38d9e1e1, 0x13ebf8f8, 0xb32b9898, 0x33221111, 0xbbd26969, 0x70a9d9d9, 0x89078e8e, 0xa7339494,
-	0xb62d9b9b, 0x223c1e1e, 0x92158787, 0x20c9e9e9, 0x4987cece, 0xffaa5555, 0x78502828, 0x7aa5dfdf,
-	0x8f038c8c, 0xf859a1a1, 0x80098989, 0x171a0d0d, 0xda65bfbf, 0x31d7e6e6, 0xc6844242, 0xb8d06868,
-	0xc3824141, 0xb0299999, 0x775a2d2d, 0x111e0f0f, 0xcb7bb0b0, 0xfca85454, 0xd66dbbbb, 0x3a2c1616
+	32'ha5c66363, 32'h84f87c7c, 32'h99ee7777, 32'h8df67b7b, 32'h0dfff2f2, 32'hbdd66b6b, 32'hb1de6f6f, 32'h5491c5c5,
+	32'h50603030, 32'h03020101, 32'ha9ce6767, 32'h7d562b2b, 32'h19e7fefe, 32'h62b5d7d7, 32'he64dabab, 32'h9aec7676,
+	32'h458fcaca, 32'h9d1f8282, 32'h4089c9c9, 32'h87fa7d7d, 32'h15effafa, 32'hebb25959, 32'hc98e4747, 32'h0bfbf0f0,
+	32'hec41adad, 32'h67b3d4d4, 32'hfd5fa2a2, 32'hea45afaf, 32'hbf239c9c, 32'hf753a4a4, 32'h96e47272, 32'h5b9bc0c0,
+	32'hc275b7b7, 32'h1ce1fdfd, 32'hae3d9393, 32'h6a4c2626, 32'h5a6c3636, 32'h417e3f3f, 32'h02f5f7f7, 32'h4f83cccc,
+	32'h5c683434, 32'hf451a5a5, 32'h34d1e5e5, 32'h08f9f1f1, 32'h93e27171, 32'h73abd8d8, 32'h53623131, 32'h3f2a1515,
+	32'h0c080404, 32'h5295c7c7, 32'h65462323, 32'h5e9dc3c3, 32'h28301818, 32'ha1379696, 32'h0f0a0505, 32'hb52f9a9a,
+	32'h090e0707, 32'h36241212, 32'h9b1b8080, 32'h3ddfe2e2, 32'h26cdebeb, 32'h694e2727, 32'hcd7fb2b2, 32'h9fea7575,
+	32'h1b120909, 32'h9e1d8383, 32'h74582c2c, 32'h2e341a1a, 32'h2d361b1b, 32'hb2dc6e6e, 32'heeb45a5a, 32'hfb5ba0a0,
+	32'hf6a45252, 32'h4d763b3b, 32'h61b7d6d6, 32'hce7db3b3, 32'h7b522929, 32'h3edde3e3, 32'h715e2f2f, 32'h97138484,
+	32'hf5a65353, 32'h68b9d1d1, 32'h00000000, 32'h2cc1eded, 32'h60402020, 32'h1fe3fcfc, 32'hc879b1b1, 32'hedb65b5b,
+	32'hbed46a6a, 32'h468dcbcb, 32'hd967bebe, 32'h4b723939, 32'hde944a4a, 32'hd4984c4c, 32'he8b05858, 32'h4a85cfcf,
+	32'h6bbbd0d0, 32'h2ac5efef, 32'he54faaaa, 32'h16edfbfb, 32'hc5864343, 32'hd79a4d4d, 32'h55663333, 32'h94118585,
+	32'hcf8a4545, 32'h10e9f9f9, 32'h06040202, 32'h81fe7f7f, 32'hf0a05050, 32'h44783c3c, 32'hba259f9f, 32'he34ba8a8,
+	32'hf3a25151, 32'hfe5da3a3, 32'hc0804040, 32'h8a058f8f, 32'had3f9292, 32'hbc219d9d, 32'h48703838, 32'h04f1f5f5,
+	32'hdf63bcbc, 32'hc177b6b6, 32'h75afdada, 32'h63422121, 32'h30201010, 32'h1ae5ffff, 32'h0efdf3f3, 32'h6dbfd2d2,
+	32'h4c81cdcd, 32'h14180c0c, 32'h35261313, 32'h2fc3ecec, 32'he1be5f5f, 32'ha2359797, 32'hcc884444, 32'h392e1717,
+	32'h5793c4c4, 32'hf255a7a7, 32'h82fc7e7e, 32'h477a3d3d, 32'hacc86464, 32'he7ba5d5d, 32'h2b321919, 32'h95e67373,
+	32'ha0c06060, 32'h98198181, 32'hd19e4f4f, 32'h7fa3dcdc, 32'h66442222, 32'h7e542a2a, 32'hab3b9090, 32'h830b8888,
+	32'hca8c4646, 32'h29c7eeee, 32'hd36bb8b8, 32'h3c281414, 32'h79a7dede, 32'he2bc5e5e, 32'h1d160b0b, 32'h76addbdb,
+	32'h3bdbe0e0, 32'h56643232, 32'h4e743a3a, 32'h1e140a0a, 32'hdb924949, 32'h0a0c0606, 32'h6c482424, 32'he4b85c5c,
+	32'h5d9fc2c2, 32'h6ebdd3d3, 32'hef43acac, 32'ha6c46262, 32'ha8399191, 32'ha4319595, 32'h37d3e4e4, 32'h8bf27979,
+	32'h32d5e7e7, 32'h438bc8c8, 32'h596e3737, 32'hb7da6d6d, 32'h8c018d8d, 32'h64b1d5d5, 32'hd29c4e4e, 32'he049a9a9,
+	32'hb4d86c6c, 32'hfaac5656, 32'h07f3f4f4, 32'h25cfeaea, 32'hafca6565, 32'h8ef47a7a, 32'he947aeae, 32'h18100808,
+	32'hd56fbaba, 32'h88f07878, 32'h6f4a2525, 32'h725c2e2e, 32'h24381c1c, 32'hf157a6a6, 32'hc773b4b4, 32'h5197c6c6,
+	32'h23cbe8e8, 32'h7ca1dddd, 32'h9ce87474, 32'h213e1f1f, 32'hdd964b4b, 32'hdc61bdbd, 32'h860d8b8b, 32'h850f8a8a,
+	32'h90e07070, 32'h427c3e3e, 32'hc471b5b5, 32'haacc6666, 32'hd8904848, 32'h05060303, 32'h01f7f6f6, 32'h121c0e0e,
+	32'ha3c26161, 32'h5f6a3535, 32'hf9ae5757, 32'hd069b9b9, 32'h91178686, 32'h5899c1c1, 32'h273a1d1d, 32'hb9279e9e,
+	32'h38d9e1e1, 32'h13ebf8f8, 32'hb32b9898, 32'h33221111, 32'hbbd26969, 32'h70a9d9d9, 32'h89078e8e, 32'ha7339494,
+	32'hb62d9b9b, 32'h223c1e1e, 32'h92158787, 32'h20c9e9e9, 32'h4987cece, 32'hffaa5555, 32'h78502828, 32'h7aa5dfdf,
+	32'h8f038c8c, 32'hf859a1a1, 32'h80098989, 32'h171a0d0d, 32'hda65bfbf, 32'h31d7e6e6, 32'hc6844242, 32'hb8d06868,
+	32'hc3824141, 32'hb0299999, 32'h775a2d2d, 32'h111e0f0f, 32'hcb7bb0b0, 32'hfca85454, 32'hd66dbbbb, 32'h3a2c1616
 	};
 
 
 localparam int A2 [0:255] = '{
-	0x63a5c663, 0x7c84f87c, 0x7799ee77, 0x7b8df67b, 0xf20dfff2, 0x6bbdd66b, 0x6fb1de6f, 0xc55491c5,
-	0x30506030, 0x01030201, 0x67a9ce67, 0x2b7d562b, 0xfe19e7fe, 0xd762b5d7, 0xabe64dab, 0x769aec76,
-	0xca458fca, 0x829d1f82, 0xc94089c9, 0x7d87fa7d, 0xfa15effa, 0x59ebb259, 0x47c98e47, 0xf00bfbf0,
-	0xadec41ad, 0xd467b3d4, 0xa2fd5fa2, 0xafea45af, 0x9cbf239c, 0xa4f753a4, 0x7296e472, 0xc05b9bc0,
-	0xb7c275b7, 0xfd1ce1fd, 0x93ae3d93, 0x266a4c26, 0x365a6c36, 0x3f417e3f, 0xf702f5f7, 0xcc4f83cc,
-	0x345c6834, 0xa5f451a5, 0xe534d1e5, 0xf108f9f1, 0x7193e271, 0xd873abd8, 0x31536231, 0x153f2a15,
-	0x040c0804, 0xc75295c7, 0x23654623, 0xc35e9dc3, 0x18283018, 0x96a13796, 0x050f0a05, 0x9ab52f9a,
-	0x07090e07, 0x12362412, 0x809b1b80, 0xe23ddfe2, 0xeb26cdeb, 0x27694e27, 0xb2cd7fb2, 0x759fea75,
-	0x091b1209, 0x839e1d83, 0x2c74582c, 0x1a2e341a, 0x1b2d361b, 0x6eb2dc6e, 0x5aeeb45a, 0xa0fb5ba0,
-	0x52f6a452, 0x3b4d763b, 0xd661b7d6, 0xb3ce7db3, 0x297b5229, 0xe33edde3, 0x2f715e2f, 0x84971384,
-	0x53f5a653, 0xd168b9d1, 0x00000000, 0xed2cc1ed, 0x20604020, 0xfc1fe3fc, 0xb1c879b1, 0x5bedb65b,
-	0x6abed46a, 0xcb468dcb, 0xbed967be, 0x394b7239, 0x4ade944a, 0x4cd4984c, 0x58e8b058, 0xcf4a85cf,
-	0xd06bbbd0, 0xef2ac5ef, 0xaae54faa, 0xfb16edfb, 0x43c58643, 0x4dd79a4d, 0x33556633, 0x85941185,
-	0x45cf8a45, 0xf910e9f9, 0x02060402, 0x7f81fe7f, 0x50f0a050, 0x3c44783c, 0x9fba259f, 0xa8e34ba8,
-	0x51f3a251, 0xa3fe5da3, 0x40c08040, 0x8f8a058f, 0x92ad3f92, 0x9dbc219d, 0x38487038, 0xf504f1f5,
-	0xbcdf63bc, 0xb6c177b6, 0xda75afda, 0x21634221, 0x10302010, 0xff1ae5ff, 0xf30efdf3, 0xd26dbfd2,
-	0xcd4c81cd, 0x0c14180c, 0x13352613, 0xec2fc3ec, 0x5fe1be5f, 0x97a23597, 0x44cc8844, 0x17392e17,
-	0xc45793c4, 0xa7f255a7, 0x7e82fc7e, 0x3d477a3d, 0x64acc864, 0x5de7ba5d, 0x192b3219, 0x7395e673,
-	0x60a0c060, 0x81981981, 0x4fd19e4f, 0xdc7fa3dc, 0x22664422, 0x2a7e542a, 0x90ab3b90, 0x88830b88,
-	0x46ca8c46, 0xee29c7ee, 0xb8d36bb8, 0x143c2814, 0xde79a7de, 0x5ee2bc5e, 0x0b1d160b, 0xdb76addb,
-	0xe03bdbe0, 0x32566432, 0x3a4e743a, 0x0a1e140a, 0x49db9249, 0x060a0c06, 0x246c4824, 0x5ce4b85c,
-	0xc25d9fc2, 0xd36ebdd3, 0xacef43ac, 0x62a6c462, 0x91a83991, 0x95a43195, 0xe437d3e4, 0x798bf279,
-	0xe732d5e7, 0xc8438bc8, 0x37596e37, 0x6db7da6d, 0x8d8c018d, 0xd564b1d5, 0x4ed29c4e, 0xa9e049a9,
-	0x6cb4d86c, 0x56faac56, 0xf407f3f4, 0xea25cfea, 0x65afca65, 0x7a8ef47a, 0xaee947ae, 0x08181008,
-	0xbad56fba, 0x7888f078, 0x256f4a25, 0x2e725c2e, 0x1c24381c, 0xa6f157a6, 0xb4c773b4, 0xc65197c6,
-	0xe823cbe8, 0xdd7ca1dd, 0x749ce874, 0x1f213e1f, 0x4bdd964b, 0xbddc61bd, 0x8b860d8b, 0x8a850f8a,
-	0x7090e070, 0x3e427c3e, 0xb5c471b5, 0x66aacc66, 0x48d89048, 0x03050603, 0xf601f7f6, 0x0e121c0e,
-	0x61a3c261, 0x355f6a35, 0x57f9ae57, 0xb9d069b9, 0x86911786, 0xc15899c1, 0x1d273a1d, 0x9eb9279e,
-	0xe138d9e1, 0xf813ebf8, 0x98b32b98, 0x11332211, 0x69bbd269, 0xd970a9d9, 0x8e89078e, 0x94a73394,
-	0x9bb62d9b, 0x1e223c1e, 0x87921587, 0xe920c9e9, 0xce4987ce, 0x55ffaa55, 0x28785028, 0xdf7aa5df,
-	0x8c8f038c, 0xa1f859a1, 0x89800989, 0x0d171a0d, 0xbfda65bf, 0xe631d7e6, 0x42c68442, 0x68b8d068,
-	0x41c38241, 0x99b02999, 0x2d775a2d, 0x0f111e0f, 0xb0cb7bb0, 0x54fca854, 0xbbd66dbb, 0x163a2c16
+	32'h63a5c663, 32'h7c84f87c, 32'h7799ee77, 32'h7b8df67b, 32'hf20dfff2, 32'h6bbdd66b, 32'h6fb1de6f, 32'hc55491c5,
+	32'h30506030, 32'h01030201, 32'h67a9ce67, 32'h2b7d562b, 32'hfe19e7fe, 32'hd762b5d7, 32'habe64dab, 32'h769aec76,
+	32'hca458fca, 32'h829d1f82, 32'hc94089c9, 32'h7d87fa7d, 32'hfa15effa, 32'h59ebb259, 32'h47c98e47, 32'hf00bfbf0,
+	32'hadec41ad, 32'hd467b3d4, 32'ha2fd5fa2, 32'hafea45af, 32'h9cbf239c, 32'ha4f753a4, 32'h7296e472, 32'hc05b9bc0,
+	32'hb7c275b7, 32'hfd1ce1fd, 32'h93ae3d93, 32'h266a4c26, 32'h365a6c36, 32'h3f417e3f, 32'hf702f5f7, 32'hcc4f83cc,
+	32'h345c6834, 32'ha5f451a5, 32'he534d1e5, 32'hf108f9f1, 32'h7193e271, 32'hd873abd8, 32'h31536231, 32'h153f2a15,
+	32'h040c0804, 32'hc75295c7, 32'h23654623, 32'hc35e9dc3, 32'h18283018, 32'h96a13796, 32'h050f0a05, 32'h9ab52f9a,
+	32'h07090e07, 32'h12362412, 32'h809b1b80, 32'he23ddfe2, 32'heb26cdeb, 32'h27694e27, 32'hb2cd7fb2, 32'h759fea75,
+	32'h091b1209, 32'h839e1d83, 32'h2c74582c, 32'h1a2e341a, 32'h1b2d361b, 32'h6eb2dc6e, 32'h5aeeb45a, 32'ha0fb5ba0,
+	32'h52f6a452, 32'h3b4d763b, 32'hd661b7d6, 32'hb3ce7db3, 32'h297b5229, 32'he33edde3, 32'h2f715e2f, 32'h84971384,
+	32'h53f5a653, 32'hd168b9d1, 32'h00000000, 32'hed2cc1ed, 32'h20604020, 32'hfc1fe3fc, 32'hb1c879b1, 32'h5bedb65b,
+	32'h6abed46a, 32'hcb468dcb, 32'hbed967be, 32'h394b7239, 32'h4ade944a, 32'h4cd4984c, 32'h58e8b058, 32'hcf4a85cf,
+	32'hd06bbbd0, 32'hef2ac5ef, 32'haae54faa, 32'hfb16edfb, 32'h43c58643, 32'h4dd79a4d, 32'h33556633, 32'h85941185,
+	32'h45cf8a45, 32'hf910e9f9, 32'h02060402, 32'h7f81fe7f, 32'h50f0a050, 32'h3c44783c, 32'h9fba259f, 32'ha8e34ba8,
+	32'h51f3a251, 32'ha3fe5da3, 32'h40c08040, 32'h8f8a058f, 32'h92ad3f92, 32'h9dbc219d, 32'h38487038, 32'hf504f1f5,
+	32'hbcdf63bc, 32'hb6c177b6, 32'hda75afda, 32'h21634221, 32'h10302010, 32'hff1ae5ff, 32'hf30efdf3, 32'hd26dbfd2,
+	32'hcd4c81cd, 32'h0c14180c, 32'h13352613, 32'hec2fc3ec, 32'h5fe1be5f, 32'h97a23597, 32'h44cc8844, 32'h17392e17,
+	32'hc45793c4, 32'ha7f255a7, 32'h7e82fc7e, 32'h3d477a3d, 32'h64acc864, 32'h5de7ba5d, 32'h192b3219, 32'h7395e673,
+	32'h60a0c060, 32'h81981981, 32'h4fd19e4f, 32'hdc7fa3dc, 32'h22664422, 32'h2a7e542a, 32'h90ab3b90, 32'h88830b88,
+	32'h46ca8c46, 32'hee29c7ee, 32'hb8d36bb8, 32'h143c2814, 32'hde79a7de, 32'h5ee2bc5e, 32'h0b1d160b, 32'hdb76addb,
+	32'he03bdbe0, 32'h32566432, 32'h3a4e743a, 32'h0a1e140a, 32'h49db9249, 32'h060a0c06, 32'h246c4824, 32'h5ce4b85c,
+	32'hc25d9fc2, 32'hd36ebdd3, 32'hacef43ac, 32'h62a6c462, 32'h91a83991, 32'h95a43195, 32'he437d3e4, 32'h798bf279,
+	32'he732d5e7, 32'hc8438bc8, 32'h37596e37, 32'h6db7da6d, 32'h8d8c018d, 32'hd564b1d5, 32'h4ed29c4e, 32'ha9e049a9,
+	32'h6cb4d86c, 32'h56faac56, 32'hf407f3f4, 32'hea25cfea, 32'h65afca65, 32'h7a8ef47a, 32'haee947ae, 32'h08181008,
+	32'hbad56fba, 32'h7888f078, 32'h256f4a25, 32'h2e725c2e, 32'h1c24381c, 32'ha6f157a6, 32'hb4c773b4, 32'hc65197c6,
+	32'he823cbe8, 32'hdd7ca1dd, 32'h749ce874, 32'h1f213e1f, 32'h4bdd964b, 32'hbddc61bd, 32'h8b860d8b, 32'h8a850f8a,
+	32'h7090e070, 32'h3e427c3e, 32'hb5c471b5, 32'h66aacc66, 32'h48d89048, 32'h03050603, 32'hf601f7f6, 32'h0e121c0e,
+	32'h61a3c261, 32'h355f6a35, 32'h57f9ae57, 32'hb9d069b9, 32'h86911786, 32'hc15899c1, 32'h1d273a1d, 32'h9eb9279e,
+	32'he138d9e1, 32'hf813ebf8, 32'h98b32b98, 32'h11332211, 32'h69bbd269, 32'hd970a9d9, 32'h8e89078e, 32'h94a73394,
+	32'h9bb62d9b, 32'h1e223c1e, 32'h87921587, 32'he920c9e9, 32'hce4987ce, 32'h55ffaa55, 32'h28785028, 32'hdf7aa5df,
+	32'h8c8f038c, 32'ha1f859a1, 32'h89800989, 32'h0d171a0d, 32'hbfda65bf, 32'he631d7e6, 32'h42c68442, 32'h68b8d068,
+	32'h41c38241, 32'h99b02999, 32'h2d775a2d, 32'h0f111e0f, 32'hb0cb7bb0, 32'h54fca854, 32'hbbd66dbb, 32'h163a2c16
 	};
 
 localparam int A3 [0:255] = '{
-	0x6363a5c6, 0x7c7c84f8, 0x777799ee, 0x7b7b8df6, 0xf2f20dff, 0x6b6bbdd6, 0x6f6fb1de, 0xc5c55491,
-	0x30305060, 0x01010302, 0x6767a9ce, 0x2b2b7d56, 0xfefe19e7, 0xd7d762b5, 0xababe64d, 0x76769aec,
-	0xcaca458f, 0x82829d1f, 0xc9c94089, 0x7d7d87fa, 0xfafa15ef, 0x5959ebb2, 0x4747c98e, 0xf0f00bfb,
-	0xadadec41, 0xd4d467b3, 0xa2a2fd5f, 0xafafea45, 0x9c9cbf23, 0xa4a4f753, 0x727296e4, 0xc0c05b9b,
-	0xb7b7c275, 0xfdfd1ce1, 0x9393ae3d, 0x26266a4c, 0x36365a6c, 0x3f3f417e, 0xf7f702f5, 0xcccc4f83,
-	0x34345c68, 0xa5a5f451, 0xe5e534d1, 0xf1f108f9, 0x717193e2, 0xd8d873ab, 0x31315362, 0x15153f2a,
-	0x04040c08, 0xc7c75295, 0x23236546, 0xc3c35e9d, 0x18182830, 0x9696a137, 0x05050f0a, 0x9a9ab52f,
-	0x0707090e, 0x12123624, 0x80809b1b, 0xe2e23ddf, 0xebeb26cd, 0x2727694e, 0xb2b2cd7f, 0x75759fea,
-	0x09091b12, 0x83839e1d, 0x2c2c7458, 0x1a1a2e34, 0x1b1b2d36, 0x6e6eb2dc, 0x5a5aeeb4, 0xa0a0fb5b,
-	0x5252f6a4, 0x3b3b4d76, 0xd6d661b7, 0xb3b3ce7d, 0x29297b52, 0xe3e33edd, 0x2f2f715e, 0x84849713,
-	0x5353f5a6, 0xd1d168b9, 0x00000000, 0xeded2cc1, 0x20206040, 0xfcfc1fe3, 0xb1b1c879, 0x5b5bedb6,
-	0x6a6abed4, 0xcbcb468d, 0xbebed967, 0x39394b72, 0x4a4ade94, 0x4c4cd498, 0x5858e8b0, 0xcfcf4a85,
-	0xd0d06bbb, 0xefef2ac5, 0xaaaae54f, 0xfbfb16ed, 0x4343c586, 0x4d4dd79a, 0x33335566, 0x85859411,
-	0x4545cf8a, 0xf9f910e9, 0x02020604, 0x7f7f81fe, 0x5050f0a0, 0x3c3c4478, 0x9f9fba25, 0xa8a8e34b,
-	0x5151f3a2, 0xa3a3fe5d, 0x4040c080, 0x8f8f8a05, 0x9292ad3f, 0x9d9dbc21, 0x38384870, 0xf5f504f1,
-	0xbcbcdf63, 0xb6b6c177, 0xdada75af, 0x21216342, 0x10103020, 0xffff1ae5, 0xf3f30efd, 0xd2d26dbf,
-	0xcdcd4c81, 0x0c0c1418, 0x13133526, 0xecec2fc3, 0x5f5fe1be, 0x9797a235, 0x4444cc88, 0x1717392e,
-	0xc4c45793, 0xa7a7f255, 0x7e7e82fc, 0x3d3d477a, 0x6464acc8, 0x5d5de7ba, 0x19192b32, 0x737395e6,
-	0x6060a0c0, 0x81819819, 0x4f4fd19e, 0xdcdc7fa3, 0x22226644, 0x2a2a7e54, 0x9090ab3b, 0x8888830b,
-	0x4646ca8c, 0xeeee29c7, 0xb8b8d36b, 0x14143c28, 0xdede79a7, 0x5e5ee2bc, 0x0b0b1d16, 0xdbdb76ad,
-	0xe0e03bdb, 0x32325664, 0x3a3a4e74, 0x0a0a1e14, 0x4949db92, 0x06060a0c, 0x24246c48, 0x5c5ce4b8,
-	0xc2c25d9f, 0xd3d36ebd, 0xacacef43, 0x6262a6c4, 0x9191a839, 0x9595a431, 0xe4e437d3, 0x79798bf2,
-	0xe7e732d5, 0xc8c8438b, 0x3737596e, 0x6d6db7da, 0x8d8d8c01, 0xd5d564b1, 0x4e4ed29c, 0xa9a9e049,
-	0x6c6cb4d8, 0x5656faac, 0xf4f407f3, 0xeaea25cf, 0x6565afca, 0x7a7a8ef4, 0xaeaee947, 0x08081810,
-	0xbabad56f, 0x787888f0, 0x25256f4a, 0x2e2e725c, 0x1c1c2438, 0xa6a6f157, 0xb4b4c773, 0xc6c65197,
-	0xe8e823cb, 0xdddd7ca1, 0x74749ce8, 0x1f1f213e, 0x4b4bdd96, 0xbdbddc61, 0x8b8b860d, 0x8a8a850f,
-	0x707090e0, 0x3e3e427c, 0xb5b5c471, 0x6666aacc, 0x4848d890, 0x03030506, 0xf6f601f7, 0x0e0e121c,
-	0x6161a3c2, 0x35355f6a, 0x5757f9ae, 0xb9b9d069, 0x86869117, 0xc1c15899, 0x1d1d273a, 0x9e9eb927,
-	0xe1e138d9, 0xf8f813eb, 0x9898b32b, 0x11113322, 0x6969bbd2, 0xd9d970a9, 0x8e8e8907, 0x9494a733,
-	0x9b9bb62d, 0x1e1e223c, 0x87879215, 0xe9e920c9, 0xcece4987, 0x5555ffaa, 0x28287850, 0xdfdf7aa5,
-	0x8c8c8f03, 0xa1a1f859, 0x89898009, 0x0d0d171a, 0xbfbfda65, 0xe6e631d7, 0x4242c684, 0x6868b8d0,
-	0x4141c382, 0x9999b029, 0x2d2d775a, 0x0f0f111e, 0xb0b0cb7b, 0x5454fca8, 0xbbbbd66d, 0x16163a2c
+	32'h6363a5c6, 32'h7c7c84f8, 32'h777799ee, 32'h7b7b8df6, 32'hf2f20dff, 32'h6b6bbdd6, 32'h6f6fb1de, 32'hc5c55491,
+	32'h30305060, 32'h01010302, 32'h6767a9ce, 32'h2b2b7d56, 32'hfefe19e7, 32'hd7d762b5, 32'hababe64d, 32'h76769aec,
+	32'hcaca458f, 32'h82829d1f, 32'hc9c94089, 32'h7d7d87fa, 32'hfafa15ef, 32'h5959ebb2, 32'h4747c98e, 32'hf0f00bfb,
+	32'hadadec41, 32'hd4d467b3, 32'ha2a2fd5f, 32'hafafea45, 32'h9c9cbf23, 32'ha4a4f753, 32'h727296e4, 32'hc0c05b9b,
+	32'hb7b7c275, 32'hfdfd1ce1, 32'h9393ae3d, 32'h26266a4c, 32'h36365a6c, 32'h3f3f417e, 32'hf7f702f5, 32'hcccc4f83,
+	32'h34345c68, 32'ha5a5f451, 32'he5e534d1, 32'hf1f108f9, 32'h717193e2, 32'hd8d873ab, 32'h31315362, 32'h15153f2a,
+	32'h04040c08, 32'hc7c75295, 32'h23236546, 32'hc3c35e9d, 32'h18182830, 32'h9696a137, 32'h05050f0a, 32'h9a9ab52f,
+	32'h0707090e, 32'h12123624, 32'h80809b1b, 32'he2e23ddf, 32'hebeb26cd, 32'h2727694e, 32'hb2b2cd7f, 32'h75759fea,
+	32'h09091b12, 32'h83839e1d, 32'h2c2c7458, 32'h1a1a2e34, 32'h1b1b2d36, 32'h6e6eb2dc, 32'h5a5aeeb4, 32'ha0a0fb5b,
+	32'h5252f6a4, 32'h3b3b4d76, 32'hd6d661b7, 32'hb3b3ce7d, 32'h29297b52, 32'he3e33edd, 32'h2f2f715e, 32'h84849713,
+	32'h5353f5a6, 32'hd1d168b9, 32'h00000000, 32'heded2cc1, 32'h20206040, 32'hfcfc1fe3, 32'hb1b1c879, 32'h5b5bedb6,
+	32'h6a6abed4, 32'hcbcb468d, 32'hbebed967, 32'h39394b72, 32'h4a4ade94, 32'h4c4cd498, 32'h5858e8b0, 32'hcfcf4a85,
+	32'hd0d06bbb, 32'hefef2ac5, 32'haaaae54f, 32'hfbfb16ed, 32'h4343c586, 32'h4d4dd79a, 32'h33335566, 32'h85859411,
+	32'h4545cf8a, 32'hf9f910e9, 32'h02020604, 32'h7f7f81fe, 32'h5050f0a0, 32'h3c3c4478, 32'h9f9fba25, 32'ha8a8e34b,
+	32'h5151f3a2, 32'ha3a3fe5d, 32'h4040c080, 32'h8f8f8a05, 32'h9292ad3f, 32'h9d9dbc21, 32'h38384870, 32'hf5f504f1,
+	32'hbcbcdf63, 32'hb6b6c177, 32'hdada75af, 32'h21216342, 32'h10103020, 32'hffff1ae5, 32'hf3f30efd, 32'hd2d26dbf,
+	32'hcdcd4c81, 32'h0c0c1418, 32'h13133526, 32'hecec2fc3, 32'h5f5fe1be, 32'h9797a235, 32'h4444cc88, 32'h1717392e,
+	32'hc4c45793, 32'ha7a7f255, 32'h7e7e82fc, 32'h3d3d477a, 32'h6464acc8, 32'h5d5de7ba, 32'h19192b32, 32'h737395e6,
+	32'h6060a0c0, 32'h81819819, 32'h4f4fd19e, 32'hdcdc7fa3, 32'h22226644, 32'h2a2a7e54, 32'h9090ab3b, 32'h8888830b,
+	32'h4646ca8c, 32'heeee29c7, 32'hb8b8d36b, 32'h14143c28, 32'hdede79a7, 32'h5e5ee2bc, 32'h0b0b1d16, 32'hdbdb76ad,
+	32'he0e03bdb, 32'h32325664, 32'h3a3a4e74, 32'h0a0a1e14, 32'h4949db92, 32'h06060a0c, 32'h24246c48, 32'h5c5ce4b8,
+	32'hc2c25d9f, 32'hd3d36ebd, 32'hacacef43, 32'h6262a6c4, 32'h9191a839, 32'h9595a431, 32'he4e437d3, 32'h79798bf2,
+	32'he7e732d5, 32'hc8c8438b, 32'h3737596e, 32'h6d6db7da, 32'h8d8d8c01, 32'hd5d564b1, 32'h4e4ed29c, 32'ha9a9e049,
+	32'h6c6cb4d8, 32'h5656faac, 32'hf4f407f3, 32'heaea25cf, 32'h6565afca, 32'h7a7a8ef4, 32'haeaee947, 32'h08081810,
+	32'hbabad56f, 32'h787888f0, 32'h25256f4a, 32'h2e2e725c, 32'h1c1c2438, 32'ha6a6f157, 32'hb4b4c773, 32'hc6c65197,
+	32'he8e823cb, 32'hdddd7ca1, 32'h74749ce8, 32'h1f1f213e, 32'h4b4bdd96, 32'hbdbddc61, 32'h8b8b860d, 32'h8a8a850f,
+	32'h707090e0, 32'h3e3e427c, 32'hb5b5c471, 32'h6666aacc, 32'h4848d890, 32'h03030506, 32'hf6f601f7, 32'h0e0e121c,
+	32'h6161a3c2, 32'h35355f6a, 32'h5757f9ae, 32'hb9b9d069, 32'h86869117, 32'hc1c15899, 32'h1d1d273a, 32'h9e9eb927,
+	32'he1e138d9, 32'hf8f813eb, 32'h9898b32b, 32'h11113322, 32'h6969bbd2, 32'hd9d970a9, 32'h8e8e8907, 32'h9494a733,
+	32'h9b9bb62d, 32'h1e1e223c, 32'h87879215, 32'he9e920c9, 32'hcece4987, 32'h5555ffaa, 32'h28287850, 32'hdfdf7aa5,
+	32'h8c8c8f03, 32'ha1a1f859, 32'h89898009, 32'h0d0d171a, 32'hbfbfda65, 32'he6e631d7, 32'h4242c684, 32'h6868b8d0,
+	32'h4141c382, 32'h9999b029, 32'h2d2d775a, 32'h0f0f111e, 32'hb0b0cb7b, 32'h5454fca8, 32'hbbbbd66d, 32'h16163a2c
 	};
-
-// assign i = counter
-// assign k_i_1 = key[3];
-// assign k_N_i = key[0];
-// rc_i = counter == 0 ? 0 : rc_out;
-counter <= counter + 1;
-for (i = 1; i < 4; i = i + 1) key[i-1] <= key[i];
-key[3] <= key_out;
-if (counter == 0)
-	for (i = 0; i < 4; i = i + 1) cyphertext[i] <= plaintext[i] ^ key[i];
-else if (counter > 0 && counter < 10) begin
-	cyphertext[0] <= A0[cyphertext[0][7:0]]^A1[cyphertext[1][15:8]]^A2[cyphertext[2][23:16]]^A3[cyphertext[3][31:24]]^key[0];
-	cyphertext[1] <= A0[cyphertext[1][7:0]]^A1[cyphertext[2][15:8]]^A2[cyphertext[3][23:16]]^A3[cyphertext[0][31:24]]^key[1];
-	cyphertext[2] <= A0[cyphertext[2][7:0]]^A1[cyphertext[3][15:8]]^A2[cyphertext[0][15:8]]^A3[cyphertext[1][31:24]]^key[2];
-	cyphertext[3] <= A0[cyphertext[3][7:0]]^A1[cyphertext[0][15:8]]^A2[cyphertext[1][23:16]]^A3[cyphertext[2][31:24]]^key[3];
-end
-else if (counter == 10)
-	cyphertext[0] <= s_box[cyphertext[0][7:0] << 24]^s_box[cyphertext[1][15:8] << 16]^s_box[cyphertext[2][23:16] << 8]^s_box[cyphertext[3][31:24]]^key[0];
-	cyphertext[1] <= s_box[cyphertext[1][7:0] << 24]^s_box[cyphertext[2][15:8] << 16]^s_box[cyphertext[3][23:16] << 8]^s_box[cyphertext[0][31:24]]^key[1];
-	cyphertext[2] <= s_box[cyphertext[2][7:0] << 24]^s_box[cyphertext[3][15:8] << 16]^s_box[cyphertext[0][15:8] << 8]^s_box[cyphertext[1][31:24]]^key[2];
-	cyphertext[3] <= s_box[cyphertext[3][7:0] << 24]^s_box[cyphertext[0][15:8] << 16]^s_box[cyphertext[1][23:16] << 8]^s_box[cyphertext[2][31:24]]^key[3];
-else
-	for (i = 0; i < 4; i = i + 1) cyphertext[i] <= cyphertext[i];
-*/
+endmodule

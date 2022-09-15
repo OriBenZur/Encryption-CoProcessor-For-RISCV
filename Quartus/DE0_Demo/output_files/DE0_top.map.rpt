@@ -1,5 +1,5 @@
-Analysis & Elaboration report for DE0_top
-Thu Sep 15 02:21:05 2022
+Analysis & Synthesis report for DE0_top
+Thu Sep 15 23:17:52 2022
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -7,15 +7,19 @@ Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 ; Table of Contents ;
 ---------------------
   1. Legal Notice
-  2. Analysis & Elaboration Summary
-  3. Parallel Compilation
-  4. Analysis & Elaboration IP Cores Summary
-  5. Source assignments for sld_signaltap:auto_signaltap_0
-  6. Parameter Settings for User Entity Instance: Top-level Entity: |key_expander
-  7. Parameter Settings for Inferred Entity Instance: sld_signaltap:auto_signaltap_0
-  8. Analysis & Elaboration Settings
-  9. SignalTap II Logic Analyzer Settings
- 10. Analysis & Elaboration Messages
+  2. Analysis & Synthesis Summary
+  3. Analysis & Synthesis Settings
+  4. Parallel Compilation
+  5. Analysis & Synthesis Source Files Read
+  6. Analysis & Synthesis Resource Usage Summary
+  7. Analysis & Synthesis Resource Utilization by Entity
+  8. General Register Statistics
+  9. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 10. Parameter Settings for User Entity Instance: key_expander:key_scheduler
+ 11. Port Connectivity Checks: "key_expander:key_scheduler"
+ 12. Post-Synthesis Netlist Statistics for Top Partition
+ 13. Elapsed Time Per Partition
+ 14. Analysis & Synthesis Messages
 
 
 
@@ -40,150 +44,34 @@ agreement for further details.
 
 
 +----------------------------------------------------------------------------------+
-; Analysis & Elaboration Summary                                                   ;
+; Analysis & Synthesis Summary                                                     ;
 +------------------------------------+---------------------------------------------+
-; Analysis & Elaboration Status      ; Successful - Thu Sep 15 02:21:05 2022       ;
+; Analysis & Synthesis Status        ; Successful - Thu Sep 15 23:17:52 2022       ;
 ; Quartus Prime Version              ; 17.0.0 Build 595 04/25/2017 SJ Lite Edition ;
 ; Revision Name                      ; DE0_top                                     ;
-; Top-level Entity Name              ; key_expander                                ;
+; Top-level Entity Name              ; encryptor                                   ;
 ; Family                             ; MAX 10                                      ;
-; Total logic elements               ; N/A until Partition Merge                   ;
-;     Total combinational functions  ; N/A until Partition Merge                   ;
-;     Dedicated logic registers      ; N/A until Partition Merge                   ;
-; Total registers                    ; N/A until Partition Merge                   ;
-; Total pins                         ; N/A until Partition Merge                   ;
-; Total virtual pins                 ; N/A until Partition Merge                   ;
-; Total memory bits                  ; N/A until Partition Merge                   ;
-; Embedded Multiplier 9-bit elements ; N/A until Partition Merge                   ;
-; Total PLLs                         ; N/A until Partition Merge                   ;
-; UFM blocks                         ; N/A until Partition Merge                   ;
-; ADC blocks                         ; N/A until Partition Merge                   ;
+; Total logic elements               ; 9,186                                       ;
+;     Total combinational functions  ; 9,050                                       ;
+;     Dedicated logic registers      ; 450                                         ;
+; Total registers                    ; 450                                         ;
+; Total pins                         ; 116                                         ;
+; Total virtual pins                 ; 0                                           ;
+; Total memory bits                  ; 0                                           ;
+; Embedded Multiplier 9-bit elements ; 0                                           ;
+; Total PLLs                         ; 0                                           ;
+; UFM blocks                         ; 0                                           ;
+; ADC blocks                         ; 0                                           ;
 +------------------------------------+---------------------------------------------+
-
-
-+------------------------------------------+
-; Parallel Compilation                     ;
-+----------------------------+-------------+
-; Processors                 ; Number      ;
-+----------------------------+-------------+
-; Number detected on machine ; 16          ;
-; Maximum allowed            ; 4           ;
-;                            ;             ;
-; Average used               ; 1.00        ;
-; Maximum used               ; 1           ;
-;                            ;             ;
-; Usage by Processor         ; % Time Used ;
-;     Processor 1            ; 100.0%      ;
-+----------------------------+-------------+
-
-
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Elaboration IP Cores Summary                                                                                                                                                                                                                                                                                                                                                                            ;
-+--------+--------------+---------+--------------+--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
-; Vendor ; IP Core Name ; Version ; Release Date ; License Type ; Entity Instance                                                                                                                                                                                                                                                                                                                  ; IP Include File ;
-+--------+--------------+---------+--------------+--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
-; Altera ; Signal Tap   ; N/A     ; N/A          ; Licensed     ; |key_expander|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric                                                                                                                                ;                 ;
-; Altera ; Signal Tap   ; N/A     ; N/A          ; Licensed     ; |key_expander|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab                                                                                            ;                 ;
-; Altera ; Signal Tap   ; N/A     ; N/A          ; Licensed     ; |key_expander|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_presplit:presplit                                                  ;                 ;
-; Altera ; Signal Tap   ; N/A     ; N/A          ; Licensed     ; |key_expander|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric                                                ;                 ;
-; Altera ; Signal Tap   ; N/A     ; N/A          ; Licensed     ; |key_expander|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_splitter:splitter                                                  ;                 ;
-; Altera ; Signal Tap   ; N/A     ; N/A          ; Licensed     ; |key_expander|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_trigger_flow_sel:\generated:ela_trigger_flow_mgr_entity|sld_ela_trigger_flow_sel_ai31:auto_generated|sld_reserved_DE0_top_auto_signaltap_0_flow_mgr_c90c:mgl_prim1 ;                 ;
-; Altera ; Signal Tap   ; N/A     ; N/A          ; Licensed     ; |key_expander|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_trigger:\multi_level_advanced_trigger_gen:advanced_trigger_wrapper|sld_ela_trigger_sio:auto_generated|sld_reserved_DE0_top_auto_signaltap_0_1_3b48:mgl_prim1       ;                 ;
-+--------+--------------+---------+--------------+--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
-
-
-+-------------------------------------------------------+
-; Source assignments for sld_signaltap:auto_signaltap_0 ;
-+-----------------+-------+------+----------------------+
-; Assignment      ; Value ; From ; To                   ;
-+-----------------+-------+------+----------------------+
-; MESSAGE_DISABLE ; 13410 ; -    ; -                    ;
-+-----------------+-------+------+----------------------+
-
-
-+------------------------------------------------------------------------------+
-; Parameter Settings for User Entity Instance: Top-level Entity: |key_expander ;
-+----------------+-------+-----------------------------------------------------+
-; Parameter Name ; Value ; Type                                                ;
-+----------------+-------+-----------------------------------------------------+
-; KEY_SIZE       ; 4     ; Signed Integer                                      ;
-+----------------+-------+-----------------------------------------------------+
-Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
-
-
-+------------------------------------------------------------------------------------------------------------------------+
-; Parameter Settings for Inferred Entity Instance: sld_signaltap:auto_signaltap_0                                        ;
-+-------------------------------------------------+-----------------------------------------------------+----------------+
-; Parameter Name                                  ; Value                                               ; Type           ;
-+-------------------------------------------------+-----------------------------------------------------+----------------+
-; lpm_type                                        ; sld_signaltap                                       ; String         ;
-; sld_node_info                                   ; 805334528                                           ; Untyped        ;
-; SLD_SECTION_ID                                  ; hdl_signaltap_0                                     ; String         ;
-; SLD_IP_VERSION                                  ; 6                                                   ; Signed Integer ;
-; SLD_IP_MINOR_VERSION                            ; 0                                                   ; Signed Integer ;
-; SLD_COMMON_IP_VERSION                           ; 0                                                   ; Signed Integer ;
-; sld_data_bits                                   ; 2                                                   ; Untyped        ;
-; sld_trigger_bits                                ; 2                                                   ; Untyped        ;
-; SLD_NODE_CRC_BITS                               ; 32                                                  ; Signed Integer ;
-; SLD_NODE_CRC_HIWORD                             ; 41394                                               ; Signed Integer ;
-; SLD_NODE_CRC_LOWORD                             ; 50132                                               ; Signed Integer ;
-; sld_incremental_routing                         ; 1                                                   ; Untyped        ;
-; sld_sample_depth                                ; 128                                                 ; Untyped        ;
-; sld_segment_size                                ; 128                                                 ; Untyped        ;
-; sld_ram_block_type                              ; AUTO                                                ; Untyped        ;
-; sld_state_bits                                  ; 2                                                   ; Untyped        ;
-; sld_buffer_full_stop                            ; 0                                                   ; Untyped        ;
-; SLD_MEM_ADDRESS_BITS                            ; 7                                                   ; Signed Integer ;
-; SLD_DATA_BIT_CNTR_BITS                          ; 4                                                   ; Signed Integer ;
-; sld_trigger_level                               ; 1                                                   ; Untyped        ;
-; sld_trigger_in_enabled                          ; 0                                                   ; Untyped        ;
-; SLD_HPS_TRIGGER_IN_ENABLED                      ; 0                                                   ; Signed Integer ;
-; SLD_HPS_TRIGGER_OUT_ENABLED                     ; 0                                                   ; Signed Integer ;
-; SLD_HPS_EVENT_ENABLED                           ; 0                                                   ; Signed Integer ;
-; SLD_HPS_EVENT_ID                                ; 0                                                   ; Signed Integer ;
-; sld_advanced_trigger_entity                     ; sld_reserved_DE0_top_auto_signaltap_0_1_3b48,       ; Untyped        ;
-; sld_trigger_level_pipeline                      ; 1                                                   ; Untyped        ;
-; sld_trigger_pipeline                            ; 0                                                   ; Untyped        ;
-; sld_ram_pipeline                                ; 0                                                   ; Untyped        ;
-; sld_counter_pipeline                            ; 0                                                   ; Untyped        ;
-; sld_enable_advanced_trigger                     ; 1                                                   ; Untyped        ;
-; SLD_ADVANCED_TRIGGER_1                          ; NONE                                                ; String         ;
-; SLD_ADVANCED_TRIGGER_2                          ; NONE                                                ; String         ;
-; SLD_ADVANCED_TRIGGER_3                          ; NONE                                                ; String         ;
-; SLD_ADVANCED_TRIGGER_4                          ; NONE                                                ; String         ;
-; SLD_ADVANCED_TRIGGER_5                          ; NONE                                                ; String         ;
-; SLD_ADVANCED_TRIGGER_6                          ; NONE                                                ; String         ;
-; SLD_ADVANCED_TRIGGER_7                          ; NONE                                                ; String         ;
-; SLD_ADVANCED_TRIGGER_8                          ; NONE                                                ; String         ;
-; SLD_ADVANCED_TRIGGER_9                          ; NONE                                                ; String         ;
-; SLD_ADVANCED_TRIGGER_10                         ; NONE                                                ; String         ;
-; sld_inversion_mask_length                       ; 14                                                  ; Untyped        ;
-; sld_inversion_mask                              ; 00000000000000                                      ; Untyped        ;
-; sld_power_up_trigger                            ; 0                                                   ; Untyped        ;
-; sld_state_flow_mgr_entity                       ; sld_reserved_DE0_top_auto_signaltap_0_flow_mgr_c90c ; Untyped        ;
-; sld_state_flow_use_generated                    ; 1                                                   ; Untyped        ;
-; sld_current_resource_width                      ; 0                                                   ; Untyped        ;
-; sld_attribute_mem_mode                          ; OFF                                                 ; Untyped        ;
-; sld_storage_qualifier_bits                      ; 2                                                   ; Untyped        ;
-; sld_storage_qualifier_gap_record                ; 1                                                   ; Untyped        ;
-; sld_storage_qualifier_mode                      ; TRANSITIONAL                                        ; Untyped        ;
-; SLD_STORAGE_QUALIFIER_ENABLE_ADVANCED_CONDITION ; 0                                                   ; Signed Integer ;
-; sld_storage_qualifier_inversion_mask_length     ; 3                                                   ; Untyped        ;
-; SLD_STORAGE_QUALIFIER_ADVANCED_CONDITION_ENTITY ; basic                                               ; String         ;
-; SLD_STORAGE_QUALIFIER_PIPELINE                  ; 0                                                   ; Signed Integer ;
-; SLD_CREATE_MONITOR_INTERFACE                    ; 0                                                   ; Signed Integer ;
-; SLD_USE_JTAG_SIGNAL_ADAPTER                     ; 1                                                   ; Signed Integer ;
-+-------------------------------------------------+-----------------------------------------------------+----------------+
-Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
 +----------------------------------------------------------------------------------------------------------------------+
-; Analysis & Elaboration Settings                                                                                      ;
+; Analysis & Synthesis Settings                                                                                        ;
 +----------------------------------------------------------------------------+--------------------+--------------------+
 ; Option                                                                     ; Setting            ; Default Value      ;
 +----------------------------------------------------------------------------+--------------------+--------------------+
 ; Device                                                                     ; 10M50DAF484C7G     ;                    ;
-; Top-level entity name                                                      ; key_expander       ; DE0_top            ;
+; Top-level entity name                                                      ; encryptor          ; DE0_top            ;
 ; Family name                                                                ; MAX 10             ; Cyclone IV GX      ;
 ; Maximum processors allowed for parallel compilation                        ; 4                  ;                    ;
 ; Verilog Show LMF Mapping Messages                                          ; Off                ;                    ;
@@ -265,46 +153,195 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------------------------------------------------------------------+--------------------+--------------------+
 
 
-+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; SignalTap II Logic Analyzer Settings                                                                                                                                                                                                                                    ;
-+----------------+------------------+---------------------+------------------+--------------+----------+------------------------+----------------------+--------------------+-----------------------------+-----------------+------------------+--------------------------+
-; Instance Index ; Instance Name    ; Trigger Input Width ; Data Input Width ; Sample Depth ; Segments ; Storage Qualifier Type ; Trigger Flow Control ; Trigger Conditions ; Advanced Trigger Conditions ; Trigger In Used ; Trigger Out Used ; Power-Up Trigger Enabled ;
-+----------------+------------------+---------------------+------------------+--------------+----------+------------------------+----------------------+--------------------+-----------------------------+-----------------+------------------+--------------------------+
-; 0              ; auto_signaltap_0 ; 2                   ; 2                ; 128          ; 1        ; continuous             ; state-based          ; 1                  ; 1                           ; no              ; no               ; no                       ;
-+----------------+------------------+---------------------+------------------+--------------+----------+------------------------+----------------------+--------------------+-----------------------------+-----------------+------------------+--------------------------+
++------------------------------------------+
+; Parallel Compilation                     ;
++----------------------------+-------------+
+; Processors                 ; Number      ;
++----------------------------+-------------+
+; Number detected on machine ; 16          ;
+; Maximum allowed            ; 4           ;
+;                            ;             ;
+; Average used               ; 1.00        ;
+; Maximum used               ; 4           ;
+;                            ;             ;
+; Usage by Processor         ; % Time Used ;
+;     Processor 1            ; 100.0%      ;
+;     Processor 2            ;   0.0%      ;
+;     Processor 3            ;   0.0%      ;
+;     Processor 4            ;   0.0%      ;
++----------------------------+-------------+
 
 
-+---------------------------------+
-; Analysis & Elaboration Messages ;
-+---------------------------------+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                    ;
++-------------------------------------+-----------------+------------------------------+--------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path    ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                             ; Library ;
++-------------------------------------+-----------------+------------------------------+--------------------------------------------------------------------------+---------+
+; ../../src/Encryptor/key_expander.sv ; yes             ; User SystemVerilog HDL File  ; C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/key_expander.sv ;         ;
+; ../../src/Encryptor/encryptor.sv    ; yes             ; User SystemVerilog HDL File  ; C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv    ;         ;
++-------------------------------------+-----------------+------------------------------+--------------------------------------------------------------------------+---------+
+
+
++---------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary             ;
++---------------------------------------------+-----------+
+; Resource                                    ; Usage     ;
++---------------------------------------------+-----------+
+; Estimated Total logic elements              ; 9,186     ;
+;                                             ;           ;
+; Total combinational functions               ; 9050      ;
+; Logic element usage by number of LUT inputs ;           ;
+;     -- 4 input functions                    ; 8430      ;
+;     -- 3 input functions                    ; 332       ;
+;     -- <=2 input functions                  ; 288       ;
+;                                             ;           ;
+; Logic elements by mode                      ;           ;
+;     -- normal mode                          ; 9035      ;
+;     -- arithmetic mode                      ; 15        ;
+;                                             ;           ;
+; Total registers                             ; 450       ;
+;     -- Dedicated logic registers            ; 450       ;
+;     -- I/O registers                        ; 0         ;
+;                                             ;           ;
+; I/O pins                                    ; 116       ;
+;                                             ;           ;
+; Embedded Multiplier 9-bit elements          ; 0         ;
+;                                             ;           ;
+; Maximum fan-out node                        ; clk~input ;
+; Maximum fan-out                             ; 450       ;
+; Total fan-out                               ; 37509     ;
+; Average fan-out                             ; 3.85      ;
++---------------------------------------------+-----------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                        ;
++---------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------------------------+--------------+--------------+
+; Compilation Hierarchy Node      ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name                   ; Entity Name  ; Library Name ;
++---------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------------------------+--------------+--------------+
+; |encryptor                      ; 9050 (8119)         ; 450 (410)                 ; 0           ; 0          ; 0            ; 0       ; 0         ; 116  ; 0            ; 0          ; |encryptor                            ; encryptor    ; work         ;
+;    |key_expander:key_scheduler| ; 931 (931)           ; 40 (40)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |encryptor|key_expander:key_scheduler ; key_expander ; work         ;
++---------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------------------------+--------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
++------------------------------------------------------+
+; General Register Statistics                          ;
++----------------------------------------------+-------+
+; Statistic                                    ; Value ;
++----------------------------------------------+-------+
+; Total registers                              ; 450   ;
+; Number of registers using Synchronous Clear  ; 16    ;
+; Number of registers using Synchronous Load   ; 136   ;
+; Number of registers using Asynchronous Clear ; 450   ;
+; Number of registers using Asynchronous Load  ; 0     ;
+; Number of registers using Clock Enable       ; 416   ;
+; Number of registers using Preset             ; 0     ;
++----------------------------------------------+-------+
+
+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                  ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                        ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------+
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |encryptor|key[3][25]                             ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |encryptor|key[2][24]                             ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |encryptor|key[1][11]                             ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |encryptor|key[0][5]                              ;
+; 3:1                ; 16 bits   ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; Yes        ; |encryptor|counter[5]                             ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 16 LEs               ; 0 LEs                  ; Yes        ; |encryptor|key_expander:key_scheduler|key_out[24] ;
+; 3:1                ; 5 bits    ; 10 LEs        ; 5 LEs                ; 5 LEs                  ; Yes        ; |encryptor|key_expander:key_scheduler|rc_out[0]   ;
+; 3:1                ; 128 bits  ; 256 LEs       ; 256 LEs              ; 0 LEs                  ; Yes        ; |encryptor|cyphertext[2][0]                       ;
+; 4:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; Yes        ; |encryptor|key_expander:key_scheduler|rc_out[4]   ;
+; 32:1               ; 15 bits   ; 315 LEs       ; 150 LEs              ; 165 LEs                ; No         ; |encryptor|Mux8                                   ;
+; 32:1               ; 15 bits   ; 315 LEs       ; 150 LEs              ; 165 LEs                ; No         ; |encryptor|Mux23                                  ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------+
+
+
++-------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: key_expander:key_scheduler ;
++----------------+-------+------------------------------------------------+
+; Parameter Name ; Value ; Type                                           ;
++----------------+-------+------------------------------------------------+
+; KEY_SIZE       ; 4     ; Signed Integer                                 ;
++----------------+-------+------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "key_expander:key_scheduler"                                                                                                                                                      ;
++------+-------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Port ; Type  ; Severity ; Details                                                                                                                                                                           ;
++------+-------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; i    ; Input ; Warning  ; Input port expression (16 bits) is wider than the input port (8 bits) it drives.  The 8 most-significant bit(s) in the expression will be dangling if they have no other fanouts. ;
++------+-------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
++-----------------------------------------------------+
+; Post-Synthesis Netlist Statistics for Top Partition ;
++-----------------------+-----------------------------+
+; Type                  ; Count                       ;
++-----------------------+-----------------------------+
+; boundary_port         ; 116                         ;
+; cycloneiii_ff         ; 450                         ;
+;     CLR               ; 26                          ;
+;     CLR SLD           ; 8                           ;
+;     ENA CLR           ; 272                         ;
+;     ENA CLR SCLR      ; 16                          ;
+;     ENA CLR SLD       ; 128                         ;
+; cycloneiii_lcell_comb ; 9050                        ;
+;     arith             ; 15                          ;
+;         2 data inputs ; 15                          ;
+;     normal            ; 9035                        ;
+;         1 data inputs ; 1                           ;
+;         2 data inputs ; 272                         ;
+;         3 data inputs ; 332                         ;
+;         4 data inputs ; 8430                        ;
+;                       ;                             ;
+; Max LUT depth         ; 8.00                        ;
+; Average LUT depth     ; 6.45                        ;
++-----------------------+-----------------------------+
+
+
++-------------------------------+
+; Elapsed Time Per Partition    ;
++----------------+--------------+
+; Partition Name ; Elapsed Time ;
++----------------+--------------+
+; Top            ; 00:02:21     ;
++----------------+--------------+
+
+
++-------------------------------+
+; Analysis & Synthesis Messages ;
++-------------------------------+
 Info: *******************************************************************
-Info: Running Quartus Prime Analysis & Elaboration
+Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
-    Info: Processing started: Thu Sep 15 02:20:29 2022
-Info: Command: quartus_map --read_settings_files=on --write_settings_files=off DE0_top -c DE0_top --analysis_and_elaboration
+    Info: Processing started: Thu Sep 15 23:15:04 2022
+Info: Command: quartus_map --read_settings_files=on --write_settings_files=off DE0_top -c DE0_top
 Info (20032): Parallel compilation is enabled and will use up to 4 processors
 Info (12248): Elaborating Qsys system entity "de0cv.qsys"
-Info (12250): 2022.09.15.02:20:42 Progress: Loading DE0_Demo/de0cv.qsys
-Info (12250): 2022.09.15.02:20:43 Progress: Reading input file
-Info (12250): 2022.09.15.02:20:43 Progress: Adding clk_0 [clock_source 17.0]
-Info (12250): 2022.09.15.02:20:44 Progress: Parameterizing module clk_0
-Info (12250): 2022.09.15.02:20:44 Progress: Building connections
-Info (12250): 2022.09.15.02:20:44 Progress: Parameterizing connections
-Info (12250): 2022.09.15.02:20:44 Progress: Validating
-Info (12250): 2022.09.15.02:20:44 Progress: Done reading input file
+Info (12250): 2022.09.15.23:15:22 Progress: Loading DE0_Demo/de0cv.qsys
+Info (12250): 2022.09.15.23:15:23 Progress: Reading input file
+Info (12250): 2022.09.15.23:15:23 Progress: Adding clk_0 [clock_source 17.0]
+Info (12250): 2022.09.15.23:15:24 Progress: Parameterizing module clk_0
+Info (12250): 2022.09.15.23:15:24 Progress: Building connections
+Info (12250): 2022.09.15.23:15:24 Progress: Parameterizing connections
+Info (12250): 2022.09.15.23:15:24 Progress: Validating
+Info (12250): 2022.09.15.23:15:24 Progress: Done reading input file
 Info (12250): De0cv: Generating de0cv "de0cv" for QUARTUS_SYNTH
 Info (12250): De0cv: Done "de0cv" with 1 modules, 1 files
 Info (12249): Finished elaborating Qsys system entity "de0cv.qsys"
-Info (12021): Found 1 design units, including 1 entities, in source file /project mendelson/aes-128-for-riscv-cpu/src/encryptor/s_box.sv
-    Info (12023): Found entity 1: s_box File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/s_box.sv Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file /project mendelson/aes-128-for-riscv-cpu/src/encryptor/key_expander.sv
-    Info (12023): Found entity 1: key_expander File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/key_expander.sv Line: 3
+    Info (12023): Found entity 1: key_expander File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/key_expander.sv Line: 2
 Info (12021): Found 2 design units, including 2 entities, in source file /project mendelson/aes-128-for-riscv-cpu/src/encryptor/encryptor.sv
-    Info (12023): Found entity 1: multiplier File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 4
-    Info (12023): Found entity 2: encryptor File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 16
+    Info (12023): Found entity 1: multiplier File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 3
+    Info (12023): Found entity 2: encryptor File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 15
 Info (12021): Found 1 design units, including 1 entities, in source file /project mendelson/aes-128-for-riscv-cpu/src/leds/leds_mgmt.v
     Info (12023): Found entity 1: leds_mgmt File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Leds/leds_mgmt.v Line: 5
-Info (12021): Found 0 design units, including 0 entities, in source file /project mendelson/aes-128-for-riscv-cpu/src/accel/ai_accel.v
+Warning (12019): Can't analyze file -- file ../../src/Accel/ai_accel.v is missing
 Info (12021): Found 13 design units, including 13 entities, in source file /project mendelson/aes-128-for-riscv-cpu/src/top.v
     Info (12023): Found entity 1: progMem File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/mem/mem_prog.v Line: 9
     Info (12023): Found entity 2: dataMem File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/mem/mem_data.v Line: 11
@@ -331,68 +368,51 @@ Info (12021): Found 1 design units, including 1 entities, in source file pll.v
     Info (12023): Found entity 1: PLL File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/PLL.v Line: 39
 Info (12021): Found 1 design units, including 1 entities, in source file db/ip/de0cv/de0cv.v
     Info (12023): Found entity 1: de0cv File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/ip/de0cv/de0cv.v Line: 6
-Info (12127): Elaborating entity "key_expander" for the top level hierarchy
-Warning (10230): Verilog HDL assignment warning at key_expander.sv(35): truncated value with size 9 to match size of target (8) File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/key_expander.sv Line: 35
-Warning (10241): Verilog HDL Function Declaration warning at key_expander.sv(62): function "subWord" may return a Don't Care value because its output register may not be assigned a value in every possible path through the function File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/key_expander.sv Line: 62
-Warning (10030): Net "subWord" at key_expander.sv(62) has no driver or initial value, using a default initial value '0' File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/key_expander.sv Line: 62
-Info (12021): Found 1 design units, including 1 entities, in source file db/sld_ela_trigger_sio.tdf
-    Info (12023): Found entity 1: sld_ela_trigger_sio File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/sld_ela_trigger_sio.tdf Line: 26
-Info (12021): Found 1 design units, including 1 entities, in source file db/sld_reserved_de0_top_auto_signaltap_0_1_3b48.v
-    Info (12023): Found entity 1: sld_reserved_DE0_top_auto_signaltap_0_1_3b48 File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/sld_reserved_de0_top_auto_signaltap_0_1_3b48.v Line: 29
-Info (12021): Found 1 design units, including 1 entities, in source file db/sld_ela_trigger_flow_sel_ai31.tdf
-    Info (12023): Found entity 1: sld_ela_trigger_flow_sel_ai31 File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/sld_ela_trigger_flow_sel_ai31.tdf Line: 25
-Info (12021): Found 1 design units, including 1 entities, in source file db/sld_reserved_de0_top_auto_signaltap_0_flow_mgr_c90c.v
-    Info (12023): Found entity 1: sld_reserved_DE0_top_auto_signaltap_0_flow_mgr_c90c File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/sld_reserved_de0_top_auto_signaltap_0_flow_mgr_c90c.v Line: 29
-Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_ic14.tdf
-    Info (12023): Found entity 1: altsyncram_ic14 File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/altsyncram_ic14.tdf Line: 28
-Info (12021): Found 1 design units, including 1 entities, in source file db/mux_i7c.tdf
-    Info (12023): Found entity 1: mux_i7c File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/mux_i7c.tdf Line: 23
-Info (12021): Found 1 design units, including 1 entities, in source file db/decode_3af.tdf
-    Info (12023): Found entity 1: decode_3af File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/decode_3af.tdf Line: 23
-Info (12021): Found 1 design units, including 1 entities, in source file db/cntr_fph.tdf
-    Info (12023): Found entity 1: cntr_fph File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/cntr_fph.tdf Line: 28
-Info (12021): Found 1 design units, including 1 entities, in source file db/cmpr_erb.tdf
-    Info (12023): Found entity 1: cmpr_erb File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/cmpr_erb.tdf Line: 23
-Info (12021): Found 1 design units, including 1 entities, in source file db/cntr_8hi.tdf
-    Info (12023): Found entity 1: cntr_8hi File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/cntr_8hi.tdf Line: 26
-Info (12021): Found 1 design units, including 1 entities, in source file db/cntr_4rh.tdf
-    Info (12023): Found entity 1: cntr_4rh File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/cntr_4rh.tdf Line: 28
-Info (12021): Found 1 design units, including 1 entities, in source file db/cmpr_grb.tdf
-    Info (12023): Found entity 1: cmpr_grb File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/cmpr_grb.tdf Line: 23
-Info (12021): Found 1 design units, including 1 entities, in source file db/cntr_odi.tdf
-    Info (12023): Found entity 1: cntr_odi File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/cntr_odi.tdf Line: 28
-Info (12021): Found 1 design units, including 1 entities, in source file db/cmpr_drb.tdf
-    Info (12023): Found entity 1: cmpr_drb File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/cmpr_drb.tdf Line: 23
-Info (12033): Analysis and Synthesis generated SignalTap II or debug node instance "auto_signaltap_0"
-Info (11170): Starting IP generation for the debug fabric: alt_sld_fab.
-Info (11172): 2022.09.15.02:20:55 Progress: Loading sld5d2bcf66/alt_sld_fab_wrapper_hw.tcl
-Info (11172): Alt_sld_fab.alt_sld_fab: SLD fabric agents which did not specify prefer_host were connected to JTAG
-Info (11172): Alt_sld_fab: Generating alt_sld_fab "alt_sld_fab" for QUARTUS_SYNTH
-Info (11172): Alt_sld_fab: "alt_sld_fab" instantiated alt_sld_fab "alt_sld_fab"
-Info (11172): Presplit: "alt_sld_fab" instantiated altera_super_splitter "presplit"
-Info (11172): Splitter: "alt_sld_fab" instantiated altera_sld_splitter "splitter"
-Info (11172): Sldfabric: "alt_sld_fab" instantiated altera_sld_jtag_hub "sldfabric"
-Info (11172): Ident: "alt_sld_fab" instantiated altera_connection_identification_hub "ident"
-Info (11172): Alt_sld_fab: Done "alt_sld_fab" with 6 modules, 6 files
-Info (11171): Finished IP generation for the debug fabric: alt_sld_fab.
-Info (12021): Found 1 design units, including 1 entities, in source file db/ip/sld5d2bcf66/alt_sld_fab.v
-    Info (12023): Found entity 1: alt_sld_fab File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/ip/sld5d2bcf66/alt_sld_fab.v Line: 9
-Info (12021): Found 1 design units, including 1 entities, in source file db/ip/sld5d2bcf66/submodules/alt_sld_fab_alt_sld_fab.v
-    Info (12023): Found entity 1: alt_sld_fab_alt_sld_fab File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/ip/sld5d2bcf66/submodules/alt_sld_fab_alt_sld_fab.v Line: 9
-Info (12021): Found 1 design units, including 1 entities, in source file db/ip/sld5d2bcf66/submodules/alt_sld_fab_alt_sld_fab_ident.sv
-    Info (12023): Found entity 1: alt_sld_fab_alt_sld_fab_ident File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/ip/sld5d2bcf66/submodules/alt_sld_fab_alt_sld_fab_ident.sv Line: 33
-Info (12021): Found 1 design units, including 1 entities, in source file db/ip/sld5d2bcf66/submodules/alt_sld_fab_alt_sld_fab_presplit.sv
-    Info (12023): Found entity 1: alt_sld_fab_alt_sld_fab_presplit File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/ip/sld5d2bcf66/submodules/alt_sld_fab_alt_sld_fab_presplit.sv Line: 3
-Info (12021): Found 2 design units, including 1 entities, in source file db/ip/sld5d2bcf66/submodules/alt_sld_fab_alt_sld_fab_sldfabric.vhd
-    Info (12022): Found design unit 1: alt_sld_fab_alt_sld_fab_sldfabric-rtl File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/ip/sld5d2bcf66/submodules/alt_sld_fab_alt_sld_fab_sldfabric.vhd Line: 102
-    Info (12023): Found entity 1: alt_sld_fab_alt_sld_fab_sldfabric File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/ip/sld5d2bcf66/submodules/alt_sld_fab_alt_sld_fab_sldfabric.vhd Line: 11
-Info (12021): Found 1 design units, including 1 entities, in source file db/ip/sld5d2bcf66/submodules/alt_sld_fab_alt_sld_fab_splitter.sv
-    Info (12023): Found entity 1: alt_sld_fab_alt_sld_fab_splitter File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/ip/sld5d2bcf66/submodules/alt_sld_fab_alt_sld_fab_splitter.sv Line: 3
+Info (12127): Elaborating entity "encryptor" for the top level hierarchy
+Warning (10230): Verilog HDL assignment warning at encryptor.sv(48): truncated value with size 32 to match size of target (14) File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 48
+Info (12128): Elaborating entity "key_expander" for hierarchy "key_expander:key_scheduler" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 61
+Warning (10230): Verilog HDL assignment warning at key_expander.sv(53): truncated value with size 9 to match size of target (8) File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/key_expander.sv Line: 53
+Warning (12241): 1 hierarchies have connectivity warnings - see the Connectivity Checks report folder
+Info (286030): Timing-Driven Synthesis is running
 Warning (20013): Ignored 19 assignments for entity "de0cv" -- entity does not exist in design
-Info: Quartus Prime Analysis & Elaboration was successful. 0 errors, 4 warnings
-    Info: Peak virtual memory: 4846 megabytes
-    Info: Processing ended: Thu Sep 15 02:21:05 2022
-    Info: Elapsed time: 00:00:36
-    Info: Total CPU time (on all processors): 00:00:35
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
+Warning (21074): Design contains 27 input pin(s) that do not drive logic
+    Warning (15610): No output dependent on input pin "addr[0]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[1]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[7]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[8]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[9]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[10]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[11]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[12]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[13]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[14]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[15]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[16]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[17]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[18]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[19]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[20]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[21]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[22]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[23]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[24]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[25]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[26]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[27]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[28]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[29]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[30]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+    Warning (15610): No output dependent on input pin "addr[31]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
+Info (21057): Implemented 9304 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 68 input pins
+    Info (21059): Implemented 48 output pins
+    Info (21061): Implemented 9188 logic cells
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 33 warnings
+    Info: Peak virtual memory: 4825 megabytes
+    Info: Processing ended: Thu Sep 15 23:17:52 2022
+    Info: Elapsed time: 00:02:48
+    Info: Total CPU time (on all processors): 00:02:17
 
 

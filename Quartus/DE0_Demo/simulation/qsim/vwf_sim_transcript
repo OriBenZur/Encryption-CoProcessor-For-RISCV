@@ -7,7 +7,7 @@ Note: if both ModelSim-Altera and ModelSim executables are available, ModelSim-A
 
 **** Generating the ModelSim Testbench ****
 
-quartus_eda --gen_testbench --tool=modelsim_oem --format=vhdl --write_settings_files=off DE0_top -c DE0_top --vector_source="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/Waveform.vwf" --testbench_file="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim/Waveform.vwf.vht"
+quartus_eda --gen_testbench --tool=modelsim_oem --format=vhdl --write_settings_files=off DE0_top -c DE0_top --vector_source="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/Waveform2.vwf" --testbench_file="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim/Waveform2.vwf.vht"
 
 Info: *******************************************************************
 Info: Running Quartus Prime EDA Netlist Writer
@@ -26,11 +26,15 @@ Info: Running Quartus Prime EDA Netlist Writer
     Info: devices manufactured by Intel and sold by Intel or its 
     Info: authorized distributors.  Please refer to the applicable 
     Info: agreement for further details.
-    Info: Processing started: Tue Sep 13 22:59:52 2022
-Info: Command: quartus_eda --gen_testbench --tool=modelsim_oem --format=vhdl --write_settings_files=off DE0_top -c DE0_top --vector_source="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/Waveform.vwf" --testbench_file="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim/Waveform.vwf.vht"
+    Info: Processing started: Thu Sep 15 23:18:09 2022
+Info: Command: quartus_eda --gen_testbench --tool=modelsim_oem --format=vhdl --write_settings_files=off DE0_top -c DE0_top --vector_source="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/Waveform2.vwf" --testbench_file="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim/Waveform2.vwf.vht"
 Info (119006): Selected device 10M50DAF484C7G for design "DE0_top"
 
-nch files
+n't find port "key[1][21]" in design
+
+t[2][10]" in design
+
+: Can't find port "key_o[27]" in design
 
 Completed successfully. 
 
@@ -55,15 +59,15 @@ Info: Running Quartus Prime EDA Netlist Writer
     Info: devices manufactured by Intel and sold by Intel or its 
     Info: authorized distributors.  Please refer to the applicable 
     Info: agreement for further details.
-    Info: Processing started: Tue Sep 13 22:59:53 2022
+    Info: Processing started: Thu Sep 15 23:18:11 2022
 Info: Command: quartus_eda --write_settings_files=off --simulation=on --functional=on --flatten_buses=off --tool=modelsim_oem --format=vhdl --output_directory="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim/" DE0_top -c DE0_top
 Info (119006): Selected device 10M50DAF484C7G for design "DE0_top"
 Info (204019): Generated file DE0_top.vho in folder "C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim//" for EDA simulation tool
 Info: Quartus Prime EDA Netlist Writer was successful. 0 errors, 0 warnings
-    Info: Peak virtual memory: 4643 megabytes
-    Info: Processing ended: Tue Sep 13 22:59:54 2022
-    Info: Elapsed time: 00:00:01
-    Info: Total CPU time (on all processors): 00:00:00
+    Info: Peak virtual memory: 4661 megabytes
+    Info: Processing ended: Thu Sep 15 23:18:14 2022
+    Info: Elapsed time: 00:00:03
+    Info: Total CPU time (on all processors): 00:00:03
 
 Completed successfully. 
 
@@ -84,10 +88,12 @@ Reading C:/intelFPGA_lite/17.0/modelsim_ase/tcl/vsim/pref.tcl
 
 # do DE0_top.do
 # ** Warning: (vlib-34) Library already exists at "work".
+
 # Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
-# Start time: 22:59:54 on Sep 13,2022
+# Start time: 23:18:15 on Sep 15,2022
 # vcom -work work DE0_top.vho 
 # -- Loading package STANDARD
+
 # -- Loading package TEXTIO
 # -- Loading package std_logic_1164
 # -- Loading package VITAL_Timing
@@ -99,22 +105,23 @@ Reading C:/intelFPGA_lite/17.0/modelsim_ase/tcl/vsim/pref.tcl
 # -- Compiling entity encryptor
 # -- Compiling architecture structure of encryptor
 
-# End time: 22:59:55 on Sep 13,2022, Elapsed time: 0:00:01
-
+# End time: 23:18:18 on Sep 15,2022, Elapsed time: 0:00:03
 # Errors: 0, Warnings: 0
+
 # Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
-# Start time: 22:59:55 on Sep 13,2022
-# vcom -work work Waveform.vwf.vht 
+# Start time: 23:18:18 on Sep 15,2022
+# vcom -work work Waveform2.vwf.vht 
 # -- Loading package STANDARD
 # -- Loading package TEXTIO
 # -- Loading package std_logic_1164
 # -- Compiling entity encryptor_vhd_vec_tst
 # -- Compiling architecture encryptor_arch of encryptor_vhd_vec_tst
-# End time: 22:59:55 on Sep 13,2022, Elapsed time: 0:00:00
+
+# End time: 23:18:18 on Sep 15,2022, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 
 # vsim -novopt -c -t 1ps -L fiftyfivenm -L altera -L altera_mf -L 220model -L sgate -L altera_lnsim work.encryptor_vhd_vec_tst 
-# Start time: 22:59:55 on Sep 13,2022
+# Start time: 23:18:18 on Sep 15,2022
 # Loading std.standard
 # Loading std.textio(body)
 # Loading ieee.std_logic_1164(body)
@@ -130,44 +137,170 @@ Reading C:/intelFPGA_lite/17.0/modelsim_ase/tcl/vsim/pref.tcl
 # Loading fiftyfivenm.fiftyfivenm_io_ibuf(behavior)
 # Loading fiftyfivenm.fiftyfivenm_lcell_comb(vital_lcell_comb)
 # Loading altera.dffeas(vital_dffeas)
-# Loading ieee.std_logic_arith(body)
-# Loading ieee.std_logic_unsigned(body)
-# Loading fiftyfivenm.fiftyfivenm_mac_mult(vital_fiftyfivenm_mac_mult)
-# Loading fiftyfivenm.fiftyfivenm_mac_data_reg(vital_fiftyfivenm_mac_data_reg)
-# Loading fiftyfivenm.fiftyfivenm_mac_sign_reg(fiftyfivenm_mac_sign_reg)
-# Loading fiftyfivenm.fiftyfivenm_mac_mult_internal(vital_fiftyfivenm_mac_mult_internal)
-# Loading fiftyfivenm.fiftyfivenm_mac_out(vital_fiftyfivenm_mac_out)
-# ** Warning: Design size of 96137 statements exceeds ModelSim-Intel FPGA Starter Edition recommended capacity.
+# ** Warning: Design size of 1017491 statements exceeds ModelSim-Intel FPGA Starter Edition recommended capacity.
 # Expect performance to be adversely affected.
 # after#33
 
-# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
-#    Time: 0 ps  Iteration: 0  Instance: /encryptor_vhd_vec_tst/i1/\mul|Mult0|auto_generated|mac_mult1\/mac_multiply
-# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
-#    Time: 0 ps  Iteration: 0  Instance: /encryptor_vhd_vec_tst/i1/\mul|Mult0|auto_generated|mac_mult1\/mac_multiply
-# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
-#    Time: 0 ps  Iteration: 2  Instance: /encryptor_vhd_vec_tst/i1/\mul|Mult0|auto_generated|mac_mult1\/mac_multiply
-# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
-#    Time: 0 ps  Iteration: 2  Instance: /encryptor_vhd_vec_tst/i1/\mul|Mult0|auto_generated|mac_mult1\/mac_multiply
-# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
-#    Time: 0 ps  Iteration: 5  Instance: /encryptor_vhd_vec_tst/i1/\mul|Mult0|auto_generated|mac_mult1\/mac_multiply
-# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
-#    Time: 0 ps  Iteration: 5  Instance: /encryptor_vhd_vec_tst/i1/\mul|Mult0|auto_generated|mac_mult1\/mac_multiply
+# Simulation time: 0 ps
 
-# End time: 22:59:56 on Sep 13,2022, Elapsed time: 0:00:01
-# Errors: 0, Warnings: 7
+# Simulation time: 0 ps
+
+# Simulation time: 0 ps
+
+# Simulation time: 0 ps
+
+# Simulation time: 0 ps
+
+# Simulation time: 0 ps
+
+# Simulation time: 0 ps
+
+# Simulation time: 0 ps
+
+# Simulation time: 362500 ps
+
+# Simulation time: 362500 ps
+
+# Simulation time: 362500 ps
+
+# Simulation time: 362500 ps
+
+# Simulation time: 362500 ps
+
+# Simulation time: 362500 ps
+
+# Simulation time: 362500 ps
+
+# Simulation time: 362500 ps
+
+# Simulation time: 542500 ps
+
+# Simulation time: 542500 ps
+
+# Simulation time: 542500 ps
+
+# Simulation time: 542500 ps
+
+# Simulation time: 542500 ps
+
+# Simulation time: 542500 ps
+
+# Simulation time: 542500 ps
+
+# Simulation time: 542500 ps
+
+# Simulation time: 742500 ps
+
+# Simulation time: 742500 ps
+
+# Simulation time: 742500 ps
+
+# Simulation time: 742500 ps
+
+# Simulation time: 742500 ps
+
+# Simulation time: 742500 ps
+
+# Simulation time: 742500 ps
+
+# Simulation time: 742500 ps
+
+# Simulation time: 967500 ps
+
+# End time: 23:19:45 on Sep 15,2022, Elapsed time: 0:01:27
+# Errors: 0, Warnings: 1
 
 Completed successfully. 
 
 **** Converting ModelSim VCD to vector waveform ****
 
-Reading C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/Waveform.vwf...
+Reading C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/Waveform2.vwf...
 
 Reading C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim/DE0_top.msim.vcd...
 
 Processing channel transitions... 
 
-Writing the resulting VWF to C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim/DE0_top_20220913225956.sim.vwf
+Warning: rc[7] - signal not found in VCD.
+
+Warning: rc[6] - signal not found in VCD.
+
+Warning: rc[5] - signal not found in VCD.
+
+Warning: rc[4] - signal not found in VCD.
+
+Warning: rc[3] - signal not found in VCD.
+
+Warning: rc[2] - signal not found in VCD.
+
+Warning: rc[1] - signal not found in VCD.
+
+Warning: rc[0] - signal not found in VCD.
+
+Warning: key_o[31] - signal not found in VCD.
+
+Warning: key_o[30] - signal not found in VCD.
+
+Warning: key_o[29] - signal not found in VCD.
+
+Warning: key_o[28] - signal not found in VCD.
+
+Warning: key_o[27] - signal not found in VCD.
+
+Warning: key_o[26] - signal not found in VCD.
+
+Warning: key_o[25] - signal not found in VCD.
+
+Warning: key_o[24] - signal not found in VCD.
+
+Warning: key_o[23] - signal not found in VCD.
+
+Warning: key_o[22] - signal not found in VCD.
+
+Warning: key_o[21] - signal not found in VCD.
+
+Warning: key_o[20] - signal not found in VCD.
+
+Warning: key_o[19] - signal not found in VCD.
+
+Warning: key_o[18] - signal not found in VCD.
+
+Warning: key_o[17] - signal not found in VCD.
+
+Warning: key_o[16] - signal not found in VCD.
+
+Warning: key_o[15] - signal not found in VCD.
+
+Warning: key_o[14] - signal not found in VCD.
+
+Warning: key_o[13] - signal not found in VCD.
+
+Warning: key_o[12] - signal not found in VCD.
+
+Warning: key_o[11] - signal not found in VCD.
+
+Warning: key_o[10] - signal not found in VCD.
+
+Warning: key_o[9] - signal not found in VCD.
+
+Warning: key_o[8] - signal not found in VCD.
+
+Warning: key_o[7] - signal not found in VCD.
+
+Warning: key_o[6] - signal not found in VCD.
+
+Warning: key_o[5] - signal not found in VCD.
+
+Warning: key_o[4] - signal not found in VCD.
+
+Warning: key_o[3] - signal not found in VCD.
+
+Warning: key_o[2] - signal not found in VCD.
+
+Warning: key_o[1] - signal not found in VCD.
+
+Warning: key_o[0] - signal not found in VCD.
+
+Writing the resulting VWF to C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim/DE0_top_20220915231946.sim.vwf
 
 Finished VCD to VWF conversion.
 
