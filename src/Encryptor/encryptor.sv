@@ -23,6 +23,12 @@ module encryptor
 	output logic [31:0] data_out, // Output Data
 	output logic [15:0] ctr
     );
+	 
+	parameter int KEY_SIZE = 4;
+    localparam int DEFAULT_KEY_SIZE = 4;
+    localparam int DEFAULT_NUM_OF_ROUNDS = 11;
+    localparam int NUM_OF_ROUNDS = DEFAULT_NUM_OF_ROUNDS + KEY_SIZE - DEFAULT_KEY_SIZE;
+    localparam int EXPANDED_KEY_SIZE = 4 * DEFAULT_NUM_OF_ROUNDS;
 	
 	logic go_bit;
 	logic go_bit_in;
@@ -48,17 +54,17 @@ module encryptor
 	assign round_counter = counter / 4;
 	assign go_bit_in = (wr_en & accel_select & (addr[6:2] == 5'd0008));
 	
-	key_expander key_scheduler
-	(
-		.rst_n(rst_n), // Reset Neg
-		.clk(clk), // Clk
-		.i(counter),
-		.key_i_1(key[3]),
-		.key_N_i(key[0]),
-		.rc_i(rc_d),
-		.rc_out(rc),
-		.key_out(key_o)
-	);
+	// key_expander key_scheduler
+	// (
+	// 	.rst_n(rst_n), // Reset Neg
+	// 	.clk(clk), // Clk
+	// 	.i(counter),
+	// 	.key_i_1(key[3]),
+	// 	.key_N_i(key[0]),
+	// 	.rc_i(rc_d),
+	// 	.rc_out(rc),
+	// 	.key_out(key_o)
+	// );
 	
 	// always_ff@(addr[6:2], key, plaintext, cyphertext, counter, done_bit, go_bit, counter) begin
 	always_comb begin
@@ -90,7 +96,7 @@ module encryptor
 	always@(posedge clk or negedge rst_n) begin
 		if(~rst_n) begin
 			counter <= 16'b0;
-			rc_d <= 0;
+			rc <= 0;
 			for (i = 0; i < 4; i = i+1) begin
 				key[i] <= 32'b0;
 				plaintext[i] <= 32'b0;
@@ -98,7 +104,7 @@ module encryptor
 		end
 		else begin
 			counter <= go_bit_in? 16'h00 : done_bit_in ? counter : counter +16'h01;
-			rc_d <= rc_d;
+			rc <= 1;	
 			for (i = 0; i < 4; i = i + 1) begin
 				plaintext[i] <= plaintext[i];
 				key[i] <= key[i];
@@ -109,10 +115,11 @@ module encryptor
 					plaintext[i] <= (addr[6:2] == i + 14) ? data_in : plaintext[i];
 				end
 			end
-			else if (counter > 0) begin
+			else if (counter >= 4) begin
+				rc <= counter[KEY_SIZE - 1:0] == 0 ? ((rc < 8'h80) ? rc << 1 : ((rc << 1) ^ 9'h11b)) : rc;
 				for (i = 1; i < 4; i = i + 1) key[i-1] <= key[i];
-				key[3] <= key_o;
-				rc_d <= rc;
+				key[3] <= (counter[1:0] == 0) ? key[0] ^ subWord(rotWord(key[3])) ^ (rc << 24) : key[3] ^ key[0];
+				// else if (i >= KEY_SIZE && KEY_SIZE > 6 && i % KEY_SIZE == 4) key_out <= key_N_i ^ subWord(key_i_1);
 			end
 		end
 	end
@@ -121,7 +128,7 @@ module encryptor
 	always@(posedge clk or negedge rst_n) begin
 	if (~rst_n)
 		for (i = 0; i < 4; i = i + 1) cyphertext[i] <= 0;
-	else if (counter % 4 != 0);
+	else if (counter % 4 != 1);
 	else if (round_counter == 0)
 		for (i = 0; i < 4; i = i + 1) cyphertext[i] <= plaintext[i] ^ key[i];
 	else if (round_counter < 10) begin
@@ -159,8 +166,16 @@ module encryptor
 		if(~rst_n) done_bit <= 1'b0;
 		else done_bit <= go_bit_in ? 1'b0 : done_bit_in;
 
+	function int rotWord(int word);
+	    return {word[23:0], word[31:24]};
+    endfunction
 
-localparam byte s_box [0:255] = '{
+	function int subWord(int word);
+	    return {s_box[word[31:24]],s_box[word[23:16]],s_box[word[15:8]], s_box[word[7:0]]};
+    endfunction
+
+
+	localparam byte s_box [0:255] = '{
     8'h63, 8'h7C, 8'h77, 8'h7B, 8'hF2, 8'h6B, 8'h6F, 8'hC5, 8'h30, 8'h01, 8'h67, 8'h2B, 8'hFE, 8'hD7, 8'hAB, 8'h76,
     8'hCA, 8'h82, 8'hC9, 8'h7D, 8'hFA, 8'h59, 8'h47, 8'hF0, 8'hAD, 8'hD4, 8'hA2, 8'hAF, 8'h9C, 8'hA4, 8'h72, 8'hC0,
     8'hB7, 8'hFD, 8'h93, 8'h26, 8'h36, 8'h3F, 8'hF7, 8'hCC, 8'h34, 8'hA5, 8'hE5, 8'hF1, 8'h71, 8'hD8, 8'h31, 8'h15,
@@ -179,7 +194,7 @@ localparam byte s_box [0:255] = '{
     8'h8C, 8'hA1, 8'h89, 8'h0D, 8'hBF, 8'hE6, 8'h42, 8'h68, 8'h41, 8'h99, 8'h2D, 8'h0F, 8'hB0, 8'h54, 8'hBB, 8'h16
     };
 
-localparam int A0 [0:255] = '{
+	localparam int A0 [0:255] = '{
 	32'hc66363a5, 32'hf87c7c84, 32'hee777799, 32'hf67b7b8d, 32'hfff2f20d, 32'hd66b6bbd, 32'hde6f6fb1, 32'h91c5c554,
 	32'h60303050, 32'h02010103, 32'hce6767a9, 32'h562b2b7d, 32'he7fefe19, 32'hb5d7d762, 32'h4dababe6, 32'hec76769a,
 	32'h8fcaca45, 32'h1f82829d, 32'h89c9c940, 32'hfa7d7d87, 32'heffafa15, 32'hb25959eb, 32'h8e4747c9, 32'hfbf0f00b,
@@ -214,7 +229,7 @@ localparam int A0 [0:255] = '{
 	32'h824141c3, 32'h299999b0, 32'h5a2d2d77, 32'h1e0f0f11, 32'h7bb0b0cb, 32'ha85454fc, 32'h6dbbbbd6, 32'h2c16163a
 	};
 
-localparam int A1 [0:255] = '{
+	localparam int A1 [0:255] = '{
 	32'ha5c66363, 32'h84f87c7c, 32'h99ee7777, 32'h8df67b7b, 32'h0dfff2f2, 32'hbdd66b6b, 32'hb1de6f6f, 32'h5491c5c5,
 	32'h50603030, 32'h03020101, 32'ha9ce6767, 32'h7d562b2b, 32'h19e7fefe, 32'h62b5d7d7, 32'he64dabab, 32'h9aec7676,
 	32'h458fcaca, 32'h9d1f8282, 32'h4089c9c9, 32'h87fa7d7d, 32'h15effafa, 32'hebb25959, 32'hc98e4747, 32'h0bfbf0f0,
@@ -250,7 +265,7 @@ localparam int A1 [0:255] = '{
 	};
 
 
-localparam int A2 [0:255] = '{
+	localparam int A2 [0:255] = '{
 	32'h63a5c663, 32'h7c84f87c, 32'h7799ee77, 32'h7b8df67b, 32'hf20dfff2, 32'h6bbdd66b, 32'h6fb1de6f, 32'hc55491c5,
 	32'h30506030, 32'h01030201, 32'h67a9ce67, 32'h2b7d562b, 32'hfe19e7fe, 32'hd762b5d7, 32'habe64dab, 32'h769aec76,
 	32'hca458fca, 32'h829d1f82, 32'hc94089c9, 32'h7d87fa7d, 32'hfa15effa, 32'h59ebb259, 32'h47c98e47, 32'hf00bfbf0,
@@ -285,7 +300,7 @@ localparam int A2 [0:255] = '{
 	32'h41c38241, 32'h99b02999, 32'h2d775a2d, 32'h0f111e0f, 32'hb0cb7bb0, 32'h54fca854, 32'hbbd66dbb, 32'h163a2c16
 	};
 
-localparam int A3 [0:255] = '{
+	localparam int A3 [0:255] = '{
 	32'h6363a5c6, 32'h7c7c84f8, 32'h777799ee, 32'h7b7b8df6, 32'hf2f20dff, 32'h6b6bbdd6, 32'h6f6fb1de, 32'hc5c55491,
 	32'h30305060, 32'h01010302, 32'h6767a9ce, 32'h2b2b7d56, 32'hfefe19e7, 32'hd7d762b5, 32'hababe64d, 32'h76769aec,
 	32'hcaca458f, 32'h82829d1f, 32'hc9c94089, 32'h7d7d87fa, 32'hfafa15ef, 32'h5959ebb2, 32'h4747c98e, 32'hf0f00bfb,

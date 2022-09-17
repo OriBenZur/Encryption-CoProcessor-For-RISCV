@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <deploy
- date="2022.09.15.23:15:28"
+ date="2022.09.17.01:50:21"
  outputDirectory="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/ip/de0cv/">
  <perimeter>
   <parameter
@@ -65,13 +65,13 @@
  </perimeter>
  <entity
    path=""
-   parameterizationKey="de0cv:1.0:AUTO_CLK_CLOCK_DOMAIN=-1,AUTO_CLK_CLOCK_RATE=-1,AUTO_CLK_RESET_DOMAIN=-1,AUTO_DEVICE=10M50DAF484C7G,AUTO_DEVICE_FAMILY=MAX 10,AUTO_DEVICE_SPEEDGRADE=7,AUTO_GENERATION_ID=1663272925,AUTO_UNIQUE_ID=(clock_source:17.0:clockFrequency=50000000,clockFrequencyKnown=true,inputClockFrequency=0,resetSynchronousEdges=NONE)"
+   parameterizationKey="de0cv:1.0:AUTO_CLK_CLOCK_DOMAIN=-1,AUTO_CLK_CLOCK_RATE=-1,AUTO_CLK_RESET_DOMAIN=-1,AUTO_DEVICE=10M50DAF484C7G,AUTO_DEVICE_FAMILY=MAX 10,AUTO_DEVICE_SPEEDGRADE=7,AUTO_GENERATION_ID=1663368617,AUTO_UNIQUE_ID=(clock_source:17.0:clockFrequency=50000000,clockFrequencyKnown=true,inputClockFrequency=0,resetSynchronousEdges=NONE)"
    instancePathKey="de0cv"
    kind="de0cv"
    version="1.0"
    name="de0cv">
   <parameter name="AUTO_CLK_CLOCK_RATE" value="-1" />
-  <parameter name="AUTO_GENERATION_ID" value="1663272925" />
+  <parameter name="AUTO_GENERATION_ID" value="1663368617" />
   <parameter name="AUTO_DEVICE" value="10M50DAF484C7G" />
   <parameter name="AUTO_DEVICE_FAMILY" value="MAX 10" />
   <parameter name="AUTO_CLK_RESET_DOMAIN" value="-1" />

@@ -216,7 +216,15 @@
 					"strict" : false
 				},
 				{
+					"name" : "clk",
+					"strict" : false
+				},
+				{
 					"name" : "data_in[0]",
+					"strict" : false
+				},
+				{
+					"name" : "rst_n",
 					"strict" : false
 				},
 				{
@@ -225,14 +233,6 @@
 				},
 				{
 					"name" : "accel_select",
-					"strict" : false
-				},
-				{
-					"name" : "clk",
-					"strict" : false
-				},
-				{
-					"name" : "rst_n",
 					"strict" : false
 				},
 				{

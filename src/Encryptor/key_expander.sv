@@ -50,10 +50,10 @@ module key_expander
             key_out <= key_i_1;
         end
         else begin
-            rc_out <= (i+1) % KEY_SIZE == 0 ? ((rc_i < 8'h80) ? rc_i << 1 : ((rc_i << 1) ^ 9'h11b)) : rc_out;
-            if (i % KEY_SIZE == 0) key_out <= key_N_i ^ subWord(rotWord(key_i_1)) ^ (rc_i << 24);
-            else if (i >= KEY_SIZE && KEY_SIZE > 6 && i % KEY_SIZE == 4) key_out <= key_N_i ^ subWord(key_i_1);
-            else key_out <= key_N_i ^ key_i_1;
+            rc_out <= i[KEY_SIZE - 1:0] == 0 ? ((rc_i < 8'h80) ? rc_i << 1 : ((rc_i << 1) ^ 9'h11b)) : rc_out;
+            if (i[1:0] == 0) key_out <= key_N_i ^ subWord(rotWord(key_i_1)) ^ (rc_i << 24);
+            // else if (i >= KEY_SIZE && KEY_SIZE > 6 && i % KEY_SIZE == 4) key_out <= key_N_i ^ subWord(key_i_1);
+            else key_out <= key_i_1; // ^ key_N_i;
         end
         // else if (counter == 0) begin
         //     for (i = 1; i < NUM_OF_ROUNDS; i = i + 1) begin

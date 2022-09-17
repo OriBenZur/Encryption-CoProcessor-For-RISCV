@@ -19,7 +19,7 @@
 -- the top level entity of the current Quartus project .The user can use this   
 -- testbench to simulate his design using a third-party simulation tool .       
 -- *****************************************************************************
--- Generated on "09/15/2022 23:18:10"
+-- Generated on "09/17/2022 01:54:44"
                                                              
 -- Vhdl Test Bench(with test vectors) for design  :          encryptor
 -- 
@@ -76,7 +76,7 @@ LOOP
 	WAIT FOR 2500 ps;
 	clk <= '1';
 	WAIT FOR 2500 ps;
-	IF (NOW >= 1000000 ps) THEN WAIT; END IF;
+	IF (NOW >= 400000 ps) THEN WAIT; END IF;
 END LOOP;
 END PROCESS t_prcs_clk;
 

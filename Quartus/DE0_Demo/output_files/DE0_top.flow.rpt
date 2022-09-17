@@ -1,5 +1,5 @@
 Flow report for DE0_top
-Thu Sep 15 23:18:14 2022
+Sat Sep 17 01:54:49 2022
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -41,17 +41,17 @@ agreement for further details.
 +----------------------------------------------------------------------------------+
 ; Flow Summary                                                                     ;
 +------------------------------------+---------------------------------------------+
-; Flow Status                        ; Successful - Thu Sep 15 23:18:14 2022       ;
+; Flow Status                        ; Successful - Sat Sep 17 01:54:49 2022       ;
 ; Quartus Prime Version              ; 17.0.0 Build 595 04/25/2017 SJ Lite Edition ;
 ; Revision Name                      ; DE0_top                                     ;
 ; Top-level Entity Name              ; encryptor                                   ;
 ; Family                             ; MAX 10                                      ;
 ; Device                             ; 10M50DAF484C7G                              ;
 ; Timing Models                      ; Final                                       ;
-; Total logic elements               ; 9,186                                       ;
-;     Total combinational functions  ; 9,050                                       ;
-;     Dedicated logic registers      ; 450                                         ;
-; Total registers                    ; 450                                         ;
+; Total logic elements               ; 9,098                                       ;
+;     Total combinational functions  ; 8,970                                       ;
+;     Dedicated logic registers      ; 410                                         ;
+; Total registers                    ; 410                                         ;
 ; Total pins                         ; 116                                         ;
 ; Total virtual pins                 ; 0                                           ;
 ; Total memory bits                  ; 0                                           ;
@@ -67,7 +67,7 @@ agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 09/15/2022 23:15:05 ;
+; Start date & time ; 09/17/2022 01:49:48 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; DE0_top             ;
 +-------------------+---------------------+
@@ -78,7 +78,7 @@ agreement for further details.
 +-------------------------------------+----------------------------------------+---------------+-------------+----------------+
 ; Assignment Name                     ; Value                                  ; Default Value ; Entity Name ; Section Id     ;
 +-------------------------------------+----------------------------------------+---------------+-------------+----------------+
-; COMPILER_SIGNATURE_ID               ; 49410870714955.166327290508228         ; --            ; --          ; --             ;
+; COMPILER_SIGNATURE_ID               ; 49410870714955.166336858821916         ; --            ; --          ; --             ;
 ; EDA_OUTPUT_DATA_FORMAT              ; Verilog Hdl                            ; --            ; --          ; eda_simulation ;
 ; EDA_SIMULATION_TOOL                 ; ModelSim-Altera (Verilog)              ; <None>        ; --          ; --             ;
 ; EDA_TIME_SCALE                      ; 1 ps                                   ; --            ; --          ; eda_simulation ;
@@ -112,10 +112,10 @@ agreement for further details.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:02:47     ; 1.0                     ; 4825 MB             ; 00:02:17                           ;
-; EDA Netlist Writer   ; 00:00:01     ; 1.0                     ; 4648 MB             ; 00:00:01                           ;
-; EDA Netlist Writer   ; 00:00:03     ; 1.0                     ; 4661 MB             ; 00:00:03                           ;
-; Total                ; 00:02:51     ; --                      ; --                  ; 00:02:21                           ;
+; Analysis & Synthesis ; 00:03:07     ; 1.0                     ; 4869 MB             ; 00:03:04                           ;
+; EDA Netlist Writer   ; 00:00:01     ; 1.0                     ; 4647 MB             ; 00:00:01                           ;
+; EDA Netlist Writer   ; 00:00:04     ; 1.0                     ; 4659 MB             ; 00:00:03                           ;
+; Total                ; 00:03:12     ; --                      ; --                  ; 00:03:08                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 

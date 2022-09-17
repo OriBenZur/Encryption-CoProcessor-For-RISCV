@@ -1,5 +1,5 @@
 Analysis & Synthesis report for DE0_top
-Thu Sep 15 23:17:52 2022
+Sat Sep 17 01:52:55 2022
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -15,11 +15,10 @@ Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
   7. Analysis & Synthesis Resource Utilization by Entity
   8. General Register Statistics
   9. Multiplexer Restructuring Statistics (Restructuring Performed)
- 10. Parameter Settings for User Entity Instance: key_expander:key_scheduler
- 11. Port Connectivity Checks: "key_expander:key_scheduler"
- 12. Post-Synthesis Netlist Statistics for Top Partition
- 13. Elapsed Time Per Partition
- 14. Analysis & Synthesis Messages
+ 10. Parameter Settings for User Entity Instance: Top-level Entity: |encryptor
+ 11. Post-Synthesis Netlist Statistics for Top Partition
+ 12. Elapsed Time Per Partition
+ 13. Analysis & Synthesis Messages
 
 
 
@@ -46,15 +45,15 @@ agreement for further details.
 +----------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                     ;
 +------------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Thu Sep 15 23:17:52 2022       ;
+; Analysis & Synthesis Status        ; Successful - Sat Sep 17 01:52:55 2022       ;
 ; Quartus Prime Version              ; 17.0.0 Build 595 04/25/2017 SJ Lite Edition ;
 ; Revision Name                      ; DE0_top                                     ;
 ; Top-level Entity Name              ; encryptor                                   ;
 ; Family                             ; MAX 10                                      ;
-; Total logic elements               ; 9,186                                       ;
-;     Total combinational functions  ; 9,050                                       ;
-;     Dedicated logic registers      ; 450                                         ;
-; Total registers                    ; 450                                         ;
+; Total logic elements               ; 9,098                                       ;
+;     Total combinational functions  ; 8,970                                       ;
+;     Dedicated logic registers      ; 410                                         ;
+; Total registers                    ; 410                                         ;
 ; Total pins                         ; 116                                         ;
 ; Total virtual pins                 ; 0                                           ;
 ; Total memory bits                  ; 0                                           ;
@@ -166,20 +165,19 @@ agreement for further details.
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
-;     Processor 2            ;   0.0%      ;
+;     Processor 2            ;   0.1%      ;
 ;     Processor 3            ;   0.0%      ;
 ;     Processor 4            ;   0.0%      ;
 +----------------------------+-------------+
 
 
-+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                                                                    ;
-+-------------------------------------+-----------------+------------------------------+--------------------------------------------------------------------------+---------+
-; File Name with User-Entered Path    ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                             ; Library ;
-+-------------------------------------+-----------------+------------------------------+--------------------------------------------------------------------------+---------+
-; ../../src/Encryptor/key_expander.sv ; yes             ; User SystemVerilog HDL File  ; C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/key_expander.sv ;         ;
-; ../../src/Encryptor/encryptor.sv    ; yes             ; User SystemVerilog HDL File  ; C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv    ;         ;
-+-------------------------------------+-----------------+------------------------------+--------------------------------------------------------------------------+---------+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                              ;
++----------------------------------+-----------------+------------------------------+-----------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                          ; Library ;
++----------------------------------+-----------------+------------------------------+-----------------------------------------------------------------------+---------+
+; ../../src/Encryptor/encryptor.sv ; yes             ; User SystemVerilog HDL File  ; C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv ;         ;
++----------------------------------+-----------------+------------------------------+-----------------------------------------------------------------------+---------+
 
 
 +---------------------------------------------------------+
@@ -187,20 +185,20 @@ agreement for further details.
 +---------------------------------------------+-----------+
 ; Resource                                    ; Usage     ;
 +---------------------------------------------+-----------+
-; Estimated Total logic elements              ; 9,186     ;
+; Estimated Total logic elements              ; 9,098     ;
 ;                                             ;           ;
-; Total combinational functions               ; 9050      ;
+; Total combinational functions               ; 8970      ;
 ; Logic element usage by number of LUT inputs ;           ;
-;     -- 4 input functions                    ; 8430      ;
-;     -- 3 input functions                    ; 332       ;
-;     -- <=2 input functions                  ; 288       ;
+;     -- 4 input functions                    ; 8393      ;
+;     -- 3 input functions                    ; 296       ;
+;     -- <=2 input functions                  ; 281       ;
 ;                                             ;           ;
 ; Logic elements by mode                      ;           ;
-;     -- normal mode                          ; 9035      ;
+;     -- normal mode                          ; 8955      ;
 ;     -- arithmetic mode                      ; 15        ;
 ;                                             ;           ;
-; Total registers                             ; 450       ;
-;     -- Dedicated logic registers            ; 450       ;
+; Total registers                             ; 410       ;
+;     -- Dedicated logic registers            ; 410       ;
 ;     -- I/O registers                        ; 0         ;
 ;                                             ;           ;
 ; I/O pins                                    ; 116       ;
@@ -208,20 +206,19 @@ agreement for further details.
 ; Embedded Multiplier 9-bit elements          ; 0         ;
 ;                                             ;           ;
 ; Maximum fan-out node                        ; clk~input ;
-; Maximum fan-out                             ; 450       ;
-; Total fan-out                               ; 37509     ;
-; Average fan-out                             ; 3.85      ;
+; Maximum fan-out                             ; 410       ;
+; Total fan-out                               ; 37159     ;
+; Average fan-out                             ; 3.87      ;
 +---------------------------------------------+-----------+
 
 
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                        ;
-+---------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------------------------+--------------+--------------+
-; Compilation Hierarchy Node      ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name                   ; Entity Name  ; Library Name ;
-+---------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------------------------+--------------+--------------+
-; |encryptor                      ; 9050 (8119)         ; 450 (410)                 ; 0           ; 0          ; 0            ; 0       ; 0         ; 116  ; 0            ; 0          ; |encryptor                            ; encryptor    ; work         ;
-;    |key_expander:key_scheduler| ; 931 (931)           ; 40 (40)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |encryptor|key_expander:key_scheduler ; key_expander ; work         ;
-+---------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------------------------+--------------+--------------+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                ;
++----------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------+-------------+--------------+
+; Compilation Hierarchy Node ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name ; Entity Name ; Library Name ;
++----------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------+-------------+--------------+
+; |encryptor                 ; 8970 (8970)         ; 410 (410)                 ; 0           ; 0          ; 0            ; 0       ; 0         ; 116  ; 0            ; 0          ; |encryptor          ; encryptor   ; work         ;
++----------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------+-------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
 
@@ -230,52 +227,43 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 450   ;
+; Total registers                              ; 410   ;
 ; Number of registers using Synchronous Clear  ; 16    ;
-; Number of registers using Synchronous Load   ; 136   ;
-; Number of registers using Asynchronous Clear ; 450   ;
+; Number of registers using Synchronous Load   ; 160   ;
+; Number of registers using Asynchronous Clear ; 410   ;
 ; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 416   ;
+; Number of registers using Clock Enable       ; 408   ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
 
 
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                  ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------+
-; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                        ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------+
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |encryptor|key[3][25]                             ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |encryptor|key[2][24]                             ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |encryptor|key[1][11]                             ;
-; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |encryptor|key[0][5]                              ;
-; 3:1                ; 16 bits   ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; Yes        ; |encryptor|counter[5]                             ;
-; 3:1                ; 8 bits    ; 16 LEs        ; 16 LEs               ; 0 LEs                  ; Yes        ; |encryptor|key_expander:key_scheduler|key_out[24] ;
-; 3:1                ; 5 bits    ; 10 LEs        ; 5 LEs                ; 5 LEs                  ; Yes        ; |encryptor|key_expander:key_scheduler|rc_out[0]   ;
-; 3:1                ; 128 bits  ; 256 LEs       ; 256 LEs              ; 0 LEs                  ; Yes        ; |encryptor|cyphertext[2][0]                       ;
-; 4:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; Yes        ; |encryptor|key_expander:key_scheduler|rc_out[4]   ;
-; 32:1               ; 15 bits   ; 315 LEs       ; 150 LEs              ; 165 LEs                ; No         ; |encryptor|Mux8                                   ;
-; 32:1               ; 15 bits   ; 315 LEs       ; 150 LEs              ; 165 LEs                ; No         ; |encryptor|Mux23                                  ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------+
++--------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                             ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output   ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------+
+; 3:1                ; 24 bits   ; 48 LEs        ; 24 LEs               ; 24 LEs                 ; Yes        ; |encryptor|key[3][5]         ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |encryptor|key[2][31]        ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |encryptor|key[1][24]        ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |encryptor|key[0][10]        ;
+; 3:1                ; 16 bits   ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; Yes        ; |encryptor|counter[12]       ;
+; 3:1                ; 128 bits  ; 256 LEs       ; 256 LEs              ; 0 LEs                  ; Yes        ; |encryptor|cyphertext[0][24] ;
+; 4:1                ; 5 bits    ; 10 LEs        ; 5 LEs                ; 5 LEs                  ; Yes        ; |encryptor|rc[0]             ;
+; 4:1                ; 8 bits    ; 16 LEs        ; 16 LEs               ; 0 LEs                  ; Yes        ; |encryptor|key[3][25]        ;
+; 5:1                ; 3 bits    ; 9 LEs         ; 6 LEs                ; 3 LEs                  ; Yes        ; |encryptor|rc[3]             ;
+; 32:1               ; 15 bits   ; 315 LEs       ; 150 LEs              ; 165 LEs                ; No         ; |encryptor|Mux2              ;
+; 32:1               ; 15 bits   ; 315 LEs       ; 150 LEs              ; 165 LEs                ; No         ; |encryptor|Mux29             ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------+
 
 
-+-------------------------------------------------------------------------+
-; Parameter Settings for User Entity Instance: key_expander:key_scheduler ;
-+----------------+-------+------------------------------------------------+
-; Parameter Name ; Value ; Type                                           ;
-+----------------+-------+------------------------------------------------+
-; KEY_SIZE       ; 4     ; Signed Integer                                 ;
-+----------------+-------+------------------------------------------------+
++---------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: Top-level Entity: |encryptor ;
++----------------+-------+--------------------------------------------------+
+; Parameter Name ; Value ; Type                                             ;
++----------------+-------+--------------------------------------------------+
+; KEY_SIZE       ; 4     ; Signed Integer                                   ;
++----------------+-------+--------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
-
-
-+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Port Connectivity Checks: "key_expander:key_scheduler"                                                                                                                                                      ;
-+------+-------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Port ; Type  ; Severity ; Details                                                                                                                                                                           ;
-+------+-------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; i    ; Input ; Warning  ; Input port expression (16 bits) is wider than the input port (8 bits) it drives.  The 8 most-significant bit(s) in the expression will be dangling if they have no other fanouts. ;
-+------+-------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 
 +-----------------------------------------------------+
@@ -284,23 +272,22 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; Type                  ; Count                       ;
 +-----------------------+-----------------------------+
 ; boundary_port         ; 116                         ;
-; cycloneiii_ff         ; 450                         ;
-;     CLR               ; 26                          ;
-;     CLR SLD           ; 8                           ;
-;     ENA CLR           ; 272                         ;
+; cycloneiii_ff         ; 410                         ;
+;     CLR               ; 2                           ;
+;     ENA CLR           ; 232                         ;
 ;     ENA CLR SCLR      ; 16                          ;
-;     ENA CLR SLD       ; 128                         ;
-; cycloneiii_lcell_comb ; 9050                        ;
+;     ENA CLR SLD       ; 160                         ;
+; cycloneiii_lcell_comb ; 8970                        ;
 ;     arith             ; 15                          ;
 ;         2 data inputs ; 15                          ;
-;     normal            ; 9035                        ;
+;     normal            ; 8955                        ;
 ;         1 data inputs ; 1                           ;
-;         2 data inputs ; 272                         ;
-;         3 data inputs ; 332                         ;
-;         4 data inputs ; 8430                        ;
+;         2 data inputs ; 265                         ;
+;         3 data inputs ; 296                         ;
+;         4 data inputs ; 8393                        ;
 ;                       ;                             ;
 ; Max LUT depth         ; 8.00                        ;
-; Average LUT depth     ; 6.45                        ;
+; Average LUT depth     ; 6.42                        ;
 +-----------------------+-----------------------------+
 
 
@@ -309,7 +296,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:02:21     ;
+; Top            ; 00:02:31     ;
 +----------------+--------------+
 
 
@@ -319,18 +306,18 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
-    Info: Processing started: Thu Sep 15 23:15:04 2022
+    Info: Processing started: Sat Sep 17 01:49:47 2022
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off DE0_top -c DE0_top
 Info (20032): Parallel compilation is enabled and will use up to 4 processors
 Info (12248): Elaborating Qsys system entity "de0cv.qsys"
-Info (12250): 2022.09.15.23:15:22 Progress: Loading DE0_Demo/de0cv.qsys
-Info (12250): 2022.09.15.23:15:23 Progress: Reading input file
-Info (12250): 2022.09.15.23:15:23 Progress: Adding clk_0 [clock_source 17.0]
-Info (12250): 2022.09.15.23:15:24 Progress: Parameterizing module clk_0
-Info (12250): 2022.09.15.23:15:24 Progress: Building connections
-Info (12250): 2022.09.15.23:15:24 Progress: Parameterizing connections
-Info (12250): 2022.09.15.23:15:24 Progress: Validating
-Info (12250): 2022.09.15.23:15:24 Progress: Done reading input file
+Info (12250): 2022.09.17.01:50:12 Progress: Loading DE0_Demo/de0cv.qsys
+Info (12250): 2022.09.17.01:50:14 Progress: Reading input file
+Info (12250): 2022.09.17.01:50:14 Progress: Adding clk_0 [clock_source 17.0]
+Info (12250): 2022.09.17.01:50:15 Progress: Parameterizing module clk_0
+Info (12250): 2022.09.17.01:50:15 Progress: Building connections
+Info (12250): 2022.09.17.01:50:15 Progress: Parameterizing connections
+Info (12250): 2022.09.17.01:50:15 Progress: Validating
+Info (12250): 2022.09.17.01:50:15 Progress: Done reading input file
 Info (12250): De0cv: Generating de0cv "de0cv" for QUARTUS_SYNTH
 Info (12250): De0cv: Done "de0cv" with 1 modules, 1 files
 Info (12249): Finished elaborating Qsys system entity "de0cv.qsys"
@@ -369,10 +356,8 @@ Info (12021): Found 1 design units, including 1 entities, in source file pll.v
 Info (12021): Found 1 design units, including 1 entities, in source file db/ip/de0cv/de0cv.v
     Info (12023): Found entity 1: de0cv File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/ip/de0cv/de0cv.v Line: 6
 Info (12127): Elaborating entity "encryptor" for the top level hierarchy
-Warning (10230): Verilog HDL assignment warning at encryptor.sv(48): truncated value with size 32 to match size of target (14) File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 48
-Info (12128): Elaborating entity "key_expander" for hierarchy "key_expander:key_scheduler" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 61
-Warning (10230): Verilog HDL assignment warning at key_expander.sv(53): truncated value with size 9 to match size of target (8) File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/key_expander.sv Line: 53
-Warning (12241): 1 hierarchies have connectivity warnings - see the Connectivity Checks report folder
+Warning (10230): Verilog HDL assignment warning at encryptor.sv(54): truncated value with size 32 to match size of target (14) File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 54
+Warning (10230): Verilog HDL assignment warning at encryptor.sv(119): truncated value with size 9 to match size of target (8) File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 119
 Info (286030): Timing-Driven Synthesis is running
 Warning (20013): Ignored 19 assignments for entity "de0cv" -- entity does not exist in design
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
@@ -405,14 +390,14 @@ Warning (21074): Design contains 27 input pin(s) that do not drive logic
     Warning (15610): No output dependent on input pin "addr[29]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
     Warning (15610): No output dependent on input pin "addr[30]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
     Warning (15610): No output dependent on input pin "addr[31]" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv Line: 19
-Info (21057): Implemented 9304 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 9216 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 68 input pins
     Info (21059): Implemented 48 output pins
-    Info (21061): Implemented 9188 logic cells
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 33 warnings
-    Info: Peak virtual memory: 4825 megabytes
-    Info: Processing ended: Thu Sep 15 23:17:52 2022
-    Info: Elapsed time: 00:02:48
-    Info: Total CPU time (on all processors): 00:02:17
+    Info (21061): Implemented 9100 logic cells
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 32 warnings
+    Info: Peak virtual memory: 4869 megabytes
+    Info: Processing ended: Sat Sep 17 01:52:55 2022
+    Info: Elapsed time: 00:03:08
+    Info: Total CPU time (on all processors): 00:03:05
 
 
