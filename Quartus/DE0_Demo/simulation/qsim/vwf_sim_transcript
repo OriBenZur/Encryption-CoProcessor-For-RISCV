@@ -26,7 +26,7 @@ Info: Running Quartus Prime EDA Netlist Writer
     Info: devices manufactured by Intel and sold by Intel or its 
     Info: authorized distributors.  Please refer to the applicable 
     Info: agreement for further details.
-    Info: Processing started: Sat Sep 17 01:54:43 2022
+    Info: Processing started: Mon Sep 19 16:08:47 2022
 Info: Command: quartus_eda --gen_testbench --tool=modelsim_oem --format=vhdl --write_settings_files=off DE0_top -c DE0_top --vector_source="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/Waveform2.vwf" --testbench_file="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim/Waveform2.vwf.vht"
 Info (119006): Selected device 10M50DAF484C7G for design "DE0_top"
 
@@ -34,9 +34,11 @@ n't find port "key[1][21]" in design
 
  Can't find port "cyphertext[0][8]" in design
 
-[0][28]" in design
+ find port "plaintext[0][20]" in design
 
-01007): Can't find port "plaintext[2][28]" in design
+ in design
+
+es
 
 Completed successfully. 
 
@@ -61,14 +63,14 @@ Info: Running Quartus Prime EDA Netlist Writer
     Info: devices manufactured by Intel and sold by Intel or its 
     Info: authorized distributors.  Please refer to the applicable 
     Info: agreement for further details.
-    Info: Processing started: Sat Sep 17 01:54:45 2022
+    Info: Processing started: Mon Sep 19 16:08:49 2022
 Info: Command: quartus_eda --write_settings_files=off --simulation=on --functional=on --flatten_buses=off --tool=modelsim_oem --format=vhdl --output_directory="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim/" DE0_top -c DE0_top
 Info (119006): Selected device 10M50DAF484C7G for design "DE0_top"
 Info (204019): Generated file DE0_top.vho in folder "C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim//" for EDA simulation tool
 Info: Quartus Prime EDA Netlist Writer was successful. 0 errors, 0 warnings
-    Info: Peak virtual memory: 4659 megabytes
-    Info: Processing ended: Sat Sep 17 01:54:49 2022
-    Info: Elapsed time: 00:00:04
+    Info: Peak virtual memory: 4665 megabytes
+    Info: Processing ended: Mon Sep 19 16:08:52 2022
+    Info: Elapsed time: 00:00:03
     Info: Total CPU time (on all processors): 00:00:03
 
 Completed successfully. 
@@ -87,16 +89,14 @@ Reading C:/intelFPGA_lite/17.0/modelsim_ase/tcl/vsim/pref.tcl
 
 # 10.5b
 
-
 # do DE0_top.do
 
 # ** Warning: (vlib-34) Library already exists at "work".
-
 # Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
-# Start time: 01:54:50 on Sep 17,2022
+# Start time: 16:08:53 on Sep 19,2022
 # vcom -work work DE0_top.vho 
-# -- Loading package STANDARD
 
+# -- Loading package STANDARD
 # -- Loading package TEXTIO
 # -- Loading package std_logic_1164
 # -- Loading package VITAL_Timing
@@ -108,24 +108,23 @@ Reading C:/intelFPGA_lite/17.0/modelsim_ase/tcl/vsim/pref.tcl
 # -- Compiling entity encryptor
 # -- Compiling architecture structure of encryptor
 
-# End time: 01:54:53 on Sep 17,2022, Elapsed time: 0:00:03
+# End time: 16:08:56 on Sep 19,2022, Elapsed time: 0:00:03
 # Errors: 0, Warnings: 0
 # Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
-# Start time: 01:54:53 on Sep 17,2022
+# Start time: 16:08:56 on Sep 19,2022
 # vcom -work work Waveform2.vwf.vht 
 
 # -- Loading package STANDARD
-
 # -- Loading package TEXTIO
 # -- Loading package std_logic_1164
 # -- Compiling entity encryptor_vhd_vec_tst
 # -- Compiling architecture encryptor_arch of encryptor_vhd_vec_tst
 
-# End time: 01:54:55 on Sep 17,2022, Elapsed time: 0:00:02
+# End time: 16:08:56 on Sep 19,2022, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 
 # vsim -novopt -c -t 1ps -L fiftyfivenm -L altera -L altera_mf -L 220model -L sgate -L altera_lnsim work.encryptor_vhd_vec_tst 
-# Start time: 01:54:55 on Sep 17,2022
+# Start time: 16:08:56 on Sep 19,2022
 # Loading std.standard
 # Loading std.textio(body)
 # Loading ieee.std_logic_1164(body)
@@ -141,8 +140,9 @@ Reading C:/intelFPGA_lite/17.0/modelsim_ase/tcl/vsim/pref.tcl
 # Loading fiftyfivenm.fiftyfivenm_io_ibuf(behavior)
 # Loading fiftyfivenm.fiftyfivenm_lcell_comb(vital_lcell_comb)
 # Loading altera.dffeas(vital_dffeas)
-# ** Warning: Design size of 1002723 statements exceeds ModelSim-Intel FPGA Starter Edition recommended capacity.
+# ** Warning: Design size of 1081355 statements exceeds ModelSim-Intel FPGA Starter Edition recommended capacity.
 # Expect performance to be adversely affected.
+
 # after#33
 
 # Simulation time: 0 ps
@@ -153,9 +153,7 @@ Reading C:/intelFPGA_lite/17.0/modelsim_ase/tcl/vsim/pref.tcl
 
 # Simulation time: 0 ps
 
-# Simulation time: 0 ps
-
-# End time: 01:55:15 on Sep 17,2022, Elapsed time: 0:00:20
+# End time: 16:09:12 on Sep 19,2022, Elapsed time: 0:00:16
 # Errors: 0, Warnings: 1
 
 Completed successfully. 
@@ -168,23 +166,7 @@ Reading C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/q
 
 Processing channel transitions... 
 
-Warning: rc_d[7] - signal not found in VCD.
-
-Warning: rc_d[6] - signal not found in VCD.
-
-Warning: rc_d[5] - signal not found in VCD.
-
-Warning: rc_d[4] - signal not found in VCD.
-
-Warning: rc_d[3] - signal not found in VCD.
-
-Warning: rc_d[2] - signal not found in VCD.
-
-Warning: rc_d[1] - signal not found in VCD.
-
-Warning: rc_d[0] - signal not found in VCD.
-
-Writing the resulting VWF to C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim/DE0_top_20220917015515.sim.vwf
+Writing the resulting VWF to C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim/DE0_top_20220919160913.sim.vwf
 
 Finished VCD to VWF conversion.
 

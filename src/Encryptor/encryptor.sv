@@ -22,6 +22,7 @@ module encryptor
 	input logic [31:0] data_in,
 	output logic [31:0] data_out, // Output Data
 	output logic [15:0] ctr
+//	output int stage
     );
 	 
 	parameter int KEY_SIZE = 4;
@@ -36,14 +37,15 @@ module encryptor
 	logic done_bit_in;
 
 	logic [15:0] counter;
-	logic [13:0] round_counter;
-	byte rc, rc_d;
+	logic [15:0] round_counter;
+	byte rc;
 	
 	logic [31:0] key[3:0];
+	logic [31:0] key_in[3:0];
 	logic [31:0] key_o;
 	logic [31:0] plaintext[3:0];
 	logic [31:0] cyphertext[3:0];
-	integer i;
+	byte i;
 	// logic [31:0] cyphertext_in[3:0];
 
 	
@@ -51,7 +53,6 @@ module encryptor
 	// logic[7:0] out;
 
 	assign ctr = counter;
-	assign round_counter = counter / 4;
 	assign go_bit_in = (wr_en & accel_select & (addr[6:2] == 5'd0008));
 	
 	// key_expander key_scheduler
@@ -71,10 +72,10 @@ module encryptor
 		case(addr[6:2])
 		5'd008: data_out = {done_bit, 30'b0, go_bit};
 		5'd009: data_out = {16'b0, counter}; 
-		5'd010: data_out = key[0];
-		5'd011: data_out = key[1];
-		5'd012: data_out = key[2];
-		5'd013: data_out = key[3];
+		5'd010: data_out = key_in[0];
+		5'd011: data_out = key_in[1];
+		5'd012: data_out = key_in[2];
+		5'd013: data_out = key_in[3];
 		5'd014: data_out = plaintext[0];
 		5'd015: data_out = plaintext[1];
 		5'd016: data_out = plaintext[2];
@@ -93,74 +94,92 @@ module encryptor
 	else go_bit <=  go_bit_in ? 1'b1 : 1'b0;
 	end
 	
-	always@(posedge clk or negedge rst_n) begin
-		if(~rst_n) begin
-			counter <= 16'b0;
-			rc <= 0;
-			for (i = 0; i < 4; i = i+1) begin
-				key[i] <= 32'b0;
-				plaintext[i] <= 32'b0;
+	// Counter Logic
+	// Counter == 0: 		Standby
+	// 48 > Counter > 0:	Working
+	// Counter == 48: 		Done
+	always_ff @(posedge clk or negedge rst_n) begin
+		if (~rst_n)
+			counter <= 16'h00;
+		else if (go_bit_in)
+			counter <= 16'h01;
+		else if (done_bit_in || counter == 16'h00)
+			counter <= counter;
+		else
+			counter <= counter + 1;
+	end
+
+	// Key and plaintext MMIO input
+	always_ff @(posedge clk or negedge rst_n) begin
+		if (~rst_n) begin
+			key_in <= '{default: '0};
+			plaintext <= '{default: '0};
+		end
+		else if (wr_en & accel_select) begin
+			for (i = 0; i < 4; i++) begin
+				key_in[i] <= (addr[6:2] == i + 10) ? data_in : key_in[i];
+				plaintext[i] <= (addr[6:2] == i + 14) ? data_in : plaintext[i];
 			end
 		end
 		else begin
-			counter <= go_bit_in? 16'h00 : done_bit_in ? counter : counter +16'h01;
-			rc <= 1;	
-			for (i = 0; i < 4; i = i + 1) begin
+			for (i = 0; i < 4; i++) begin
+				key_in[i] <= key_in[i];
 				plaintext[i] <= plaintext[i];
-				key[i] <= key[i];
 			end
-			if (wr_en & accel_select) begin
-				for (i = 0; i < 4; i = i + 1) begin
-					key[i] <= (addr[6:2] == i + 10) ? data_in : key[i];
-					plaintext[i] <= (addr[6:2] == i + 14) ? data_in : plaintext[i];
-				end
-			end
-			else if (counter >= 4) begin
-				rc <= counter[KEY_SIZE - 1:0] == 0 ? ((rc < 8'h80) ? rc << 1 : ((rc << 1) ^ 9'h11b)) : rc;
-				for (i = 1; i < 4; i = i + 1) key[i-1] <= key[i];
-				key[3] <= (counter[1:0] == 0) ? key[0] ^ subWord(rotWord(key[3])) ^ (rc << 24) : key[3] ^ key[0];
+		end
+	end
+
+	// Key expansion
+	always_ff @(posedge clk or negedge rst_n) begin
+		if(~rst_n) begin
+			rc <= 0;
+			key <= '{default: '0};
+		end
+		else begin
+			rc <= 1;
+			if (counter == 16'h01)
+				key <= '{key_in[0], key_in[1], key_in[2], key_in[3]};
+			else if (counter > 16'b01) begin
+				rc <= counter[1:0] == 1 ? ((rc < 8'h80) ? rc << 1 : ((rc << 1) ^ 9'h11b)) : rc;
+				key[2:0] <= key[3:1];
+				key[3] <= (counter[1:0] == 2) ? key[0] ^ subWord(rotWord(key[3])) ^ (rc << 24) : key[3] ^ key[0];
+				// key <= '{key[3:1], (counter[1:0] == 1) ? key[0] ^ subWord(rotWord(key[3])) ^ (rc << 24) : key[3] ^ key[0]};
 				// else if (i >= KEY_SIZE && KEY_SIZE > 6 && i % KEY_SIZE == 4) key_out <= key_N_i ^ subWord(key_i_1);
 			end
 		end
 	end
 	
-
+	// Main encryption
 	always@(posedge clk or negedge rst_n) begin
-	if (~rst_n)
+	if (~rst_n) begin
+//		stage <= 0;
 		for (i = 0; i < 4; i = i + 1) cyphertext[i] <= 0;
-	else if (counter % 4 != 1);
-	else if (round_counter == 0)
+	end
+	else if (counter[1:0] != 2 || done_bit_in);
+	else if (counter[15:2] == 0) begin
 		for (i = 0; i < 4; i = i + 1) cyphertext[i] <= plaintext[i] ^ key[i];
-	else if (round_counter < 10) begin
-		cyphertext[0] <= A0[cyphertext[0][7:0]]^A1[cyphertext[1][15:8]]^A2[cyphertext[2][23:16]]^A3[cyphertext[3][31:24]]^key[0];
-		cyphertext[1] <= A0[cyphertext[1][7:0]]^A1[cyphertext[2][15:8]]^A2[cyphertext[3][23:16]]^A3[cyphertext[0][31:24]]^key[1];
-		cyphertext[2] <= A0[cyphertext[2][7:0]]^A1[cyphertext[3][15:8]]^A2[cyphertext[0][15:8]]^A3[cyphertext[1][31:24]]^key[2];
-		cyphertext[3] <= A0[cyphertext[3][7:0]]^A1[cyphertext[0][15:8]]^A2[cyphertext[1][23:16]]^A3[cyphertext[2][31:24]]^key[3];
+//		stage <= 1;
 	end
-	else begin//if (round_counter == 10) begin
-		cyphertext[0] <= (s_box[cyphertext[0][7:0]] << 24) ^ {8'b0, (s_box[cyphertext[1][15:8]] << 16)} ^ {16'b0, (s_box[cyphertext[2][23:16]] << 8)} ^ {24'b0, s_box[cyphertext[3][31:24]]} ^ key[0];
-		cyphertext[1] <= (s_box[cyphertext[1][7:0]] << 24) ^ {8'b0, (s_box[cyphertext[2][15:8]] << 16)} ^ {16'b0, (s_box[cyphertext[3][23:16]] << 8)} ^ {24'b0, s_box[cyphertext[0][31:24]]} ^ key[1];
-		cyphertext[2] <= (s_box[cyphertext[2][7:0]] << 24) ^ {8'b0, (s_box[cyphertext[3][15:8]] << 16)} ^ {16'b0, (s_box[cyphertext[0][15:8]] << 8)} ^ {24'b0, s_box[cyphertext[1][31:24]]} ^ key[2];
-		cyphertext[3] <= (s_box[cyphertext[3][7:0]] << 24) ^ {8'b0, (s_box[cyphertext[0][15:8]] << 16)} ^ {16'b0, (s_box[cyphertext[1][23:16]] << 8)} ^ {24'b0, s_box[cyphertext[2][31:24]]} ^ key[3];
+	else if (counter[15:2] < 10) begin
+		cyphertext[0] <= A0[cyphertext[0][31:24]] ^ A1[cyphertext[1][23:16]] ^ A2[cyphertext[2][15:8]] ^ A3[cyphertext[3][7:0]] ^ key[0];
+		cyphertext[1] <= A0[cyphertext[1][31:24]] ^ A1[cyphertext[2][23:16]] ^ A2[cyphertext[3][15:8]] ^ A3[cyphertext[0][7:0]] ^ key[1];
+		cyphertext[2] <= A0[cyphertext[2][31:24]] ^ A1[cyphertext[3][23:16]] ^ A2[cyphertext[0][15:8]] ^ A3[cyphertext[1][7:0]] ^ key[2];
+		cyphertext[3] <= A0[cyphertext[3][31:24]] ^ A1[cyphertext[0][23:16]] ^ A2[cyphertext[1][15:8]] ^ A3[cyphertext[2][7:0]] ^ key[3];
+	end
+	else begin//if (counter[15:2] == 10) begin
+		cyphertext[0] <= ((s_box[cyphertext[0][31:24]] << 24) | (s_box[cyphertext[1][23:16]] << 16) | (s_box[cyphertext[2][15:8]] << 8) | {24'b0, s_box[cyphertext[3][7:0]]}) ^ key[0];
+		cyphertext[1] <= ((s_box[cyphertext[1][31:24]] << 24) | (s_box[cyphertext[2][23:16]] << 16) | (s_box[cyphertext[3][15:8]] << 8) | {24'b0, s_box[cyphertext[0][7:0]]}) ^ key[1];
+		cyphertext[2] <= ((s_box[cyphertext[2][31:24]] << 24) | (s_box[cyphertext[3][23:16]] << 16) | (s_box[cyphertext[0][15:8]] << 8) | {24'b0, s_box[cyphertext[1][7:0]]}) ^ key[2];
+		cyphertext[3] <= ((s_box[cyphertext[3][31:24]] << 24) | (s_box[cyphertext[0][23:16]] << 16) | (s_box[cyphertext[1][15:8]] << 8) | {24'b0, s_box[cyphertext[2][7:0]]}) ^ key[3];
+		// cyphertext[0] <= ({24'b0, (s_box[cyphertext[0][31:24]])} | {16'b0, (s_box[cyphertext[1][23:16]] << 8)} | {8'b0, (s_box[cyphertext[2][15:8]] << 16)} | s_box[cyphertext[3][7:0]] << 24) ^ key[0];
+		// cyphertext[1] <= ({24'b0, (s_box[cyphertext[1][31:24]])} | {16'b0, (s_box[cyphertext[2][23:16]] << 8)} | {8'b0, (s_box[cyphertext[3][15:8]] << 16)} | s_box[cyphertext[0][7:0]] << 24) ^ key[1];
+		// cyphertext[2] <= ({24'b0, (s_box[cyphertext[2][31:24]])} | {16'b0, (s_box[cyphertext[3][23:16]] << 8)} | {8'b0, (s_box[cyphertext[0][15:8]] << 16)} | s_box[cyphertext[1][7:0]] << 24) ^ key[2];
+		// cyphertext[3] <= ({24'b0, (s_box[cyphertext[3][31:24]])} | {16'b0, (s_box[cyphertext[0][23:16]] << 8)} | {8'b0, (s_box[cyphertext[1][15:8]] << 16)} | s_box[cyphertext[2][7:0]] << 24) ^ key[3];
+//		stage <= s_box[cyphertext[1][23:16]] << 16;
 	end
 	end
-	
-
-	// always_comb begin
-	// case(counter[3:0])
-	// 	4'd0: cyphertext_in[0] = {cyphertext[0][31:8], out};
-	// 	4'd1: cyphertext_in[0] = {cyphertext[0][31:16], out, cyphertext[0][7:0]};
-	// 	4'd2: cyphertext_in[0] = {cyphertext[0][31:24], out, cyphertext[0][15:0]};
-	// 	4'd3: cyphertext_in[0] = {out, cyphertext[0][23:0]};
-	// 	default: cyphertext_in[0] = cyphertext_in[0];
-	// 	endcase
-	// end	 
-							
-	// always_ff@(posedge clk or negedge rst_n)
-	// 	if(~rst_n) cyphertext[0] <= 32'h0;
-	// 	else cyphertext[0] <= cyphertext_in[0];
 			
-	assign done_bit_in = (counter == 16'd48);
+	assign done_bit_in = (counter == 16'd43);
 	
 	always@(posedge clk or negedge rst_n)
 		if(~rst_n) done_bit <= 1'b0;

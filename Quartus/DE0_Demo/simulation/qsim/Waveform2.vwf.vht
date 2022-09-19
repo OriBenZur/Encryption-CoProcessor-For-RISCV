@@ -19,7 +19,7 @@
 -- the top level entity of the current Quartus project .The user can use this   
 -- testbench to simulate his design using a third-party simulation tool .       
 -- *****************************************************************************
--- Generated on "09/17/2022 01:54:44"
+-- Generated on "09/19/2022 16:08:48"
                                                              
 -- Vhdl Test Bench(with test vectors) for design  :          encryptor
 -- 
@@ -41,6 +41,7 @@ SIGNAL ctr : STD_LOGIC_VECTOR(15 DOWNTO 0);
 SIGNAL data_in : STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL data_out : STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL rst_n : STD_LOGIC;
+SIGNAL stage : STD_LOGIC_VECTOR(31 DOWNTO 0);
 SIGNAL wr_en : STD_LOGIC;
 COMPONENT encryptor
 	PORT (
@@ -51,6 +52,7 @@ COMPONENT encryptor
 	data_in : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
 	data_out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
 	rst_n : IN STD_LOGIC;
+	stage : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
 	wr_en : IN STD_LOGIC
 	);
 END COMPONENT;
@@ -65,6 +67,7 @@ BEGIN
 	data_in => data_in,
 	data_out => data_out,
 	rst_n => rst_n,
+	stage => stage,
 	wr_en => wr_en
 	);
 

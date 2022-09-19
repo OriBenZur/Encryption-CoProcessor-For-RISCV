@@ -4,12 +4,12 @@ This repository is a work in progress.
 In this project, I'll build an encryption Co-Processor on top of an exising RISC-V core. The encryption unit will be implemented in systemverilog with Quartus enviroment.
 At this stage, the CoProcessor interfaces with the processor exculisivly via MMIO, and the CoProcessor doesn't have access to the core's memory.
 Project goals:
-1. Build an encryption acceleration unit that support AES-128 encryption
+1. Build an encryption acceleration unit that support AES-128 encryption - _done!_
 2. Modify the encription unit such that it'll support servicing two processing cores
 As part of the goals above, the CoProcessors interface require heavy modifications.
 
 # Current State
-The encryption unit is going through debugging and will soon be fully operational
+The encrytion unit is done, now working on adding a second core
 
 <!-- [![Build Status](https://travis-ci.com/4a1c0/RV32i-Verilog.svg?branch=master)](https://travis-ci.com/4a1c0/RV32i-Verilog)
 

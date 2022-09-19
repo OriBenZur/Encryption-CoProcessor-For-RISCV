@@ -1,5 +1,5 @@
 Flow report for DE0_top
-Sat Sep 17 01:54:49 2022
+Mon Sep 19 20:32:15 2022
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -41,24 +41,24 @@ agreement for further details.
 +----------------------------------------------------------------------------------+
 ; Flow Summary                                                                     ;
 +------------------------------------+---------------------------------------------+
-; Flow Status                        ; Successful - Sat Sep 17 01:54:49 2022       ;
+; Flow Status                        ; Successful - Mon Sep 19 20:31:55 2022       ;
 ; Quartus Prime Version              ; 17.0.0 Build 595 04/25/2017 SJ Lite Edition ;
 ; Revision Name                      ; DE0_top                                     ;
-; Top-level Entity Name              ; encryptor                                   ;
+; Top-level Entity Name              ; DE0_top                                     ;
 ; Family                             ; MAX 10                                      ;
 ; Device                             ; 10M50DAF484C7G                              ;
 ; Timing Models                      ; Final                                       ;
-; Total logic elements               ; 9,098                                       ;
-;     Total combinational functions  ; 8,970                                       ;
-;     Dedicated logic registers      ; 410                                         ;
-; Total registers                    ; 410                                         ;
-; Total pins                         ; 116                                         ;
+; Total logic elements               ; 23,680 / 49,760 ( 48 % )                    ;
+;     Total combinational functions  ; 19,691 / 49,760 ( 40 % )                    ;
+;     Dedicated logic registers      ; 9,983 / 49,760 ( 20 % )                     ;
+; Total registers                    ; 9983                                        ;
+; Total pins                         ; 66 / 360 ( 18 % )                           ;
 ; Total virtual pins                 ; 0                                           ;
-; Total memory bits                  ; 0                                           ;
-; Embedded Multiplier 9-bit elements ; 0                                           ;
-; Total PLLs                         ; 0                                           ;
-; UFM blocks                         ; 0                                           ;
-; ADC blocks                         ; 0                                           ;
+; Total memory bits                  ; 0 / 1,677,312 ( 0 % )                       ;
+; Embedded Multiplier 9-bit elements ; 0 / 288 ( 0 % )                             ;
+; Total PLLs                         ; 1 / 4 ( 25 % )                              ;
+; UFM blocks                         ; 0 / 1 ( 0 % )                               ;
+; ADC blocks                         ; 0 / 2 ( 0 % )                               ;
 +------------------------------------+---------------------------------------------+
 
 
@@ -67,7 +67,7 @@ agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 09/17/2022 01:49:48 ;
+; Start date & time ; 09/19/2022 20:22:27 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; DE0_top             ;
 +-------------------+---------------------+
@@ -78,9 +78,8 @@ agreement for further details.
 +-------------------------------------+----------------------------------------+---------------+-------------+----------------+
 ; Assignment Name                     ; Value                                  ; Default Value ; Entity Name ; Section Id     ;
 +-------------------------------------+----------------------------------------+---------------+-------------+----------------+
-; COMPILER_SIGNATURE_ID               ; 49410870714955.166336858821916         ; --            ; --          ; --             ;
-; EDA_OUTPUT_DATA_FORMAT              ; Verilog Hdl                            ; --            ; --          ; eda_simulation ;
-; EDA_SIMULATION_TOOL                 ; ModelSim-Altera (Verilog)              ; <None>        ; --          ; --             ;
+; COMPILER_SIGNATURE_ID               ; 49410870714955.166360814726124         ; --            ; --          ; --             ;
+; EDA_OUTPUT_DATA_FORMAT              ; None                                   ; --            ; --          ; eda_simulation ;
 ; EDA_TIME_SCALE                      ; 1 ps                                   ; --            ; --          ; eda_simulation ;
 ; ENABLE_SIGNALTAP                    ; Off                                    ; --            ; --          ; --             ;
 ; FLOW_ENABLE_RTL_VIEWER              ; On                                     ; Off           ; --          ; --             ;
@@ -91,14 +90,13 @@ agreement for further details.
 ; MISC_FILE                           ; prog_bb.v                              ; --            ; --          ; --             ;
 ; MISC_FILE                           ; PLL_bb.v                               ; --            ; --          ; --             ;
 ; MISC_FILE                           ; PLL.ppf                                ; --            ; --          ; --             ;
-; NUM_PARALLEL_PROCESSORS             ; 4                                      ; --            ; --          ; --             ;
-; PARTITION_COLOR                     ; -- (Not supported for targeted family) ; --            ; encryptor   ; Top            ;
-; PARTITION_FITTER_PRESERVATION_LEVEL ; -- (Not supported for targeted family) ; --            ; encryptor   ; Top            ;
-; PARTITION_NETLIST_TYPE              ; -- (Not supported for targeted family) ; --            ; encryptor   ; Top            ;
+; NUM_PARALLEL_PROCESSORS             ; 8                                      ; --            ; --          ; --             ;
+; PARTITION_COLOR                     ; -- (Not supported for targeted family) ; --            ; --          ; Top            ;
+; PARTITION_FITTER_PRESERVATION_LEVEL ; -- (Not supported for targeted family) ; --            ; --          ; Top            ;
+; PARTITION_NETLIST_TYPE              ; -- (Not supported for targeted family) ; --            ; --          ; Top            ;
 ; POWER_BOARD_THERMAL_MODEL           ; None (CONSERVATIVE)                    ; --            ; --          ; --             ;
 ; POWER_PRESET_COOLING_SOLUTION       ; 23 MM HEAT SINK WITH 200 LFPM AIRFLOW  ; --            ; --          ; --             ;
 ; PROJECT_OUTPUT_DIRECTORY            ; output_files                           ; --            ; --          ; --             ;
-; TOP_LEVEL_ENTITY                    ; encryptor                              ; DE0_top       ; --          ; --             ;
 ; USE_SIGNALTAP_FILE                  ; output_files/stp1.stp                  ; --            ; --          ; --             ;
 ; VERILOG_INPUT_VERSION               ; SystemVerilog_2005                     ; Verilog_2001  ; --          ; --             ;
 ; VERILOG_MACRO                       ; CUSTOM_DEFINE=1                        ; --            ; --          ; --             ;
@@ -107,35 +105,38 @@ agreement for further details.
 +-------------------------------------+----------------------------------------+---------------+-------------+----------------+
 
 
-+--------------------------------------------------------------------------------------------------------------------------+
-; Flow Elapsed Time                                                                                                        ;
-+----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
-+----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:03:07     ; 1.0                     ; 4869 MB             ; 00:03:04                           ;
-; EDA Netlist Writer   ; 00:00:01     ; 1.0                     ; 4647 MB             ; 00:00:01                           ;
-; EDA Netlist Writer   ; 00:00:04     ; 1.0                     ; 4659 MB             ; 00:00:03                           ;
-; Total                ; 00:03:12     ; --                      ; --                  ; 00:03:08                           ;
-+----------------------+--------------+-------------------------+---------------------+------------------------------------+
++-------------------------------------------------------------------------------------------------------------------------------+
+; Flow Elapsed Time                                                                                                             ;
++---------------------------+--------------+-------------------------+---------------------+------------------------------------+
+; Module Name               ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
++---------------------------+--------------+-------------------------+---------------------+------------------------------------+
+; Analysis & Synthesis      ; 00:06:38     ; 1.0                     ; 4976 MB             ; 00:06:29                           ;
+; Fitter                    ; 00:02:30     ; 1.8                     ; 6299 MB             ; 00:03:21                           ;
+; Assembler                 ; 00:00:06     ; 1.0                     ; 4741 MB             ; 00:00:06                           ;
+; TimeQuest Timing Analyzer ; 00:00:18     ; 3.3                     ; 5127 MB             ; 00:00:50                           ;
+; Total                     ; 00:09:32     ; --                      ; --                  ; 00:10:46                           ;
++---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
-+------------------------------------------------------------------------------------+
-; Flow OS Summary                                                                    ;
-+----------------------+------------------+------------+------------+----------------+
-; Module Name          ; Machine Hostname ; OS Name    ; OS Version ; Processor type ;
-+----------------------+------------------+------------+------------+----------------+
-; Analysis & Synthesis ; MSI              ; Windows 10 ; 10.0       ; x86_64         ;
-; EDA Netlist Writer   ; MSI              ; Windows 10 ; 10.0       ; x86_64         ;
-; EDA Netlist Writer   ; MSI              ; Windows 10 ; 10.0       ; x86_64         ;
-+----------------------+------------------+------------+------------+----------------+
++-----------------------------------------------------------------------------------------+
+; Flow OS Summary                                                                         ;
++---------------------------+------------------+------------+------------+----------------+
+; Module Name               ; Machine Hostname ; OS Name    ; OS Version ; Processor type ;
++---------------------------+------------------+------------+------------+----------------+
+; Analysis & Synthesis      ; MSI              ; Windows 10 ; 10.0       ; x86_64         ;
+; Fitter                    ; MSI              ; Windows 10 ; 10.0       ; x86_64         ;
+; Assembler                 ; MSI              ; Windows 10 ; 10.0       ; x86_64         ;
+; TimeQuest Timing Analyzer ; MSI              ; Windows 10 ; 10.0       ; x86_64         ;
++---------------------------+------------------+------------+------------+----------------+
 
 
 ------------
 ; Flow Log ;
 ------------
 quartus_map --read_settings_files=on --write_settings_files=off DE0_top -c DE0_top
-quartus_eda --gen_testbench --tool=modelsim_oem --format=vhdl --write_settings_files=off DE0_top -c DE0_top --vector_source="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/Waveform2.vwf" --testbench_file="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim/Waveform2.vwf.vht"
-quartus_eda --write_settings_files=off --simulation=on --functional=on --flatten_buses=off --tool=modelsim_oem --format=vhdl --output_directory="C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/simulation/qsim/" DE0_top -c DE0_top
+quartus_fit --read_settings_files=off --write_settings_files=off DE0_top -c DE0_top
+quartus_asm --read_settings_files=off --write_settings_files=off DE0_top -c DE0_top
+quartus_sta DE0_top -c DE0_top
 
 
 

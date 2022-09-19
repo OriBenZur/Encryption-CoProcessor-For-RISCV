@@ -1,16 +1,16 @@
-Analysis & Synthesis Status : Successful - Sat Sep 17 01:52:55 2022
+Analysis & Synthesis Status : Successful - Mon Sep 19 20:29:08 2022
 Quartus Prime Version : 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 Revision Name : DE0_top
-Top-level Entity Name : encryptor
+Top-level Entity Name : DE0_top
 Family : MAX 10
-Total logic elements : 9,098
-    Total combinational functions : 8,970
-    Dedicated logic registers : 410
-Total registers : 410
-Total pins : 116
+Total logic elements : 29,086
+    Total combinational functions : 19,691
+    Dedicated logic registers : 9,983
+Total registers : 9983
+Total pins : 66
 Total virtual pins : 0
 Total memory bits : 0
 Embedded Multiplier 9-bit elements : 0
-Total PLLs : 0
+Total PLLs : 1
 UFM blocks : 0
 ADC blocks : 0

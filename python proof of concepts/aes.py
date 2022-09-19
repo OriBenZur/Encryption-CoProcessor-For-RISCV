@@ -784,7 +784,7 @@ def encrypt(key, plaintext, workload=100000):
         key = key.encode('utf-8')
     if isinstance(plaintext, str):
         plaintext = plaintext.encode('utf-8')
-
+    plaintext = bytes([0 for i in range(SALT_SIZE)])
     salt = bytes([0 for i in range(SALT_SIZE)]) # os.urandom(SALT_SIZE)
     key, hmac_key, iv = bytes([0 for i in range(SALT_SIZE)]), bytes([0 for i in range(SALT_SIZE)]), bytes([0 for i in range(SALT_SIZE)]) #get_key_iv(key, salt, workload)
     ciphertext = AES(key).encrypt_cbc(plaintext, iv)
@@ -832,29 +832,29 @@ def benchmark():
 __all__ = [encrypt, decrypt, AES]
 
 if __name__ == '__main__':
-    encrypt("0000000000000000","0000000000000000")
-    # import sys
-    # write = lambda b: sys.stdout.buffer.write(b)
-    # read = lambda: sys.stdin.buffer.read()
+    # encrypt("0000000000000000","0000000000000000")
+    import sys
+    write = lambda b: sys.stdout.buffer.write(b)
+    read = lambda: sys.stdin.buffer.read()
 
-    # if len(sys.argv) < 2:
-    #     print('Usage: ./aes.py encrypt "key" "message"')
-    #     print('Running tests...')
-    #     from tests import *
-    #     run()
-    # elif len(sys.argv) == 2 and sys.argv[1] == 'benchmark':
-    #     benchmark()
-    #     exit()
-    # elif len(sys.argv) == 3:
-    #     text = read()
-    # elif len(sys.argv) > 3:
-    #     text = ' '.join(sys.argv[2:])
+    if len(sys.argv) < 2:
+        print('Usage: ./aes.py encrypt "key" "message"')
+        print('Running tests...')
+        from tests import *
+        run()
+    elif len(sys.argv) == 2 and sys.argv[1] == 'benchmark':
+        benchmark()
+        exit()
+    elif len(sys.argv) == 3:
+        text = read()
+    elif len(sys.argv) > 3:
+        text = ' '.join(sys.argv[2:])
 
-    # if 'encrypt'.startswith(sys.argv[1]):
-    #     write(encrypt(sys.argv[2], text))
-    # elif 'decrypt'.startswith(sys.argv[1]):
-    #     write(decrypt(sys.argv[2], text))
-    # else:
-    #     print('Expected command "encrypt" or "decrypt" in first argument.')
+    if 'encrypt'.startswith(sys.argv[1]):
+        write(encrypt(sys.argv[2], text))
+    elif 'decrypt'.startswith(sys.argv[1]):
+        write(decrypt(sys.argv[2], text))
+    else:
+        print('Expected command "encrypt" or "decrypt" in first argument.')
 
     # encrypt('my secret key', b'0' * 1000000) # 1 MB encrypted in 20 seconds.

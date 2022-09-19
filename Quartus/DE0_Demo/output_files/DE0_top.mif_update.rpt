@@ -1,5 +1,5 @@
 MIF/HEX Update report for DE0_top
-Sat Sep 10 00:50:09 2022
+Mon Sep 19 20:06:04 2022
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -36,7 +36,7 @@ agreement for further details.
 +-----------------------------------------------------------+
 ; MIF/HEX Update Summary                                    ;
 +-----------------------+-----------------------------------+
-; MIF/HEX Update Status ; Failed - Sat Sep 10 00:50:09 2022 ;
+; MIF/HEX Update Status ; Failed - Mon Sep 19 20:06:04 2022 ;
 ; Revision Name         ; DE0_top                           ;
 ; Top-level Entity Name ; DE0_top                           ;
 ; Family                ; MAX 10                            ;
@@ -57,14 +57,13 @@ agreement for further details.
 Info: *******************************************************************
 Info: Running Quartus Prime MIF/HEX Update
     Info: Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
-    Info: Processing started: Sat Sep 10 00:50:08 2022
+    Info: Processing started: Mon Sep 19 20:06:02 2022
 Info: Command: quartus_cdb DE0_top -c DE0_top --update_mif
-Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Error (39022): Found no valid Memory Initialization File to process
-Error: Quartus Prime MIF/HEX Update was unsuccessful. 1 error, 1 warning
-    Error: Peak virtual memory: 4776 megabytes
-    Error: Processing ended: Sat Sep 10 00:50:09 2022
-    Error: Elapsed time: 00:00:01
-    Error: Total CPU time (on all processors): 00:00:01
+Error: Quartus Prime MIF/HEX Update was unsuccessful. 1 error, 0 warnings
+    Error: Peak virtual memory: 4804 megabytes
+    Error: Processing ended: Mon Sep 19 20:06:04 2022
+    Error: Elapsed time: 00:00:02
+    Error: Total CPU time (on all processors): 00:00:02
 
 
