@@ -27,24 +27,24 @@ module progMem
 	input rst_n; 
 	input clk;
 	//input [14:0]	addr;
-	input [ADDR_WIDTH-1:0]	addr;
+	input [ADDR_WIDTH-1:0]	addr[1:0];
 
 	// Outputs
-	output [DATA_WIDTH-1:0] data_out;
+	output [DATA_WIDTH-1:0] data_out[1:0];
 	
 	// Internal
 	//reg [DATA_WIDTH-1:0] progArray[0:8191]; 
 	reg [DATA_WIDTH-1:0] progArray[0:MEM_DEPTH-1]; 
 
 		
-	wire [31:0] d_out = progArray[addr >> 2];
+	wire [31:0] d_out [1:0] = '{progArray[addr[0] >> 2], progArray[addr[1] >> 2]};
 	
 	//`define BIG_END_IMG
 	
 	`ifdef BIG_END_IMG
 	assign data_out = d_out;
 	`else
-	assign data_out = {d_out[7:0], d_out[15:8], d_out[23:16], d_out[31:24]};
+	assign data_out = '{{d_out[0][7:0], d_out[0][15:8], d_out[0][23:16], d_out[0][31:24]}, {d_out[1][7:0], d_out[1][15:8], d_out[1][23:16], d_out[1][31:24]}};
 	`endif
 	
 	always @ (posedge clk or negedge rst_n)

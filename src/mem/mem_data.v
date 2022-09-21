@@ -33,14 +33,14 @@ module dataMem
 
     // Inputs
     input rst_n;
-    input we;  
+    input we[1:0];  
     input clk;  
     
-    input [ADDR_WIDTH-1:0]	addr;
-    input [DATA_WIDTH-1:0]	data_in;
-    input [TRANSFER_WIDTH-1:0] write_transfer_i;
+    input [ADDR_WIDTH-1:0]	addr[1:0];
+    input [DATA_WIDTH-1:0]	data_in[1:0];
+    input [TRANSFER_WIDTH-1:0] write_transfer_i[1:0];
 
-    output [DATA_WIDTH-1:0] data_out;
+    output [DATA_WIDTH-1:0] data_out[1:0];
 
     
     // Internal
@@ -51,7 +51,7 @@ module dataMem
     // Code
     
     // Tristate output
-    assign data_out = (we == 1'b0) ? dataArray[addr >> 2] : {DATA_WIDTH{1'b0}};
+    assign data_out = '{(we[0] == 1'b0) ? dataArray[addr[0] >> 2] : {DATA_WIDTH{1'b0}}, (we[1] == 1'b0) ? dataArray[addr[1] >> 2] : {DATA_WIDTH{1'b0}}};
 
     
     always @ (posedge clk or negedge rst_n)
@@ -68,12 +68,20 @@ module dataMem
             `endif
         end 
         // Write Operation (we = 1, cs = 1)
-        else if ( we  && |write_transfer_i && (addr >> 2) < MEM_DEPTH) begin
+        else begin
             //dataArray[addr] <= data_in;
-            if (write_transfer_i[0]) dataArray[addr >> 2][ 7: 0] <= data_in[ 7: 0];
-            if (write_transfer_i[1]) dataArray[addr >> 2][15: 8] <= data_in[15: 8];
-            if (write_transfer_i[2]) dataArray[addr >> 2][23:16] <= data_in[23:16];
-            if (write_transfer_i[3]) dataArray[addr >> 2][31:24] <= data_in[31:24];
+            if ( we[1] && (addr[1] >> 2) < MEM_DEPTH && |write_transfer_i[1]) begin
+                if (write_transfer_i[1][0]) dataArray[addr[1] >> 2][ 7: 0] <= data_in[1][ 7: 0];
+                if (write_transfer_i[1][1]) dataArray[addr[1] >> 2][15: 8] <= data_in[1][15: 8];
+                if (write_transfer_i[1][2]) dataArray[addr[1] >> 2][23:16] <= data_in[1][23:16];
+                if (write_transfer_i[1][3]) dataArray[addr[1] >> 2][31:24] <= data_in[1][31:24];
+            end
+            if (we[0] && (addr[0] >> 2) < MEM_DEPTH && |write_transfer_i[0]) begin
+                if (write_transfer_i[0][0]) dataArray[addr[0] >> 2][ 7: 0] <= data_in[0][ 7: 0];
+                if (write_transfer_i[0][1]) dataArray[addr[0] >> 2][15: 8] <= data_in[0][15: 8];
+                if (write_transfer_i[0][2]) dataArray[addr[0] >> 2][23:16] <= data_in[0][23:16];
+                if (write_transfer_i[0][3]) dataArray[addr[0] >> 2][31:24] <= data_in[0][31:24];
+            end
         end
         // else if ( we  && !write_transfer_i && (addr >> 2) < MEM_DEPTH) begin
         //     dataArray[addr >> 2] <= data_in;

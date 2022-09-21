@@ -207,34 +207,47 @@ SEG7_LUT	SEG5(
         parameter TRANSFER_WIDTH = 4;
 `endif
 
-    wire we_mem_data;
-    wire [ADDR_WIDTH-1 : 0] addr_mem_data;
-    wire [DATA_WIDTH-1 : 0] val_mem_data_write;
-    wire [DATA_WIDTH-1 : 0] val_mem_data_read;
-	 wire [DATA_WIDTH-1 : 0] val_mem_data_read_ram;
-    wire [I_ADDR_WIDTH-1 : 0] addr_mem_prog;
+    wire we_mem_data[1:0];
+    wire [ADDR_WIDTH-1 : 0] addr_mem_data[1:0];
+    wire [DATA_WIDTH-1 : 0] val_mem_data_write[1:0];
+    wire [DATA_WIDTH-1 : 0] val_mem_data_read[1:0];
+	 wire [DATA_WIDTH-1 : 0] val_mem_data_read_ram[1:0];
+    wire [I_ADDR_WIDTH-1 : 0] addr_mem_prog[1:0];
 	 //wire [ADDR_WIDTH-1 : 0] addr_mem_prog;
-    wire [DATA_WIDTH-1 : 0] val_mem_prog;
-    wire  [TRANSFER_WIDTH-1:0] write_transfer;
+    wire [DATA_WIDTH-1 : 0] val_mem_prog[1:0];
+    wire  [TRANSFER_WIDTH-1:0] write_transfer[1:0];
 	 wire PLL_1MHzclock;
-	 wire ai_accel_select;
-	 wire [31:0] ai_accel_data_out;
+	 wire encryptor_select;
+	 wire [31:0] encryptor_data_out;
 
 
-assign val_mem_data_read = ai_accel_select ? ai_accel_data_out : val_mem_data_read_ram;
+assign val_mem_data_read[0] = encryptor_select ? encryptor_data_out : val_mem_data_read_ram[0];
+assign val_mem_data_read[1] = encryptor_select ? encryptor_data_out : val_mem_data_read_ram[1];
 
 //assign val_mem_data_read = val_mem_data_read_ram;
 
-core core_de0(
+core core0(
         .clk (clock_to_core),
         .rst_n (reset_n),
-        .we_mem_data_o (we_mem_data),
-        .addr_mem_data_o (addr_mem_data),
-        .val_mem_data_read_i (val_mem_data_read),
-        .val_mem_data_write_o (val_mem_data_write),
-        .addr_mem_prog_o (addr_mem_prog),
-        .val_mem_prog_i (val_mem_prog),
-        .write_transfer_mem_data_o (write_transfer)
+        .we_mem_data_o (we_mem_data[0]),
+        .addr_mem_data_o (addr_mem_data[0]),
+        .val_mem_data_read_i (val_mem_data_read[0]),
+        .val_mem_data_write_o (val_mem_data_write[0]),
+        .addr_mem_prog_o (addr_mem_prog[0]),
+        .val_mem_prog_i (val_mem_prog[0]),
+        .write_transfer_mem_data_o (write_transfer[0])
+    );
+	 
+core #(.INIT_SP(32'd512)) core1(
+        .clk (clock_to_core),
+        .rst_n (reset_n),
+        .we_mem_data_o (we_mem_data[1]),
+        .addr_mem_data_o (addr_mem_data[1]),
+        .val_mem_data_read_i (val_mem_data_read[1]),
+        .val_mem_data_write_o (val_mem_data_write[1]),
+        .addr_mem_prog_o (addr_mem_prog[1]),
+        .val_mem_prog_i (val_mem_prog[1]),
+        .write_transfer_mem_data_o (write_transfer[1])
     );
 //set LOAD_MEMS to true to load mems
 
@@ -245,7 +258,7 @@ core core_de0(
 ram mem_data_de0 (
         .clock		(clock_to_core)	,
         .wren			(we_mem_data)	,  // Write Enable
-        .address		(addr_mem_data[ADDR_WIDTH-1 : 2])	,  // Address
+        .address		(addr_mem_data[0][ADDR_WIDTH-1 : 2])	,  // Address
         .data	(val_mem_data_write),  //  Data in
         .byteena (write_transfer), // write Byte mask
 		  .q   (val_mem_data_read_ram)  //data out 
@@ -256,11 +269,11 @@ ram mem_data_de0 (
 dataMem mem_data_de0 (
         .rst_n		(reset_n)			,  // Reset Neg
         .clk		(clock_to_core)	,
-        .we			(we_mem_data)	,  // Write Enable
-        .addr		(addr_mem_data)	,  // Address
-        .data_in	(val_mem_data_write),  //  Data in
-        .data_out   (val_mem_data_read_ram),  //data out
-        .write_transfer_i (write_transfer) // write Byte mask
+        .we			('{we_mem_data[0], we_mem_data[1]})	,  // Write Enable
+        .addr		('{addr_mem_data[0], addr_mem_data[1]})	,  // Address
+        .data_in	('{val_mem_data_write[0], val_mem_data_write[1]}),  //  Data in
+        .data_out   ('{val_mem_data_read_ram[0], val_mem_data_read_ram[1]}),  //data out
+        .write_transfer_i ('{write_transfer[0], write_transfer[1]}) // write Byte mask
     );
 `endif
 
@@ -278,17 +291,17 @@ prog mem_prog_de0 (
 progMem mem_prog_de0 (
         .rst_n (reset_n)		,  // Reset Neg
         .clk (clock_to_core),             // Clk
-        .addr (addr_mem_prog)		,  // Address
-        .data_out (val_mem_prog)	   // Output Data
+        .addr ('{addr_mem_prog[0], addr_mem_prog[1]})		,  // Address
+        .data_out ('{val_mem_prog[0], val_mem_prog[1]})	   // Output Data
     );
 
 `endif
 
 
-assign iDIG_0    = SW[2] ? iDIG_0_o : addr_mem_prog[3:0];
-assign iDIG_1    = SW[2] ? iDIG_1_o : addr_mem_prog[7:4];
-assign iDIG_2    = SW[2] ? iDIG_2_o : addr_mem_prog[11:8]; 
-assign iDIG_3    = SW[2] ? iDIG_3_o : addr_mem_prog[I_ADDR_WIDTH-1:12];
+assign iDIG_0    = SW[2] ? iDIG_0_o : addr_mem_prog[0][3:0];
+assign iDIG_1    = SW[2] ? iDIG_1_o : addr_mem_prog[0][7:4];
+assign iDIG_2    = SW[2] ? iDIG_2_o : addr_mem_prog[0][11:8]; 
+assign iDIG_3    = SW[2] ? iDIG_3_o : addr_mem_prog[0][I_ADDR_WIDTH-1:12];
 assign iDIG_4    = SW[2] ? iDIG_4_o : 4'h0;
 assign iDIG_5    = SW[2] ? iDIG_5_o : clock_to_core ? 4'b1 : 4'b0;
 
@@ -315,16 +328,16 @@ always @ (negedge out_BUTTON_1 )
 `define LEDS_ADDR_LAST  32'h014
 wire leds_select;
 
-assign leds_select = (addr_mem_data>=`LEDS_ADDR_START) & (addr_mem_data<=`LEDS_ADDR_LAST);
+assign leds_select = (addr_mem_data[0]>=`LEDS_ADDR_START) & (addr_mem_data[0]<=`LEDS_ADDR_LAST);
 
 leds_mgmt leds_mgmt_display
 (
         .rst_n(reset_n)		,
         .clk(clock_to_core),
-        .addr(addr_mem_data),
-		  .wr_en(we_mem_data),
+        .addr(addr_mem_data[0]),
+		  .wr_en(we_mem_data[0]),
 		  .select(leds_select),
-		  .data_in(val_mem_data_write),
+		  .data_in(val_mem_data_write[0]),
         .leds_out(LEDR),
 		  .sevseg0(iDIG_0_o),
 		  .sevseg1(iDIG_1_o),
@@ -353,20 +366,20 @@ always @(posedge PLL_1MHzclock or negedge reset_n) begin
 end
 
 
-`define AI_ADDR_START 32'h020
-`define AI_ADDR_LAST  32'h058
-assign ai_accel_select = (addr_mem_data>=`AI_ADDR_START) & (addr_mem_data<=`AI_ADDR_LAST);
+`define ENCRYPTOR_ADDR_START 32'h020
+`define ENCRYPTOR_ADDR_LAST  32'h058
+assign encryptor_select = (addr_mem_data[0]>=`ENCRYPTOR_ADDR_START) & (addr_mem_data[0]<=`ENCRYPTOR_ADDR_LAST);
 
 
-encryptor ai_accelerator
+encryptor encryption_CoProcessor
 (
         .rst_n(reset_n),
         .clk(clock_to_core),
-        .addr(addr_mem_data),
-		  .data_in(val_mem_data_write),
-        .data_out(ai_accel_data_out),
-		  .accel_select(ai_accel_select),
-		  .wr_en(we_mem_data),
-		  .ctr(ctr)
+        .addr(addr_mem_data[0]),
+		.data_in(val_mem_data_write[0]),
+        .data_out(encryptor_data_out),
+		.accel_select(encryptor_select),
+		.wr_en(we_mem_data[0]),
+		.ctr(ctr)
     );
 endmodule

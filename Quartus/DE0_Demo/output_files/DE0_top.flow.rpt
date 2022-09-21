@@ -1,5 +1,5 @@
 Flow report for DE0_top
-Mon Sep 19 20:32:15 2022
+Wed Sep 21 22:53:54 2022
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -41,17 +41,17 @@ agreement for further details.
 +----------------------------------------------------------------------------------+
 ; Flow Summary                                                                     ;
 +------------------------------------+---------------------------------------------+
-; Flow Status                        ; Successful - Mon Sep 19 20:31:55 2022       ;
+; Flow Status                        ; Successful - Wed Sep 21 22:53:30 2022       ;
 ; Quartus Prime Version              ; 17.0.0 Build 595 04/25/2017 SJ Lite Edition ;
 ; Revision Name                      ; DE0_top                                     ;
 ; Top-level Entity Name              ; DE0_top                                     ;
 ; Family                             ; MAX 10                                      ;
 ; Device                             ; 10M50DAF484C7G                              ;
 ; Timing Models                      ; Final                                       ;
-; Total logic elements               ; 23,680 / 49,760 ( 48 % )                    ;
-;     Total combinational functions  ; 19,691 / 49,760 ( 40 % )                    ;
-;     Dedicated logic registers      ; 9,983 / 49,760 ( 20 % )                     ;
-; Total registers                    ; 9983                                        ;
+; Total logic elements               ; 38,702 / 49,760 ( 78 % )                    ;
+;     Total combinational functions  ; 38,564 / 49,760 ( 78 % )                    ;
+;     Dedicated logic registers      ; 11,146 / 49,760 ( 22 % )                    ;
+; Total registers                    ; 11146                                       ;
 ; Total pins                         ; 66 / 360 ( 18 % )                           ;
 ; Total virtual pins                 ; 0                                           ;
 ; Total memory bits                  ; 0 / 1,677,312 ( 0 % )                       ;
@@ -67,7 +67,7 @@ agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 09/19/2022 20:22:27 ;
+; Start date & time ; 09/21/2022 22:33:20 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; DE0_top             ;
 +-------------------+---------------------+
@@ -78,7 +78,7 @@ agreement for further details.
 +-------------------------------------+----------------------------------------+---------------+-------------+----------------+
 ; Assignment Name                     ; Value                                  ; Default Value ; Entity Name ; Section Id     ;
 +-------------------------------------+----------------------------------------+---------------+-------------+----------------+
-; COMPILER_SIGNATURE_ID               ; 49410870714955.166360814726124         ; --            ; --          ; --             ;
+; COMPILER_SIGNATURE_ID               ; 49410870714955.166378880011188         ; --            ; --          ; --             ;
 ; EDA_OUTPUT_DATA_FORMAT              ; None                                   ; --            ; --          ; eda_simulation ;
 ; EDA_TIME_SCALE                      ; 1 ps                                   ; --            ; --          ; eda_simulation ;
 ; ENABLE_SIGNALTAP                    ; Off                                    ; --            ; --          ; --             ;
@@ -90,7 +90,7 @@ agreement for further details.
 ; MISC_FILE                           ; prog_bb.v                              ; --            ; --          ; --             ;
 ; MISC_FILE                           ; PLL_bb.v                               ; --            ; --          ; --             ;
 ; MISC_FILE                           ; PLL.ppf                                ; --            ; --          ; --             ;
-; NUM_PARALLEL_PROCESSORS             ; 8                                      ; --            ; --          ; --             ;
+; NUM_PARALLEL_PROCESSORS             ; 4                                      ; --            ; --          ; --             ;
 ; PARTITION_COLOR                     ; -- (Not supported for targeted family) ; --            ; --          ; Top            ;
 ; PARTITION_FITTER_PRESERVATION_LEVEL ; -- (Not supported for targeted family) ; --            ; --          ; Top            ;
 ; PARTITION_NETLIST_TYPE              ; -- (Not supported for targeted family) ; --            ; --          ; Top            ;
@@ -110,11 +110,11 @@ agreement for further details.
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name               ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis      ; 00:06:38     ; 1.0                     ; 4976 MB             ; 00:06:29                           ;
-; Fitter                    ; 00:02:30     ; 1.8                     ; 6299 MB             ; 00:03:21                           ;
-; Assembler                 ; 00:00:06     ; 1.0                     ; 4741 MB             ; 00:00:06                           ;
-; TimeQuest Timing Analyzer ; 00:00:18     ; 3.3                     ; 5127 MB             ; 00:00:50                           ;
-; Total                     ; 00:09:32     ; --                      ; --                  ; 00:10:46                           ;
+; Analysis & Synthesis      ; 00:11:08     ; 1.0                     ; 5056 MB             ; 00:10:46                           ;
+; Fitter                    ; 00:08:46     ; 1.2                     ; 6086 MB             ; 00:09:18                           ;
+; Assembler                 ; 00:00:05     ; 1.0                     ; 4786 MB             ; 00:00:04                           ;
+; TimeQuest Timing Analyzer ; 00:00:22     ; 2.6                     ; 5226 MB             ; 00:00:53                           ;
+; Total                     ; 00:20:21     ; --                      ; --                  ; 00:21:01                           ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 

@@ -10,11 +10,13 @@ module regFile
 	`ifdef CUSTOM_DEFINE
 		#(parameter DATA_WIDTH = `REG_DATA_WIDTH,
 		parameter REG_DEPTH = `REG_DEPTH,
-        parameter REG_ADDR_WIDTH = `REG_ADDR_WIDTH) 
+        parameter REG_ADDR_WIDTH = `REG_ADDR_WIDTH,
+		  parameter INITIAL_SP = {DATA_WIDTH{1'b0}}) 
 	`else
 		#(parameter DATA_WIDTH = 32,
 		parameter REG_DEPTH = 32,
-        parameter REG_ADDR_WIDTH = 5) 
+        parameter REG_ADDR_WIDTH = 5,
+		  parameter INITIAL_SP = {DATA_WIDTH{1'b0}}) 
 	`endif(
 	rst_n			,  // Reset Neg
 	clk			,  // Clock
@@ -65,6 +67,7 @@ module regFile
 			for (j=0; j < REG_DEPTH; j=j+1) begin
 				regFile[j] <= {DATA_WIDTH{1'b0}}; //reset array
 			end
+			regFile[2] <= INITIAL_SP;
 		end 
 		// Write Operation (we = 1, cs = 1)
 		else if ( we ) begin

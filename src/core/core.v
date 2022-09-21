@@ -28,7 +28,8 @@ module core
         parameter LIS_OP_WIDTH = `LIS_OP_WIDTH,
         parameter BR_OP_WIDTH = `BR_OP_WIDTH,
         parameter DATA_ORIGIN_WIDTH = `DATA_ORIGIN_WIDTH,
-        parameter REG_ADDR_WIDTH = `REG_ADDR_WIDTH) 
+        parameter REG_ADDR_WIDTH = `REG_ADDR_WIDTH,
+		  parameter INIT_SP = {DATA_WIDTH{1'b0}}) 
 	`else
 		#(parameter MEM_ADDR_WIDTH = 10,
 		  parameter I_MEM_ADDR_WIDTH = 15,
@@ -40,7 +41,8 @@ module core
         parameter LIS_OP_WIDTH = 3,
         parameter BR_OP_WIDTH = 2,
         parameter DATA_ORIGIN_WIDTH = 2,
-        parameter REG_ADDR_WIDTH = 5) 
+        parameter REG_ADDR_WIDTH = 5,
+		  parameter INIT_SP = {DATA_WIDTH{1'b0}}) 
 	`endif
     (
         clk,
@@ -54,6 +56,7 @@ module core
         write_transfer_mem_data_o
     );
     
+   
     localparam DATA_TARGET_WIDTH = 2;
 
     input 	clk;
@@ -154,7 +157,7 @@ module core
         .pc (pc)  // next addr
     );
 
-    regFile reg_file_inst(
+    regFile #(.INITIAL_SP(INIT_SP)) reg_file_inst(
         .rst_n (rst_n)			,  // Reset Neg
         .clk	(clk)		,  // Clock
         .we (we_reg_file)			,  // Write Enable
