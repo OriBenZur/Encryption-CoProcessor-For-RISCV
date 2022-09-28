@@ -33,14 +33,14 @@ module dataMem
 
     // Inputs
     input rst_n;
-    input we[1:0];  
+    input we[0:1];  
     input clk;  
     
-    input [ADDR_WIDTH-1:0]	addr[1:0];
-    input [DATA_WIDTH-1:0]	data_in[1:0];
-    input [TRANSFER_WIDTH-1:0] write_transfer_i[1:0];
+    input [ADDR_WIDTH-1:0]	addr[0:1];
+    input [DATA_WIDTH-1:0]	data_in[0:1];
+    input [TRANSFER_WIDTH-1:0] write_transfer_i[0:1];
 
-    output [DATA_WIDTH-1:0] data_out[1:0];
+    output [DATA_WIDTH-1:0] data_out[0:1];
 
     
     // Internal

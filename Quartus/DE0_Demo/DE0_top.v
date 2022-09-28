@@ -222,7 +222,7 @@ SEG7_LUT	SEG5(
 
 
 assign val_mem_data_read[0] = encryptor_select ? encryptor_data_out : val_mem_data_read_ram[0];
-assign val_mem_data_read[1] = encryptor_select ? encryptor_data_out : val_mem_data_read_ram[1];
+assign val_mem_data_read[1] = val_mem_data_read_ram[1]; //encryptor_select ? encryptor_data_out : ;
 
 //assign val_mem_data_read = val_mem_data_read_ram;
 
@@ -291,7 +291,7 @@ prog mem_prog_de0 (
 progMem mem_prog_de0 (
         .rst_n (reset_n)		,  // Reset Neg
         .clk (clock_to_core),             // Clk
-        .addr ('{addr_mem_prog[0], addr_mem_prog[1]})		,  // Address
+        .addr ('{addr_mem_prog[0], addr_mem_prog[1]})		,  // Address - This is the problem
         .data_out ('{val_mem_prog[0], val_mem_prog[1]})	   // Output Data
     );
 

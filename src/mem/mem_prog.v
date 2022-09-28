@@ -27,17 +27,17 @@ module progMem
 	input rst_n; 
 	input clk;
 	//input [14:0]	addr;
-	input [ADDR_WIDTH-1:0]	addr[1:0];
+	input [ADDR_WIDTH-1:0]	addr[0:1];
 
 	// Outputs
-	output [DATA_WIDTH-1:0] data_out[1:0];
+	output [DATA_WIDTH-1:0] data_out[0:1];
 	
 	// Internal
 	//reg [DATA_WIDTH-1:0] progArray[0:8191]; 
 	reg [DATA_WIDTH-1:0] progArray[0:MEM_DEPTH-1]; 
 
 		
-	wire [31:0] d_out [1:0] = '{progArray[addr[0] >> 2], progArray[addr[1] >> 2]};
+	wire [31:0] d_out [0:1] = '{progArray[addr[0] >> 2], progArray[addr[1] >> 2]};
 	
 	//`define BIG_END_IMG
 	

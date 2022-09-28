@@ -18,53 +18,19 @@
 int main(){
 	int i = 0;
 	int* leds = (int*)0x14;
-	int addr = 0x01010101;
+	volatile int *addr = 700;
+	*addr = 0x01010101;
 	if ((unsigned int)(&leds) > 700) {// core0
-		addr *= 2;
-		for (int i = 0; i < 1000; i++);
+		*addr *= 2;
+		for (int i = 0; i < 2000; i++);
 		PRINT(SEVSEG, *addr);
-		// PRINT(LEDS, 3);
 	}
 	else {
 		for (int i = 0; i < 1000; i++);
-		// *(char*)(702) = 0x34;
-		// *(char*)(703) = 0x34;
+		*addr *= 2;
 	}
 
+
+	PRINT(LEDS, 3);
 	STOP;
 }
-
-
-// void encryptor_init() {
-// 	encryptor.key_addr = (int *)ACCEL_A;
-// 	encryptor.plaintext = (int *)ACCEL_B;
-// 	encryptor.cyphertext = (int *)ACCEL_C;
-// 	encryptor.ctrl_ptr = (int*)ACCEL_CTRL;
-// 	encryptor.perf_ctr = (int*)ACCEL_PERF_COUNTER;
-// }
-
-
-// void atomic_encrypt(int *key, int *plaintext, int *cyphertext) {
-// 	for (int i = 0; i < 4; i++) {
-// 		encryptor.key_addr[i] = key[i];
-// 		encryptor.plaintext[i] = plaintext[i];
-// 	}
-// 	*encryptor.ctrl_ptr = 1;
-// 	PRINT(LEDS, 1);
-// 	while (*encryptor.ctrl_ptr != ACCEL_DONE);
-// 	PRINT(LEDS, 2);
-// 	for (int i = 0; i < 4; i++) cyphertext[i] = encryptor.cyphertext[i];
-// }
-
-
-// void lock_init(Lock *lock) {
-// 	lock = 0;
-// }
-
-// lock (Lock *lock) {
-// 	while(xchnge(*lock) == 1);
-// }
-
-// unlock(Lock *lock) {
-// 	*lock = 0;
-// }
