@@ -16,21 +16,20 @@
 
 
 int main(){
-	int i = 0;
 	int* leds = (int*)0x14;
 	volatile int *addr = 700;
-	*addr = 0x01010101;
+	*addr = 0x1;
 	if ((unsigned int)(&leds) > 700) {// core0
 		*addr *= 2;
-		for (int i = 0; i < 2000; i++);
+		for (int i = 0; i < 20; i++);
 		PRINT(SEVSEG, *addr);
+		// PRINT(LEDS, *addr);
 	}
 	else {
-		for (int i = 0; i < 1000; i++);
+		for (int i = 0; i < 10; i++);
 		*addr *= 2;
 	}
 
 
-	PRINT(LEDS, 3);
 	STOP;
 }

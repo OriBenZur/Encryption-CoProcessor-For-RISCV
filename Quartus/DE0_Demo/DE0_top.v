@@ -195,38 +195,46 @@ SEG7_LUT	SEG5(
 				  );
 
 
-`ifdef CUSTOM_DEFINE
-		  parameter ADDR_WIDTH = `MEM_ADDR_WIDTH;
-		  parameter I_ADDR_WIDTH = `I_MEM_ADDR_WIDTH;
-        parameter DATA_WIDTH = `REG_DATA_WIDTH;
-        parameter TRANSFER_WIDTH = `MEM_TRANSFER_WIDTH;
-`else
-		  parameter ADDR_WIDTH = 10;
-		  parameter I_ADDR_WIDTH = 15;
+// `ifdef CUSTOM_DEFINE
+// 		  parameter ADDR_WIDTH = `MEM_ADDR_WIDTH;
+// 		  parameter I_ADDR_WIDTH = `I_MEM_ADDR_WIDTH;
+//         parameter DATA_WIDTH = `REG_DATA_WIDTH;
+//         parameter TRANSFER_WIDTH = `MEM_TRANSFER_WIDTH;
+// `else
+		parameter ADDR_WIDTH = 11;
+		parameter I_ADDR_WIDTH = 15;
         parameter DATA_WIDTH = 32;
         parameter TRANSFER_WIDTH = 4;
-`endif
+// `endif
 
-    wire we_mem_data[1:0];
-    wire [ADDR_WIDTH-1 : 0] addr_mem_data[1:0];
-    wire [DATA_WIDTH-1 : 0] val_mem_data_write[1:0];
-    wire [DATA_WIDTH-1 : 0] val_mem_data_read[1:0];
-	 wire [DATA_WIDTH-1 : 0] val_mem_data_read_ram[1:0];
-    wire [I_ADDR_WIDTH-1 : 0] addr_mem_prog[1:0];
-	 //wire [ADDR_WIDTH-1 : 0] addr_mem_prog;
-    wire [DATA_WIDTH-1 : 0] val_mem_prog[1:0];
-    wire  [TRANSFER_WIDTH-1:0] write_transfer[1:0];
-	 wire PLL_1MHzclock;
-	 wire encryptor_select;
-	 wire [31:0] encryptor_data_out;
+    wire we_mem_data[0:1];
+    wire [ADDR_WIDTH-1 : 0] addr_mem_data[0:1];
+    wire [DATA_WIDTH-1 : 0] val_mem_data_write[0:1];
+    wire [DATA_WIDTH-1 : 0] val_mem_data_read[0:1];
+	wire [DATA_WIDTH-1 : 0] val_mem_data_read_ram[0:1];
+    wire [I_ADDR_WIDTH-1 : 0] addr_mem_prog[0:1];
+	//wire [ADDR_WIDTH-1 : 0] addr_mem_prog;
+    wire [DATA_WIDTH-1 : 0] val_mem_prog[0:1];
+    wire  [TRANSFER_WIDTH-1:0] write_transfer[0:1];
+	wire PLL_1MHzclock;
+	wire cpu_encryptor_select[0:1];
+	wire [31:0] lock_data_out[0:1];
+	 
+	 
+	// Encryptor wires
+	wire [ADDR_WIDTH-1:0] encryptor_addr_in;
+	wire [DATA_WIDTH-1:0] encryptor_data_in;
+	wire [DATA_WIDTH-1:0] encryptor_data_out;
+	wire encryptor_select;
+	wire encryptor_we_mem_data;
 
 
-assign val_mem_data_read[0] = encryptor_select ? encryptor_data_out : val_mem_data_read_ram[0];
-assign val_mem_data_read[1] = val_mem_data_read_ram[1]; //encryptor_select ? encryptor_data_out : ;
+assign val_mem_data_read[0] = cpu_encryptor_select[0] ? lock_data_out[0] : val_mem_data_read_ram[0];
+assign val_mem_data_read[1] = cpu_encryptor_select[1] ? lock_data_out[1] : val_mem_data_read_ram[1];
 
 //assign val_mem_data_read = val_mem_data_read_ram;
 
-core core0(
+core #(.MEM_ADDR_WIDTH(ADDR_WIDTH), .I_MEM_ADDR_WIDTH(I_ADDR_WIDTH)) core0(
         .clk (clock_to_core),
         .rst_n (reset_n),
         .we_mem_data_o (we_mem_data[0]),
@@ -238,7 +246,7 @@ core core0(
         .write_transfer_mem_data_o (write_transfer[0])
     );
 	 
-core #(.INIT_SP(32'd512)) core1(
+core #(.INIT_SP(32'h200), .MEM_ADDR_WIDTH(ADDR_WIDTH), .I_MEM_ADDR_WIDTH(I_ADDR_WIDTH)) core1(
         .clk (clock_to_core),
         .rst_n (reset_n),
         .we_mem_data_o (we_mem_data[1]),
@@ -251,59 +259,128 @@ core #(.INIT_SP(32'd512)) core1(
     );
 //set LOAD_MEMS to true to load mems
 
-//`define MEM
+`define MEM
 
 `ifdef MEM
 
-ram mem_data_de0 (
-        .clock		(clock_to_core)	,
-        .wren			(we_mem_data)	,  // Write Enable
-        .address		(addr_mem_data[0][ADDR_WIDTH-1 : 2])	,  // Address
-        .data	(val_mem_data_write),  //  Data in
-        .byteena (write_transfer), // write Byte mask
-		  .q   (val_mem_data_read_ram)  //data out 
-    );
+new_ram	mem_data_max10 (
+	.address_a(addr_mem_data[0]),
+	.address_b(addr_mem_data[1]),
+	.byteena_a(write_transfer[0]),
+	.byteena_b(write_transfer[1]),
+	.clock(clock_to_core),
+	.data_a(val_mem_data_write[0]),
+	.data_b(val_mem_data_write[1]),
+	.wren_a(we_mem_data[0]),
+	.wren_b(we_mem_data[1]),
+	.q_a(val_mem_data_read_ram[0]),
+	.q_b(val_mem_data_read_ram[1])
+	);
 
 `else
 
 dataMem mem_data_de0 (
         .rst_n		(reset_n)			,  // Reset Neg
         .clk		(clock_to_core)	,
-        .we			('{we_mem_data[0], we_mem_data[1]})	,  // Write Enable
-        .addr		('{addr_mem_data[0], addr_mem_data[1]})	,  // Address
-        .data_in	('{val_mem_data_write[0], val_mem_data_write[1]}),  //  Data in
-        .data_out   ('{val_mem_data_read_ram[0], val_mem_data_read_ram[1]}),  //data out
-        .write_transfer_i ('{write_transfer[0], write_transfer[1]}) // write Byte mask
+        .we			(we_mem_data)	,  // Write Enable
+        .addr		(addr_mem_data)	,  // Address
+        .data_in	(val_mem_data_write),  //  Data in
+        .data_out   (val_mem_data_read_ram),  //data out
+        .write_transfer_i (write_transfer) // write Byte mask
     );
 `endif
+
+
 
 	
 
 `ifdef MEM
 
-prog mem_prog_de0 (
-	.address(addr_mem_prog[ADDR_WIDTH-1 : 2]),
-	.clock (clock_to_core),
-	.q (val_mem_prog)
+mem_test	new_prog_mem_inst (
+	.address_a ( addr_mem_prog[0][I_ADDR_WIDTH-1:2] ),
+	.address_b ( addr_mem_prog[1][I_ADDR_WIDTH-1:2] ),
+	.clock ( clock_to_core ),
+	.q_a ( val_mem_prog[0] ),
+	.q_b ( val_mem_prog[1] )
 	);
 	 
 `else
 progMem mem_prog_de0 (
         .rst_n (reset_n)		,  // Reset Neg
         .clk (clock_to_core),             // Clk
-        .addr ('{addr_mem_prog[0], addr_mem_prog[1]})		,  // Address - This is the problem
-        .data_out ('{val_mem_prog[0], val_mem_prog[1]})	   // Output Data
+        .addr (addr_mem_prog)		,  // Address - This is the problem
+        .data_out (val_mem_prog)	   // Output Data
     );
 
 `endif
 
 
-assign iDIG_0    = SW[2] ? iDIG_0_o : addr_mem_prog[0][3:0];
-assign iDIG_1    = SW[2] ? iDIG_1_o : addr_mem_prog[0][7:4];
-assign iDIG_2    = SW[2] ? iDIG_2_o : addr_mem_prog[0][11:8]; 
-assign iDIG_3    = SW[2] ? iDIG_3_o : addr_mem_prog[0][I_ADDR_WIDTH-1:12];
-assign iDIG_4    = SW[2] ? iDIG_4_o : 4'h0;
-assign iDIG_5    = SW[2] ? iDIG_5_o : clock_to_core ? 4'b1 : 4'b0;
+// assign iDIG_0    = SW[2] ? iDIG_0_o : addr_mem_prog[0][3:0];
+// assign iDIG_1    = SW[2] ? iDIG_1_o : addr_mem_prog[0][7:4];
+// assign iDIG_2    = SW[2] ? iDIG_2_o : addr_mem_prog[0][11:8]; 
+// assign iDIG_3    = SW[2] ? iDIG_3_o : addr_mem_prog[0][I_ADDR_WIDTH-1:12];
+// assign iDIG_4    = SW[2] ? iDIG_4_o : 4'h0;
+// assign iDIG_5    = SW[2] ? iDIG_5_o : clock_to_core ? 4'b1 : 4'b0;
+
+always@* begin 
+	case(SW[8:2])
+	6'd1: begin 
+		iDIG_0 = addr_mem_prog[SW[9]][3:0];
+		iDIG_1 = addr_mem_prog[SW[9]][7:4];
+		iDIG_2 = addr_mem_prog[SW[9]][11:8];
+		iDIG_3 = addr_mem_prog[SW[9]][I_ADDR_WIDTH-1:12];
+		iDIG_4 = 4'h0;
+		iDIG_5 = (clock_to_core ? 4'b1 : 4'b0);
+	end
+	6'd2: begin 
+		iDIG_0 = val_mem_data_write[SW[9]][3:0];
+		iDIG_1 = val_mem_data_write[SW[9]][7:4];
+		iDIG_2 = val_mem_data_write[SW[9]][11:8]; 
+		iDIG_3 = val_mem_data_write[SW[9]][15:12];
+		iDIG_4 = val_mem_data_write[SW[9]][19:16];
+		iDIG_5 = val_mem_data_write[SW[9]][23:20];
+	end
+	6'd3: begin 
+		iDIG_0 = val_mem_prog[SW[9]][3:0];
+		iDIG_1 = val_mem_prog[SW[9]][7:4];
+		iDIG_2 = val_mem_prog[SW[9]][11:8]; 
+		iDIG_3 = val_mem_prog[SW[9]][15:12];
+		iDIG_4 = val_mem_prog[SW[9]][19:16];
+		iDIG_5 = val_mem_prog[SW[9]][23:20];
+	end
+	6'd4: begin 
+		iDIG_0 = addr_mem_data[SW[9]][3:0];
+		iDIG_1 = addr_mem_data[SW[9]][7:4];
+		iDIG_2 = addr_mem_data[SW[9]][10:8]; 
+		iDIG_3 = {3'b0, we_mem_data[SW[9]]};
+		iDIG_4 = write_transfer[SW[9]];
+		iDIG_5 = (clock_to_core ? 4'b1 : 4'b0);
+	end
+	6'd5: begin 
+		iDIG_0 = val_mem_data_read[SW[9]][3:0];
+		iDIG_1 = val_mem_data_read[SW[9]][7:4];
+		iDIG_2 = val_mem_data_read[SW[9]][11:8]; 
+		iDIG_3 = val_mem_data_read[SW[9]][15:12];
+		iDIG_4 = val_mem_data_read[SW[9]][19:16];
+		iDIG_5 = val_mem_data_read[SW[9]][23:20];
+	end
+	default: begin
+		iDIG_0 = iDIG_0_o;
+		iDIG_1 = iDIG_1_o;
+		iDIG_2 = iDIG_2_o;
+		iDIG_3 = iDIG_3_o;
+		iDIG_4 = iDIG_4_o;
+		iDIG_5 = iDIG_5_o;
+	end
+	endcase
+end
+
+// assign iDIG_0    = SW[2] ? addr_mem_prog[0][3:0] 				:	val_mem_data_write[0][3:0];
+// assign iDIG_1    = SW[2] ? addr_mem_prog[0][7:4] 				: 	val_mem_data_write[0][7:4];
+// assign iDIG_2    = SW[2] ? addr_mem_prog[0][11:8] 				: 	val_mem_data_write[0][11:8]; 
+// assign iDIG_3    = SW[2] ? addr_mem_prog[0][I_ADDR_WIDTH-1:12]	: 	val_mem_data_write[0][15:12];
+// assign iDIG_4    = SW[2] ? 4'h0 								: 	val_mem_data_write[0][19:16];
+// assign iDIG_5    = SW[2] ? (clock_to_core ? 4'b1 : 4'b0) 		: 	val_mem_data_write[0][23:20];
 
 assign reset_n   = BUTTON[0]; 			 		 
 assign clock_to_core = SW[0] ?  (SW[1])? out_10hz:PLL_1MHzclock :virtual_clk;  // SW[0] ? MAX10_CLK1_50:PLL_1MHzclock;  //
@@ -367,19 +444,38 @@ end
 
 
 `define ENCRYPTOR_ADDR_START 32'h020
-`define ENCRYPTOR_ADDR_LAST  32'h058
-assign encryptor_select = (addr_mem_data[0]>=`ENCRYPTOR_ADDR_START) & (addr_mem_data[0]<=`ENCRYPTOR_ADDR_LAST);
+`define ENCRYPTOR_ADDR_LAST  32'h05C
+assign cpu_encryptor_select = '{(addr_mem_data[0]>=`ENCRYPTOR_ADDR_START) & (addr_mem_data[0]<=`ENCRYPTOR_ADDR_LAST), (addr_mem_data[1]>=`ENCRYPTOR_ADDR_START) & (addr_mem_data[1]<=`ENCRYPTOR_ADDR_LAST)};
+
+
+lock #(.N_CLIENTS(32'd2), .LOCK_ADDR(32'h58)) encryptor_lock
+(
+	.rst_n(reset_n),
+    .clk(clock_to_core),
+    .addr_in(addr_mem_data),
+    .wr_en_in(we_mem_data),
+    .select_in(cpu_encryptor_select),
+    .data_in(val_mem_data_write),
+
+    .data_from_accel(encryptor_data_out), // input from the accelerator
+    .data_to_accel(encryptor_data_in), // input from the accelerator
+    .addr_o(encryptor_addr_in),
+    .wr_en_o(encryptor_we_mem_data), //Write enable
+    .accel_select_o(encryptor_select), 
+
+    .data_out(lock_data_out) // Output Data // fix
+);
 
 
 encryptor encryption_CoProcessor
 (
-        .rst_n(reset_n),
-        .clk(clock_to_core),
-        .addr(addr_mem_data[0]),
-		.data_in(val_mem_data_write[0]),
-        .data_out(encryptor_data_out),
-		.accel_select(encryptor_select),
-		.wr_en(we_mem_data[0]),
-		.ctr(ctr)
+	.rst_n(reset_n),
+	.clk(clock_to_core),
+	.addr(encryptor_addr_in),
+	.data_in(encryptor_data_in),
+	.data_out(encryptor_data_out),
+	.accel_select(encryptor_select),
+	.wr_en(encryptor_we_mem_data),
+	.ctr(ctr)
     );
 endmodule

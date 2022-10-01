@@ -34,7 +34,7 @@ module encryptor
 	logic [31:0] key_o;
 	logic [31:0] plaintext[3:0];
 	logic [31:0] cyphertext[3:0];
-	byte i;
+	int i;
 	// logic [31:0] cyphertext_in[3:0];
 
 	
@@ -95,7 +95,7 @@ module encryptor
 		else if (done_bit_in || counter == 16'h00)
 			counter <= counter;
 		else
-			counter <= counter + 1;
+			counter <= counter + 16'h1;
 	end
 
 	// Key and plaintext MMIO input
@@ -142,7 +142,7 @@ module encryptor
 	always@(posedge clk or negedge rst_n) begin
 	if (~rst_n) begin
 //		stage <= 0;
-		for (i = 0; i < 4; i = i + 1) cyphertext[i] <= 0;
+		for (i = 0; i < 4; i = i + 1) cyphertext[i] <= 32'h0;
 	end
 	else if (counter[1:0] != 2 || done_bit_in);
 	else if (counter[15:2] == 0) begin
