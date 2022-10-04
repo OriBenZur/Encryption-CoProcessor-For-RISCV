@@ -19,42 +19,426 @@
 // the top level entity of the current Quartus project .The user can use this   
 // testbench to simulate his design using a third-party simulation tool .       
 // *****************************************************************************
-// Generated on "09/15/2022 20:03:42"
+// Generated on "09/28/2022 17:23:09"
                                                                                 
-// Verilog Test Bench (with test vectors) for design :                          encryptor
+// Verilog Test Bench (with test vectors) for design :                          alt_lock
 // 
 // Simulation tool : 3rd Party
 // 
 
 `timescale 1 ps/ 1 ps
-module encryptor_vlg_vec_tst();
+module alt_lock_vlg_vec_tst();
 // constants                                           
 // general purpose registers
-reg accel_select;
-reg [31:0] addr;
+reg addr_in_0_31;
+reg addr_in_0_30;
+reg addr_in_0_29;
+reg addr_in_0_28;
+reg addr_in_0_27;
+reg addr_in_0_26;
+reg addr_in_0_25;
+reg addr_in_0_24;
+reg addr_in_0_23;
+reg addr_in_0_22;
+reg addr_in_0_21;
+reg addr_in_0_20;
+reg addr_in_0_19;
+reg addr_in_0_18;
+reg addr_in_0_17;
+reg addr_in_0_16;
+reg addr_in_0_15;
+reg addr_in_0_14;
+reg addr_in_0_13;
+reg addr_in_0_12;
+reg addr_in_0_11;
+reg addr_in_0_10;
+reg addr_in_0_9;
+reg addr_in_0_8;
+reg addr_in_0_7;
+reg addr_in_0_6;
+reg addr_in_0_5;
+reg addr_in_0_4;
+reg addr_in_0_3;
+reg addr_in_0_2;
+reg addr_in_0_1;
+reg addr_in_0_0;
+reg addr_in_1_31;
+reg addr_in_1_30;
+reg addr_in_1_29;
+reg addr_in_1_28;
+reg addr_in_1_27;
+reg addr_in_1_26;
+reg addr_in_1_25;
+reg addr_in_1_24;
+reg addr_in_1_23;
+reg addr_in_1_22;
+reg addr_in_1_21;
+reg addr_in_1_20;
+reg addr_in_1_19;
+reg addr_in_1_18;
+reg addr_in_1_17;
+reg addr_in_1_16;
+reg addr_in_1_15;
+reg addr_in_1_14;
+reg addr_in_1_13;
+reg addr_in_1_12;
+reg addr_in_1_11;
+reg addr_in_1_10;
+reg addr_in_1_9;
+reg addr_in_1_8;
+reg addr_in_1_7;
+reg addr_in_1_6;
+reg addr_in_1_5;
+reg addr_in_1_4;
+reg addr_in_1_3;
+reg addr_in_1_2;
+reg addr_in_1_1;
+reg addr_in_1_0;
 reg clk;
-reg [31:0] data_in;
+reg [31:0] data_accel_in;
+reg data_in_0_31;
+reg data_in_0_30;
+reg data_in_0_29;
+reg data_in_0_28;
+reg data_in_0_27;
+reg data_in_0_26;
+reg data_in_0_25;
+reg data_in_0_24;
+reg data_in_0_23;
+reg data_in_0_22;
+reg data_in_0_21;
+reg data_in_0_20;
+reg data_in_0_19;
+reg data_in_0_18;
+reg data_in_0_17;
+reg data_in_0_16;
+reg data_in_0_15;
+reg data_in_0_14;
+reg data_in_0_13;
+reg data_in_0_12;
+reg data_in_0_11;
+reg data_in_0_10;
+reg data_in_0_9;
+reg data_in_0_8;
+reg data_in_0_7;
+reg data_in_0_6;
+reg data_in_0_5;
+reg data_in_0_4;
+reg data_in_0_3;
+reg data_in_0_2;
+reg data_in_0_1;
+reg data_in_0_0;
+reg data_in_1_31;
+reg data_in_1_30;
+reg data_in_1_29;
+reg data_in_1_28;
+reg data_in_1_27;
+reg data_in_1_26;
+reg data_in_1_25;
+reg data_in_1_24;
+reg data_in_1_23;
+reg data_in_1_22;
+reg data_in_1_21;
+reg data_in_1_20;
+reg data_in_1_19;
+reg data_in_1_18;
+reg data_in_1_17;
+reg data_in_1_16;
+reg data_in_1_15;
+reg data_in_1_14;
+reg data_in_1_13;
+reg data_in_1_12;
+reg data_in_1_11;
+reg data_in_1_10;
+reg data_in_1_9;
+reg data_in_1_8;
+reg data_in_1_7;
+reg data_in_1_6;
+reg data_in_1_5;
+reg data_in_1_4;
+reg data_in_1_3;
+reg data_in_1_2;
+reg data_in_1_1;
+reg data_in_1_0;
 reg rst_n;
-reg wr_en;
+reg [0:1] select_in;
+reg [0:1] wr_en_in;
 // wires                                               
-wire [15:0] ctr;
-wire [31:0] data_out;
+wire accel_select_o;
+wire [31:0] addr_o;
+wire data_out_0_31;
+wire data_out_0_30;
+wire data_out_0_29;
+wire data_out_0_28;
+wire data_out_0_27;
+wire data_out_0_26;
+wire data_out_0_25;
+wire data_out_0_24;
+wire data_out_0_23;
+wire data_out_0_22;
+wire data_out_0_21;
+wire data_out_0_20;
+wire data_out_0_19;
+wire data_out_0_18;
+wire data_out_0_17;
+wire data_out_0_16;
+wire data_out_0_15;
+wire data_out_0_14;
+wire data_out_0_13;
+wire data_out_0_12;
+wire data_out_0_11;
+wire data_out_0_10;
+wire data_out_0_9;
+wire data_out_0_8;
+wire data_out_0_7;
+wire data_out_0_6;
+wire data_out_0_5;
+wire data_out_0_4;
+wire data_out_0_3;
+wire data_out_0_2;
+wire data_out_0_1;
+wire data_out_0_0;
+wire data_out_1_31;
+wire data_out_1_30;
+wire data_out_1_29;
+wire data_out_1_28;
+wire data_out_1_27;
+wire data_out_1_26;
+wire data_out_1_25;
+wire data_out_1_24;
+wire data_out_1_23;
+wire data_out_1_22;
+wire data_out_1_21;
+wire data_out_1_20;
+wire data_out_1_19;
+wire data_out_1_18;
+wire data_out_1_17;
+wire data_out_1_16;
+wire data_out_1_15;
+wire data_out_1_14;
+wire data_out_1_13;
+wire data_out_1_12;
+wire data_out_1_11;
+wire data_out_1_10;
+wire data_out_1_9;
+wire data_out_1_8;
+wire data_out_1_7;
+wire data_out_1_6;
+wire data_out_1_5;
+wire data_out_1_4;
+wire data_out_1_3;
+wire data_out_1_2;
+wire data_out_1_1;
+wire data_out_1_0;
+wire wr_en_o;
 
 // assign statements (if any)                          
-encryptor i1 (
+alt_lock i1 (
 // port map - connection between master ports and signals/registers   
-	.accel_select(accel_select),
-	.addr(addr),
+	.accel_select_o(accel_select_o),
+	.addr_in_0_31(addr_in_0_31),
+	.addr_in_0_30(addr_in_0_30),
+	.addr_in_0_29(addr_in_0_29),
+	.addr_in_0_28(addr_in_0_28),
+	.addr_in_0_27(addr_in_0_27),
+	.addr_in_0_26(addr_in_0_26),
+	.addr_in_0_25(addr_in_0_25),
+	.addr_in_0_24(addr_in_0_24),
+	.addr_in_0_23(addr_in_0_23),
+	.addr_in_0_22(addr_in_0_22),
+	.addr_in_0_21(addr_in_0_21),
+	.addr_in_0_20(addr_in_0_20),
+	.addr_in_0_19(addr_in_0_19),
+	.addr_in_0_18(addr_in_0_18),
+	.addr_in_0_17(addr_in_0_17),
+	.addr_in_0_16(addr_in_0_16),
+	.addr_in_0_15(addr_in_0_15),
+	.addr_in_0_14(addr_in_0_14),
+	.addr_in_0_13(addr_in_0_13),
+	.addr_in_0_12(addr_in_0_12),
+	.addr_in_0_11(addr_in_0_11),
+	.addr_in_0_10(addr_in_0_10),
+	.addr_in_0_9(addr_in_0_9),
+	.addr_in_0_8(addr_in_0_8),
+	.addr_in_0_7(addr_in_0_7),
+	.addr_in_0_6(addr_in_0_6),
+	.addr_in_0_5(addr_in_0_5),
+	.addr_in_0_4(addr_in_0_4),
+	.addr_in_0_3(addr_in_0_3),
+	.addr_in_0_2(addr_in_0_2),
+	.addr_in_0_1(addr_in_0_1),
+	.addr_in_0_0(addr_in_0_0),
+	.addr_in_1_31(addr_in_1_31),
+	.addr_in_1_30(addr_in_1_30),
+	.addr_in_1_29(addr_in_1_29),
+	.addr_in_1_28(addr_in_1_28),
+	.addr_in_1_27(addr_in_1_27),
+	.addr_in_1_26(addr_in_1_26),
+	.addr_in_1_25(addr_in_1_25),
+	.addr_in_1_24(addr_in_1_24),
+	.addr_in_1_23(addr_in_1_23),
+	.addr_in_1_22(addr_in_1_22),
+	.addr_in_1_21(addr_in_1_21),
+	.addr_in_1_20(addr_in_1_20),
+	.addr_in_1_19(addr_in_1_19),
+	.addr_in_1_18(addr_in_1_18),
+	.addr_in_1_17(addr_in_1_17),
+	.addr_in_1_16(addr_in_1_16),
+	.addr_in_1_15(addr_in_1_15),
+	.addr_in_1_14(addr_in_1_14),
+	.addr_in_1_13(addr_in_1_13),
+	.addr_in_1_12(addr_in_1_12),
+	.addr_in_1_11(addr_in_1_11),
+	.addr_in_1_10(addr_in_1_10),
+	.addr_in_1_9(addr_in_1_9),
+	.addr_in_1_8(addr_in_1_8),
+	.addr_in_1_7(addr_in_1_7),
+	.addr_in_1_6(addr_in_1_6),
+	.addr_in_1_5(addr_in_1_5),
+	.addr_in_1_4(addr_in_1_4),
+	.addr_in_1_3(addr_in_1_3),
+	.addr_in_1_2(addr_in_1_2),
+	.addr_in_1_1(addr_in_1_1),
+	.addr_in_1_0(addr_in_1_0),
+	.addr_o(addr_o),
 	.clk(clk),
-	.ctr(ctr),
-	.data_in(data_in),
-	.data_out(data_out),
+	.data_accel_in(data_accel_in),
+	.data_in_0_31(data_in_0_31),
+	.data_in_0_30(data_in_0_30),
+	.data_in_0_29(data_in_0_29),
+	.data_in_0_28(data_in_0_28),
+	.data_in_0_27(data_in_0_27),
+	.data_in_0_26(data_in_0_26),
+	.data_in_0_25(data_in_0_25),
+	.data_in_0_24(data_in_0_24),
+	.data_in_0_23(data_in_0_23),
+	.data_in_0_22(data_in_0_22),
+	.data_in_0_21(data_in_0_21),
+	.data_in_0_20(data_in_0_20),
+	.data_in_0_19(data_in_0_19),
+	.data_in_0_18(data_in_0_18),
+	.data_in_0_17(data_in_0_17),
+	.data_in_0_16(data_in_0_16),
+	.data_in_0_15(data_in_0_15),
+	.data_in_0_14(data_in_0_14),
+	.data_in_0_13(data_in_0_13),
+	.data_in_0_12(data_in_0_12),
+	.data_in_0_11(data_in_0_11),
+	.data_in_0_10(data_in_0_10),
+	.data_in_0_9(data_in_0_9),
+	.data_in_0_8(data_in_0_8),
+	.data_in_0_7(data_in_0_7),
+	.data_in_0_6(data_in_0_6),
+	.data_in_0_5(data_in_0_5),
+	.data_in_0_4(data_in_0_4),
+	.data_in_0_3(data_in_0_3),
+	.data_in_0_2(data_in_0_2),
+	.data_in_0_1(data_in_0_1),
+	.data_in_0_0(data_in_0_0),
+	.data_in_1_31(data_in_1_31),
+	.data_in_1_30(data_in_1_30),
+	.data_in_1_29(data_in_1_29),
+	.data_in_1_28(data_in_1_28),
+	.data_in_1_27(data_in_1_27),
+	.data_in_1_26(data_in_1_26),
+	.data_in_1_25(data_in_1_25),
+	.data_in_1_24(data_in_1_24),
+	.data_in_1_23(data_in_1_23),
+	.data_in_1_22(data_in_1_22),
+	.data_in_1_21(data_in_1_21),
+	.data_in_1_20(data_in_1_20),
+	.data_in_1_19(data_in_1_19),
+	.data_in_1_18(data_in_1_18),
+	.data_in_1_17(data_in_1_17),
+	.data_in_1_16(data_in_1_16),
+	.data_in_1_15(data_in_1_15),
+	.data_in_1_14(data_in_1_14),
+	.data_in_1_13(data_in_1_13),
+	.data_in_1_12(data_in_1_12),
+	.data_in_1_11(data_in_1_11),
+	.data_in_1_10(data_in_1_10),
+	.data_in_1_9(data_in_1_9),
+	.data_in_1_8(data_in_1_8),
+	.data_in_1_7(data_in_1_7),
+	.data_in_1_6(data_in_1_6),
+	.data_in_1_5(data_in_1_5),
+	.data_in_1_4(data_in_1_4),
+	.data_in_1_3(data_in_1_3),
+	.data_in_1_2(data_in_1_2),
+	.data_in_1_1(data_in_1_1),
+	.data_in_1_0(data_in_1_0),
+	.data_out_0_31(data_out_0_31),
+	.data_out_0_30(data_out_0_30),
+	.data_out_0_29(data_out_0_29),
+	.data_out_0_28(data_out_0_28),
+	.data_out_0_27(data_out_0_27),
+	.data_out_0_26(data_out_0_26),
+	.data_out_0_25(data_out_0_25),
+	.data_out_0_24(data_out_0_24),
+	.data_out_0_23(data_out_0_23),
+	.data_out_0_22(data_out_0_22),
+	.data_out_0_21(data_out_0_21),
+	.data_out_0_20(data_out_0_20),
+	.data_out_0_19(data_out_0_19),
+	.data_out_0_18(data_out_0_18),
+	.data_out_0_17(data_out_0_17),
+	.data_out_0_16(data_out_0_16),
+	.data_out_0_15(data_out_0_15),
+	.data_out_0_14(data_out_0_14),
+	.data_out_0_13(data_out_0_13),
+	.data_out_0_12(data_out_0_12),
+	.data_out_0_11(data_out_0_11),
+	.data_out_0_10(data_out_0_10),
+	.data_out_0_9(data_out_0_9),
+	.data_out_0_8(data_out_0_8),
+	.data_out_0_7(data_out_0_7),
+	.data_out_0_6(data_out_0_6),
+	.data_out_0_5(data_out_0_5),
+	.data_out_0_4(data_out_0_4),
+	.data_out_0_3(data_out_0_3),
+	.data_out_0_2(data_out_0_2),
+	.data_out_0_1(data_out_0_1),
+	.data_out_0_0(data_out_0_0),
+	.data_out_1_31(data_out_1_31),
+	.data_out_1_30(data_out_1_30),
+	.data_out_1_29(data_out_1_29),
+	.data_out_1_28(data_out_1_28),
+	.data_out_1_27(data_out_1_27),
+	.data_out_1_26(data_out_1_26),
+	.data_out_1_25(data_out_1_25),
+	.data_out_1_24(data_out_1_24),
+	.data_out_1_23(data_out_1_23),
+	.data_out_1_22(data_out_1_22),
+	.data_out_1_21(data_out_1_21),
+	.data_out_1_20(data_out_1_20),
+	.data_out_1_19(data_out_1_19),
+	.data_out_1_18(data_out_1_18),
+	.data_out_1_17(data_out_1_17),
+	.data_out_1_16(data_out_1_16),
+	.data_out_1_15(data_out_1_15),
+	.data_out_1_14(data_out_1_14),
+	.data_out_1_13(data_out_1_13),
+	.data_out_1_12(data_out_1_12),
+	.data_out_1_11(data_out_1_11),
+	.data_out_1_10(data_out_1_10),
+	.data_out_1_9(data_out_1_9),
+	.data_out_1_8(data_out_1_8),
+	.data_out_1_7(data_out_1_7),
+	.data_out_1_6(data_out_1_6),
+	.data_out_1_5(data_out_1_5),
+	.data_out_1_4(data_out_1_4),
+	.data_out_1_3(data_out_1_3),
+	.data_out_1_2(data_out_1_2),
+	.data_out_1_1(data_out_1_1),
+	.data_out_1_0(data_out_1_0),
 	.rst_n(rst_n),
-	.wr_en(wr_en)
+	.select_in(select_in),
+	.wr_en_in(wr_en_in),
+	.wr_en_o(wr_en_o)
 );
 initial 
 begin 
-#1000000 $finish;
+#400000 $finish;
 end 
 
 // clk
@@ -71,184 +455,6 @@ begin
 	rst_n = 1'b1;
 	rst_n = #10000 1'b0;
 	rst_n = #10000 1'b1;
-end 
-
-// accel_select
-initial
-begin
-	accel_select = 1'b0;
-	accel_select = #30000 1'b1;
-	accel_select = #10000 1'b0;
-end 
-// addr[ 31 ]
-initial
-begin
-	addr[31] = 1'b0;
-end 
-// addr[ 30 ]
-initial
-begin
-	addr[30] = 1'b0;
-end 
-// addr[ 29 ]
-initial
-begin
-	addr[29] = 1'b0;
-end 
-// addr[ 28 ]
-initial
-begin
-	addr[28] = 1'b0;
-end 
-// addr[ 27 ]
-initial
-begin
-	addr[27] = 1'b0;
-end 
-// addr[ 26 ]
-initial
-begin
-	addr[26] = 1'b0;
-end 
-// addr[ 25 ]
-initial
-begin
-	addr[25] = 1'b0;
-end 
-// addr[ 24 ]
-initial
-begin
-	addr[24] = 1'b0;
-end 
-// addr[ 23 ]
-initial
-begin
-	addr[23] = 1'b0;
-end 
-// addr[ 22 ]
-initial
-begin
-	addr[22] = 1'b0;
-end 
-// addr[ 21 ]
-initial
-begin
-	addr[21] = 1'b0;
-end 
-// addr[ 20 ]
-initial
-begin
-	addr[20] = 1'b0;
-end 
-// addr[ 19 ]
-initial
-begin
-	addr[19] = 1'b0;
-end 
-// addr[ 18 ]
-initial
-begin
-	addr[18] = 1'b0;
-end 
-// addr[ 17 ]
-initial
-begin
-	addr[17] = 1'b0;
-end 
-// addr[ 16 ]
-initial
-begin
-	addr[16] = 1'b0;
-end 
-// addr[ 15 ]
-initial
-begin
-	addr[15] = 1'b0;
-end 
-// addr[ 14 ]
-initial
-begin
-	addr[14] = 1'b0;
-end 
-// addr[ 13 ]
-initial
-begin
-	addr[13] = 1'b0;
-end 
-// addr[ 12 ]
-initial
-begin
-	addr[12] = 1'b0;
-end 
-// addr[ 11 ]
-initial
-begin
-	addr[11] = 1'b0;
-end 
-// addr[ 10 ]
-initial
-begin
-	addr[10] = 1'b0;
-end 
-// addr[ 9 ]
-initial
-begin
-	addr[9] = 1'b0;
-end 
-// addr[ 8 ]
-initial
-begin
-	addr[8] = 1'b0;
-end 
-// addr[ 7 ]
-initial
-begin
-	addr[7] = 1'b0;
-end 
-// addr[ 6 ]
-initial
-begin
-	addr[6] = 1'b0;
-end 
-// addr[ 5 ]
-initial
-begin
-	addr[5] = 1'b0;
-	addr[5] = #30000 1'b1;
-	addr[5] = #10000 1'b0;
-end 
-// addr[ 4 ]
-initial
-begin
-	addr[4] = 1'b0;
-end 
-// addr[ 3 ]
-initial
-begin
-	addr[3] = 1'b0;
-end 
-// addr[ 2 ]
-initial
-begin
-	addr[2] = 1'b0;
-end 
-// addr[ 1 ]
-initial
-begin
-	addr[1] = 1'b0;
-end 
-// addr[ 0 ]
-initial
-begin
-	addr[0] = 1'b0;
-end 
-
-// wr_en
-initial
-begin
-	wr_en = 1'b0;
-	wr_en = #30000 1'b1;
-	wr_en = #10000 1'b0;
 end 
 endmodule
 

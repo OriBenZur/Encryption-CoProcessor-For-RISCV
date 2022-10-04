@@ -29,14 +29,14 @@ module lock
     logic [31:0] lock;
 	logic lock_locked;
 
-    int i, j;
+    int i;
 	
 	assign lock_locked = (lock < N_CLIENTS) ? 1'b1 : 1'b0;
 	
-	assign addr_o = lock_locked ? addr_in[lock] : 0;
+	assign addr_o = lock_locked ? addr_in[lock] : 32'h0;
 	assign wr_en_o = lock_locked ? wr_en_in[lock] : 1'b0;
 	assign accel_select_o = lock_locked ? select_in[lock] : 1'b0;
-	assign data_to_accel = (wr_en_in[lock] && lock_locked) ? data_in[lock] : 0;
+	assign data_to_accel = (wr_en_in[lock] && lock_locked) ? data_in[lock] : 32'h0;
 
     // lock-CPUs
     always_comb begin 

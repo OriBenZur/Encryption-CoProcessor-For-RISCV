@@ -1,0 +1,45 @@
+# Reading C:/intelFPGA/17.0/modelsim_ase/tcl/vsim/pref.tcl
+# do DE0_top_run_msim_rtl_verilog.do
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Model Technology ModelSim - Intel FPGA Edition vmap 10.5b Lib Mapping Utility 2016.10 Oct  5 2016
+# vmap work rtl_work 
+# Copying C:/intelFPGA/17.0/modelsim_ase/win32aloem/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# 
+# vlog -sv -work work +incdir+C:/Project\ Mendelson/AES-128-for-RISCV-CPU/src/Encryptor {C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv}
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 16:52:48 on Sep 28,2022
+# vlog -reportprogress 300 -sv -work work "+incdir+C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor" C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv 
+# -- Compiling module encryptor
+# ** Warning: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(45): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+# ** Warning: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(62): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+# ** Warning: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(63): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+# ** Warning: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(64): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+# ** Warning: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(65): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+# ** Warning: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(66): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+# ** Warning: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(67): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+# ** Warning: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(68): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+# ** Warning: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(69): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+# ** Warning: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(70): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+# ** Warning: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(71): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+# ** Warning: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(72): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+# ** Warning: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(73): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+# ** Warning: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(74): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+# ** Warning: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(75): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+# ** Error: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(153): (vlog-2730) Undefined variable: 'A0'.
+# ** Error: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(153): (vlog-2730) Undefined variable: 'A1'.
+# ** Error: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(153): (vlog-2730) Undefined variable: 'A2'.
+# ** Error: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(153): (vlog-2730) Undefined variable: 'A3'.
+# ** Error: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(159): (vlog-2730) Undefined variable: 's_box'.
+# ** Error: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryptor.sv(182): (vlog-2730) Undefined variable: 's_box'.
+# End time: 16:52:48 on Sep 28,2022, Elapsed time: 0:00:00
+# Errors: 6, Warnings: 15
+# ** Error: C:/intelFPGA/17.0/modelsim_ase/win32aloem/vlog failed.
+# Error in macro ./DE0_top_run_msim_rtl_verilog.do line 8
+# C:/intelFPGA/17.0/modelsim_ase/win32aloem/vlog failed.
+#     while executing
+# "vlog -sv -work work +incdir+C:/Project\ Mendelson/AES-128-for-RISCV-CPU/src/Encryptor {C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/encryp..."

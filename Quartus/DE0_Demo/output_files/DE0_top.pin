@@ -1,17 +1,17 @@
- -- Copyright (C) 2017  Intel Corporation. All rights reserved.
+ -- Copyright (C) 2022  Intel Corporation. All rights reserved.
  -- Your use of Intel Corporation's design tools, logic functions 
- -- and other software and tools, and its AMPP partner logic 
+ -- and other software and tools, and any partner logic 
  -- functions, and any output files from any of the foregoing 
  -- (including device programming or simulation files), and any 
  -- associated documentation or information are expressly subject 
  -- to the terms and conditions of the Intel Program License 
  -- Subscription Agreement, the Intel Quartus Prime License Agreement,
- -- the Intel MegaCore Function License Agreement, or other 
- -- applicable license agreement, including, without limitation, 
- -- that your use is for the sole purpose of programming logic 
- -- devices manufactured by Intel and sold by Intel or its 
- -- authorized distributors.  Please refer to the applicable 
- -- agreement for further details.
+ -- the Intel FPGA IP License Agreement, or other applicable license
+ -- agreement, including, without limitation, that your use is for
+ -- the sole purpose of programming logic devices manufactured by
+ -- Intel and sold by Intel or its authorized distributors.  Please
+ -- refer to the applicable agreement for further details, at
+ -- https://fpgasoftware.intel.com/eula.
  -- 
  -- This is a Quartus Prime output file. It is for reporting purposes only, and is
  -- not intended for use as a Quartus Prime input file. This file cannot be used
@@ -30,7 +30,7 @@
  --                  Bank 1A:       2.5V
  --                  Bank 1B:       2.5V
  --                  Bank 2:       2.5V
- --                  Bank 3:       3.3V
+ --                  Bank 3:       2.5V
  --                  Bank 4:       2.5V
  --                  Bank 5:       2.5V
  --                  Bank 6:       2.5V
@@ -65,7 +65,7 @@
  -- Pin directions (input, output or bidir) are based on device operating in user mode.
  ---------------------------------------------------------------------------------
 
-Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
+Quartus Prime Version 21.1.1 Build 850 06/23/2022 SJ Lite Edition
 CHIP  "DE0_top"  ASSIGNED TO AN: 10M50DAF484C7G
 
 Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
@@ -452,9 +452,9 @@ RESERVED_INPUT_WITH_WEAK_PULLUP : T5        :        :                   :      
 RESERVED_INPUT_WITH_WEAK_PULLUP : T6        :        :                   :         : 2         :                
 VCCD_PLL1                    : T7        : power  :                   : 1.2V    :           :                
 GND                          : T8        : gnd    :                   :         :           :                
-VCCIO3                       : T9        : power  :                   : 3.3V    : 3         :                
-VCCIO3                       : T10       : power  :                   : 3.3V    : 3         :                
-VCCIO3                       : T11       : power  :                   : 3.3V    : 3         :                
+VCCIO3                       : T9        : power  :                   : 2.5V    : 3         :                
+VCCIO3                       : T10       : power  :                   : 2.5V    : 3         :                
+VCCIO3                       : T11       : power  :                   : 2.5V    : 3         :                
 VCCIO4                       : T12       : power  :                   : 2.5V    : 4         :                
 VCCIO4                       : T13       : power  :                   : 2.5V    : 4         :                
 GND                          : T14       : gnd    :                   :         :           :                
@@ -473,8 +473,8 @@ RESERVED_INPUT_WITH_WEAK_PULLUP : U4        :        :                   :      
 RESERVED_INPUT_WITH_WEAK_PULLUP : U5        :        :                   :         : 2         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : U6        :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : U7        :        :                   :         : 3         :                
-VCCIO3                       : U8        : power  :                   : 3.3V    : 3         :                
-VCCIO3                       : U9        : power  :                   : 3.3V    : 3         :                
+VCCIO3                       : U8        : power  :                   : 2.5V    : 3         :                
+VCCIO3                       : U9        : power  :                   : 2.5V    : 3         :                
 GND                          : U10       : gnd    :                   :         :           :                
 VCCIO4                       : U11       : power  :                   : 2.5V    : 4         :                
 VCCIO4                       : U12       : power  :                   : 2.5V    : 4         :                
@@ -504,7 +504,7 @@ RESERVED_INPUT_WITH_WEAK_PULLUP : V13       :        :                   :      
 RESERVED_INPUT_WITH_WEAK_PULLUP : V14       :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : V15       :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : V16       :        :                   :         : 4         :                
-MAX10_CLK2_50_2              : V17       : input  : 2.5 V             :         : 4         : N              
+RESERVED_INPUT_WITH_WEAK_PULLUP : V17       :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : V18       :        :                   :         : 5         :                
 GND                          : V19       : gnd    :                   :         :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : V20       :        :                   :         : 5         :                
@@ -512,7 +512,7 @@ RESERVED_INPUT_WITH_WEAK_PULLUP : V21       :        :                   :      
 RESERVED_INPUT_WITH_WEAK_PULLUP : V22       :        :                   :         : 5         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : W1        :        :                   :         : 2         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : W2        :        :                   :         : 2         :                
-RESERVED_INPUT_WITH_WEAK_PULLUP : W3        :        :                   :         : 3         :                
+MAX10_CLK2_50_2              : W3        : input  : 2.5 V             :         : 3         : N              
 RESERVED_INPUT_WITH_WEAK_PULLUP : W4        :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : W5        :        :                   :         : 3         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : W6        :        :                   :         : 3         :                

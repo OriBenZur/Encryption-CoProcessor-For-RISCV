@@ -2,7 +2,8 @@
 #define LEDS LEDS_BASE_ADDR 
 #define SEVSEG (LEDS_BASE_ADDR +4)
 
-#define ACCEL_BASE 0x020
+#define CORE_INDEX (*((int*)0x20))
+#define ACCEL_BASE 0x024
 #define ACCEL_CTRL ACCEL_BASE 
 #define ACCEL_PERF_COUNTER (ACCEL_BASE + 0x4)
 #define ACCEL_A (ACCEL_BASE + 0x8)
@@ -19,14 +20,16 @@ int main(){
 	int* leds = (int*)0x14;
 	volatile int *addr = 700;
 	*addr = 0x1;
-	if ((unsigned int)(&leds) > 700) {// core0
+	PRINT(LEDS, CORE_INDEX + 1);
+	if (CORE_INDEX == 0) {// core0
 		*addr *= 2;
-		for (int i = 0; i < 20; i++);
-		PRINT(SEVSEG, *addr);
-		// PRINT(LEDS, *addr);
+		for (int i = 0; i < 10; i++) {
+			PRINT(SEVSEG, *addr);
+			PRINT(LEDS, i);
+		}
 	}
 	else {
-		for (int i = 0; i < 10; i++);
+		for (int i = 0; i < 5; i++);
 		*addr *= 2;
 	}
 

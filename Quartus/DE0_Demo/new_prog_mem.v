@@ -67,7 +67,7 @@ module new_prog_mem (
 	altsyncram	altsyncram_component (
 				.address_a (address_a),
 				.address_b (address_b),
-				.clock0 (clock),
+				.clock0 (~clock),
 				.data_a (sub_wire0),
 				.data_b (sub_wire0),
 				.wren_a (sub_wire1),

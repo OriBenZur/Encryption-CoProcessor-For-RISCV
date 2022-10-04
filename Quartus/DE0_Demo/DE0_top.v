@@ -115,10 +115,12 @@ reg       		out_BUTTON_2;   		// Button2 Register output
 
 reg            virtual_clk;       // Virtual clock to slow the processor
 wire           clock_to_core;
+wire           clock_to_mem;
 wire 	[15:0]	ctr;
 
 reg [21:0] count_reg = 0;
 reg out_10hz = 0;
+reg clk_delay = 0;
 //==================================================================
 //  Structural coding
 //==================================================================
@@ -126,6 +128,11 @@ reg out_10hz = 0;
 PLL PLL_instance(
 	.inclk0(MAX10_CLK1_50),
 	.c0(PLL_1MHzclock));
+
+TestPLL MemPLL(
+	.inclk0 ( MAX10_CLK1_50 ),
+	.c0 ( clock_to_mem )
+	);
 
 
 // This is BUTTON[0] Debounce Circuit //
@@ -229,8 +236,6 @@ SEG7_LUT	SEG5(
 	wire encryptor_we_mem_data;
 
 
-assign val_mem_data_read[0] = cpu_encryptor_select[0] ? lock_data_out[0] : val_mem_data_read_ram[0];
-assign val_mem_data_read[1] = cpu_encryptor_select[1] ? lock_data_out[1] : val_mem_data_read_ram[1];
 
 //assign val_mem_data_read = val_mem_data_read_ram;
 
@@ -246,7 +251,7 @@ core #(.MEM_ADDR_WIDTH(ADDR_WIDTH), .I_MEM_ADDR_WIDTH(I_ADDR_WIDTH)) core0(
         .write_transfer_mem_data_o (write_transfer[0])
     );
 	 
-core #(.INIT_SP(32'h200), .MEM_ADDR_WIDTH(ADDR_WIDTH), .I_MEM_ADDR_WIDTH(I_ADDR_WIDTH)) core1(
+core #(.INIT_SP(32'd512), .MEM_ADDR_WIDTH(ADDR_WIDTH), .I_MEM_ADDR_WIDTH(I_ADDR_WIDTH)) core1(
         .clk (clock_to_core),
         .rst_n (reset_n),
         .we_mem_data_o (we_mem_data[1]),
@@ -257,6 +262,21 @@ core #(.INIT_SP(32'h200), .MEM_ADDR_WIDTH(ADDR_WIDTH), .I_MEM_ADDR_WIDTH(I_ADDR_
         .val_mem_prog_i (val_mem_prog[1]),
         .write_transfer_mem_data_o (write_transfer[1])
     );
+
+`define CORE_INDEX_ADDR 32'h020
+reg [DATA_WIDTH-1:0] i;
+
+always@* begin 
+	for (i = 0; i < 2; i = i + 1) begin
+		if (cpu_encryptor_select[i])
+			val_mem_data_read[i] = lock_data_out[i];
+		else if (addr_mem_data[0] == `CORE_INDEX_ADDR)
+			val_mem_data_read[i] = i;
+		else
+			val_mem_data_read[i] = val_mem_data_read_ram[i];
+	end
+end
+
 //set LOAD_MEMS to true to load mems
 
 `define MEM
@@ -264,11 +284,11 @@ core #(.INIT_SP(32'h200), .MEM_ADDR_WIDTH(ADDR_WIDTH), .I_MEM_ADDR_WIDTH(I_ADDR_
 `ifdef MEM
 
 new_ram	mem_data_max10 (
-	.address_a(addr_mem_data[0]),
-	.address_b(addr_mem_data[1]),
+	.address_a(addr_mem_data[0][ADDR_WIDTH-1 : 2]),
+	.address_b(addr_mem_data[1][ADDR_WIDTH-1 : 2]),
 	.byteena_a(write_transfer[0]),
 	.byteena_b(write_transfer[1]),
-	.clock(clock_to_core),
+	.clock(clock_to_mem),
 	.data_a(val_mem_data_write[0]),
 	.data_b(val_mem_data_write[1]),
 	.wren_a(we_mem_data[0]),
@@ -296,10 +316,10 @@ dataMem mem_data_de0 (
 
 `ifdef MEM
 
-mem_test	new_prog_mem_inst (
+new_prog_mem	new_prog_mem_inst (
 	.address_a ( addr_mem_prog[0][I_ADDR_WIDTH-1:2] ),
 	.address_b ( addr_mem_prog[1][I_ADDR_WIDTH-1:2] ),
-	.clock ( clock_to_core ),
+	.clock ( clock_to_mem ),
 	.q_a ( val_mem_prog[0] ),
 	.q_b ( val_mem_prog[1] )
 	);
@@ -351,7 +371,7 @@ always@* begin
 	6'd4: begin 
 		iDIG_0 = addr_mem_data[SW[9]][3:0];
 		iDIG_1 = addr_mem_data[SW[9]][7:4];
-		iDIG_2 = addr_mem_data[SW[9]][10:8]; 
+		iDIG_2 = addr_mem_data[SW[9]][ADDR_WIDTH-1:8]; 
 		iDIG_3 = {3'b0, we_mem_data[SW[9]]};
 		iDIG_4 = write_transfer[SW[9]];
 		iDIG_5 = (clock_to_core ? 4'b1 : 4'b0);
@@ -382,12 +402,13 @@ end
 // assign iDIG_4    = SW[2] ? 4'h0 								: 	val_mem_data_write[0][19:16];
 // assign iDIG_5    = SW[2] ? (clock_to_core ? 4'b1 : 4'b0) 		: 	val_mem_data_write[0][23:20];
 
-assign reset_n   = BUTTON[0]; 			 		 
-assign clock_to_core = SW[0] ?  (SW[1])? out_10hz:PLL_1MHzclock :virtual_clk;  // SW[0] ? MAX10_CLK1_50:PLL_1MHzclock;  //
+assign reset_n   = BUTTON[0]; 
+assign clock_to_core = (SW[0] ?  (SW[1])? out_10hz:PLL_1MHzclock :virtual_clk);	 		 
 
 //====================================================================
 // After debounce output with register
 //====================================================================
+
 always @ (posedge PLL_1MHzclock )
 	begin
 //		out_BUTTON_2 <= BUTTON[2]; ~Ori
@@ -405,16 +426,16 @@ always @ (negedge out_BUTTON_1 )
 `define LEDS_ADDR_LAST  32'h014
 wire leds_select;
 
-assign leds_select = (addr_mem_data[0]>=`LEDS_ADDR_START) & (addr_mem_data[0]<=`LEDS_ADDR_LAST);
+assign leds_select = (addr_mem_data[1]>=`LEDS_ADDR_START) & (addr_mem_data[1]<=`LEDS_ADDR_LAST);
 
 leds_mgmt leds_mgmt_display
 (
         .rst_n(reset_n)		,
         .clk(clock_to_core),
-        .addr(addr_mem_data[0]),
-		  .wr_en(we_mem_data[0]),
+        .addr(addr_mem_data[1]),
+		  .wr_en(we_mem_data[1]),
 		  .select(leds_select),
-		  .data_in(val_mem_data_write[0]),
+		  .data_in(val_mem_data_write[1]),
         .leds_out(LEDR),
 		  .sevseg0(iDIG_0_o),
 		  .sevseg1(iDIG_1_o),
@@ -443,12 +464,12 @@ always @(posedge PLL_1MHzclock or negedge reset_n) begin
 end
 
 
-`define ENCRYPTOR_ADDR_START 32'h020
-`define ENCRYPTOR_ADDR_LAST  32'h05C
+`define ENCRYPTOR_ADDR_START 32'h024
+`define ENCRYPTOR_ADDR_LAST  32'h05E
 assign cpu_encryptor_select = '{(addr_mem_data[0]>=`ENCRYPTOR_ADDR_START) & (addr_mem_data[0]<=`ENCRYPTOR_ADDR_LAST), (addr_mem_data[1]>=`ENCRYPTOR_ADDR_START) & (addr_mem_data[1]<=`ENCRYPTOR_ADDR_LAST)};
 
 
-lock #(.N_CLIENTS(32'd2), .LOCK_ADDR(32'h58)) encryptor_lock
+lock #(.N_CLIENTS(32'd2), .LOCK_ADDR(32'h5C)) encryptor_lock
 (
 	.rst_n(reset_n),
     .clk(clock_to_core),
@@ -467,7 +488,7 @@ lock #(.N_CLIENTS(32'd2), .LOCK_ADDR(32'h58)) encryptor_lock
 );
 
 
-encryptor encryption_CoProcessor
+encryptor #(.ENCRYPTOR_ADDR(`ENCRYPTOR_ADDR_START)) encryption_CoProcessor
 (
 	.rst_n(reset_n),
 	.clk(clock_to_core),

@@ -13,8 +13,13 @@ module encryptor
 	output logic [15:0] ctr
 //	output int stage
     );
-	 
+	
+	parameter int ENCRYPTOR_ADDR = 32'h20;
 	parameter int KEY_SIZE = 4;
+
+	localparam int KEY_ADDR = {27'd0,ENCRYPTOR_ADDR[6:2]} + 32'd2;
+	localparam int PLAINTEXT_ADDR = {27'd0,ENCRYPTOR_ADDR[6:2]} + 32'd6;
+
     localparam int DEFAULT_KEY_SIZE = 4;
     localparam int DEFAULT_NUM_OF_ROUNDS = 11;
     localparam int NUM_OF_ROUNDS = DEFAULT_NUM_OF_ROUNDS + KEY_SIZE - DEFAULT_KEY_SIZE;
@@ -42,7 +47,7 @@ module encryptor
 	// logic[7:0] out;
 
 	assign ctr = counter;
-	assign go_bit_in = (wr_en & accel_select & (addr[6:2] == 5'd0008));
+	assign go_bit_in = (wr_en & accel_select & (addr[6:2] == ENCRYPTOR_ADDR[6:2]));
 	
 	// key_expander key_scheduler
 	// (
@@ -59,20 +64,20 @@ module encryptor
 	// always_ff@(addr[6:2], key, plaintext, cyphertext, counter, done_bit, go_bit, counter) begin
 	always_comb begin
 		case(addr[6:2])
-		5'd008: data_out = {done_bit, 30'b0, go_bit};
-		5'd009: data_out = {16'b0, counter}; 
-		5'd010: data_out = key_in[0];
-		5'd011: data_out = key_in[1];
-		5'd012: data_out = key_in[2];
-		5'd013: data_out = key_in[3];
-		5'd014: data_out = plaintext[0];
-		5'd015: data_out = plaintext[1];
-		5'd016: data_out = plaintext[2];
-		5'd017: data_out = plaintext[3];
-		5'd018: data_out = cyphertext[0];
-		5'd019: data_out = cyphertext[1];
-		5'd020: data_out = cyphertext[2];
-		5'd021: data_out = cyphertext[3];
+		(ENCRYPTOR_ADDR[6:2] + 5'd0): data_out = {done_bit, 30'b0, go_bit};
+		(ENCRYPTOR_ADDR[6:2] + 5'd1): data_out = {16'b0, counter}; 
+		(ENCRYPTOR_ADDR[6:2] + 5'd2): data_out = key_in[0];
+		(ENCRYPTOR_ADDR[6:2] + 5'd3): data_out = key_in[1];
+		(ENCRYPTOR_ADDR[6:2] + 5'd4): data_out = key_in[2];
+		(ENCRYPTOR_ADDR[6:2] + 5'd5): data_out = key_in[3];
+		(ENCRYPTOR_ADDR[6:2] + 5'd6): data_out = plaintext[0];
+		(ENCRYPTOR_ADDR[6:2] + 5'd7): data_out = plaintext[1];
+		(ENCRYPTOR_ADDR[6:2] + 5'd8): data_out = plaintext[2];
+		(ENCRYPTOR_ADDR[6:2] + 5'd9): data_out = plaintext[3];
+		(ENCRYPTOR_ADDR[6:2] + 5'd10): data_out = cyphertext[0];
+		(ENCRYPTOR_ADDR[6:2] + 5'd11): data_out = cyphertext[1];
+		(ENCRYPTOR_ADDR[6:2] + 5'd12): data_out = cyphertext[2];
+		(ENCRYPTOR_ADDR[6:2] + 5'd13): data_out = cyphertext[3];
 		default: data_out = 32'b0;
 		endcase
 	end
@@ -106,8 +111,8 @@ module encryptor
 		end
 		else if (wr_en & accel_select) begin
 			for (i = 0; i < 4; i++) begin
-				key_in[i] <= (addr[6:2] == i + 10) ? data_in : key_in[i];
-				plaintext[i] <= (addr[6:2] == i + 14) ? data_in : plaintext[i];
+				key_in[i] <= (addr[6:2] == (i + KEY_ADDR)) ? data_in : key_in[i];
+				plaintext[i] <= (addr[6:2] == (i + PLAINTEXT_ADDR)) ? data_in : plaintext[i];
 			end
 		end
 		else begin

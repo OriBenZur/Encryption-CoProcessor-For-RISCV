@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <preferences>
  <debug showDebugMenu="0" />
- <systemtable>
+ <systemtable filter="All Interfaces">
   <columns>
-   <connections preferredWidth="47" />
+   <connections preferredWidth="31" />
    <irq preferredWidth="34" />
   </columns>
  </systemtable>
@@ -15,5 +15,5 @@
   </columns>
  </clocktable>
  <library expandedCategories="Project,Library" />
- <window x="918" y="774" width="1100" height="800" />
+ <window x="918" y="774" width="1740" height="930" />
 </preferences>
