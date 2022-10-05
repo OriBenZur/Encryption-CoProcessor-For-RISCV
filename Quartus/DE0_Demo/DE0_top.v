@@ -432,10 +432,10 @@ leds_mgmt leds_mgmt_display
 (
         .rst_n(reset_n)		,
         .clk(clock_to_core),
-        .addr(addr_mem_data[1]),
-		  .wr_en(we_mem_data[1]),
+        .addr(addr_mem_data[0]),
+		  .wr_en(we_mem_data[0]),
 		  .select(leds_select),
-		  .data_in(val_mem_data_write[1]),
+		  .data_in(val_mem_data_write[0]),
         .leds_out(LEDR),
 		  .sevseg0(iDIG_0_o),
 		  .sevseg1(iDIG_1_o),

@@ -19,54 +19,30 @@
 #define STOP while(1)
 
 
+/**
+ * @brief In this test, one core encrypts the string 0x1\0x1\0x1\0x1 and core1 then encrypts core0's cyphertext
+ * 
+ * @return All 9 LEDs on the MAX10 should be on, and the first 3 bytes of the final cyphertext should appear on the display
+ */
 int main(){
 	int* leds = (int*)0x14;
 	volatile int *buf = (int*)734;
-	// volatile int status = (int*)700;
 	volatile int *key_addr = (int *)ACCEL_A;
 	volatile int *plaintext = (int *)ACCEL_B;
 	volatile int *cyphertext = (int *)ACCEL_C;
 	volatile int *ctrl_ptr = (int*)ACCEL_CTRL;
 	volatile int *encryptor_lock = (int*)LOCK;
 	if (CORE_INDEX == 0) {// core0
-		int temp;
-		// int counter = 1;
-		// int led_val = 1; //0
-		// PRINT(LEDS, led_val);
-		temp = *encryptor_lock;
 		*encryptor_lock = 1;
-		// counter <<= 1;
-		// if (*encryptor_lock == 0)
-		// 	led_val |= counter; //1
-		// counter <<= 1;
 		for (int i = 0; i < 4; i++) {
 			key_addr[i] = 1;
 			plaintext[i] = 1;
-			// if (key_addr[i] == 1 && plaintext[i] == 1)
-			// 	led_val |= counter;//2.3.4.5
-			// counter <<= 1;
 		}
 		*ctrl_ptr = 1;
 		while (*ctrl_ptr != ACCEL_DONE);
-		// led_val |= cyphertext[0] == 0x3e1f51ca ? counter : 0; //6
-		// counter <<= 1;
-		// led_val |= cyphertext[1] == 0xaf003131 ? counter : 0; //7
-		// counter <<= 1;
-		// led_val |= cyphertext[2] == 0x12144f8a ? counter : 0; //8
-		// counter <<= 1;
-		// led_val |= cyphertext[3] == 0x7f857bf6 ? counter : 0; //9
-		// counter <<= 1;
 		for (int i = 0; i < 4; i++)
 			buf[i] = cyphertext[i];
 		*encryptor_lock = 0;
-		// led_val |= *encryptor_lock == 2 ? counter : 0; //9
-		// PRINT(LEDS, led_val);
-
-		// PRINT(SEVSEG, (buf[0] & ~0xf) | (*encryptor_lock & 0xf));
-		while(1) {
-			// PRINT(LEDS, status);
-		// PRINT(SEVSEG, buf[0]);
-		}
 	}
 	else {
 		unsigned int counter = 1;
@@ -87,9 +63,6 @@ int main(){
 			if (key_addr[i] == buf[i] && plaintext[i] == buf[i]) {
 				status |= counter; //2,3,4,5
 			}
-			// else
-			// 	buf[0] = 0x6969;
-			// 	// buf = key_addr[i] != buf[i] ? key_addr[i] : plaintext[i];
 			counter <<= 1;
 		}
 		*ctrl_ptr = 1;
@@ -103,7 +76,6 @@ int main(){
 		status |= cyphertext[3] == 0x5a43f327 ? counter : 0; //9
 		PRINT(SEVSEG, cyphertext[0]);
 		PRINT(LEDS, status);
-		// while(1);
 	}
 	STOP;
 }

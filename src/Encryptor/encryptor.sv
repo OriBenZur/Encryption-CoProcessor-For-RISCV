@@ -34,11 +34,11 @@ module encryptor
 	logic [15:0] round_counter;
 	byte rc;
 	
-	logic [31:0] key[3:0];
-	logic [31:0] key_in[3:0];
+	logic [31:0] key[0:3];
+	logic [31:0] key_in[0:3];
 	logic [31:0] key_o;
-	logic [31:0] plaintext[3:0];
-	logic [31:0] cyphertext[3:0];
+	logic [31:0] plaintext[0:3];
+	logic [31:0] cyphertext[0:3];
 	int i;
 	// logic [31:0] cyphertext_in[3:0];
 
@@ -135,7 +135,7 @@ module encryptor
 				key <= '{key_in[0], key_in[1], key_in[2], key_in[3]};
 			else if (counter > 16'b01) begin
 				rc <= counter[1:0] == 1 ? ((rc < 8'h80) ? rc << 1 : ((rc << 1) ^ 9'h11b)) : rc;
-				key[2:0] <= key[3:1];
+				key[0:2] <= key[1:3];
 				key[3] <= (counter[1:0] == 2) ? key[0] ^ subWord(rotWord(key[3])) ^ (rc << 24) : key[3] ^ key[0];
 				// key <= '{key[3:1], (counter[1:0] == 1) ? key[0] ^ subWord(rotWord(key[3])) ^ (rc << 24) : key[3] ^ key[0]};
 				// else if (i >= KEY_SIZE && KEY_SIZE > 6 && i % KEY_SIZE == 4) key_out <= key_N_i ^ subWord(key_i_1);

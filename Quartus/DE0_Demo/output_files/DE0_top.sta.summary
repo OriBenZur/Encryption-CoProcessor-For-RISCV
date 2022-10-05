@@ -7,11 +7,11 @@ Slack : 0.298
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Setup 'PLL_instance|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 15.673
+Slack : 14.425
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Setup 'MemPLL|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 25.656
+Slack : 25.219
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Hold 'PLL_instance|altpll_component|auto_generated|pll1|clk[0]'
@@ -23,15 +23,15 @@ Slack : 0.393
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Hold 'MemPLL|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 6.085
+Slack : 6.309
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Recovery 'PLL_instance|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 993.836
+Slack : 995.109
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Removal 'PLL_instance|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 1.998
+Slack : 0.952
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Minimum Pulse Width 'out_BUTTON_1'
@@ -43,11 +43,11 @@ Slack : 9.820
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Minimum Pulse Width 'MemPLL|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 49.681
+Slack : 49.678
 TNS   : 0.000
 
 Type  : Slow 1200mV 85C Model Minimum Pulse Width 'PLL_instance|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 499.712
+Slack : 499.688
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Setup 'out_BUTTON_1'
@@ -55,15 +55,15 @@ Slack : 0.361
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Setup 'PLL_instance|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 17.987
+Slack : 16.873
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Setup 'MemPLL|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 27.338
+Slack : 26.936
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Hold 'PLL_instance|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 0.306
+Slack : 0.305
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Hold 'out_BUTTON_1'
@@ -71,15 +71,15 @@ Slack : 0.354
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Hold 'MemPLL|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 5.559
+Slack : 5.703
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Recovery 'PLL_instance|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 994.392
+Slack : 995.481
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Removal 'PLL_instance|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 1.813
+Slack : 0.774
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Minimum Pulse Width 'out_BUTTON_1'
@@ -91,11 +91,11 @@ Slack : 9.830
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Minimum Pulse Width 'MemPLL|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 49.693
+Slack : 49.699
 TNS   : 0.000
 
 Type  : Slow 1200mV 0C Model Minimum Pulse Width 'PLL_instance|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 499.677
+Slack : 499.651
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Setup 'out_BUTTON_1'
@@ -103,11 +103,11 @@ Slack : 0.693
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Setup 'PLL_instance|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 34.633
+Slack : 33.868
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Setup 'MemPLL|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 39.079
+Slack : 38.748
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Hold 'PLL_instance|altpll_component|auto_generated|pll1|clk[0]'
@@ -119,15 +119,15 @@ Slack : 0.169
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Hold 'MemPLL|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 2.566
+Slack : 2.654
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Recovery 'PLL_instance|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 996.891
+Slack : 997.526
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Removal 'PLL_instance|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 0.990
+Slack : 0.536
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Minimum Pulse Width 'out_BUTTON_1'
@@ -139,11 +139,11 @@ Slack : 9.530
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Minimum Pulse Width 'MemPLL|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 49.721
+Slack : 49.715
 TNS   : 0.000
 
 Type  : Fast 1200mV 0C Model Minimum Pulse Width 'PLL_instance|altpll_component|auto_generated|pll1|clk[0]'
-Slack : 499.712
+Slack : 499.729
 TNS   : 0.000
 
 ------------------------------------------------------------
