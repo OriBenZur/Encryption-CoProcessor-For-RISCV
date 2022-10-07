@@ -1,5 +1,5 @@
 MIF/HEX Update report for DE0_top
-Tue Oct  4 19:00:26 2022
+Fri Oct  7 16:47:06 2022
 Quartus Prime Version 21.1.1 Build 850 06/23/2022 SJ Lite Edition
 
 
@@ -36,7 +36,7 @@ https://fpgasoftware.intel.com/eula.
 +---------------------------------------------------------------+
 ; MIF/HEX Update Summary                                        ;
 +-----------------------+---------------------------------------+
-; MIF/HEX Update Status ; Successful - Tue Oct  4 19:00:26 2022 ;
+; MIF/HEX Update Status ; Successful - Fri Oct  7 16:47:06 2022 ;
 ; Revision Name         ; DE0_top                               ;
 ; Top-level Entity Name ; DE0_top                               ;
 ; Family                ; MAX 10                                ;
@@ -61,15 +61,15 @@ Warning (125092): Tcl Script File mem_test.qip not found
 Info: *******************************************************************
 Info: Running Quartus Prime MIF/HEX Update
     Info: Version 21.1.1 Build 850 06/23/2022 SJ Lite Edition
-    Info: Processing started: Tue Oct  4 19:00:25 2022
+    Info: Processing started: Fri Oct  7 16:47:04 2022
 Info: Command: quartus_cdb DE0_top -c DE0_top --update_mif
-Critical Warning (127005): Memory depth (2048) in the design file differs from memory depth (1849) in the Memory Initialization File "C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/test.mif" -- setting initial value for remaining addresses to 0
+Critical Warning (127005): Memory depth (2048) in the design file differs from memory depth (1721) in the Memory Initialization File "C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/test.mif" -- setting initial value for remaining addresses to 0
 Info (39024): Processed the following Memory Initialization File(s)
     Info (39025): Processed Memory Initialization File C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/test.mif File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/test.mif Line: 0
 Info: Quartus Prime MIF/HEX Update was successful. 0 errors, 2 warnings
     Info: Peak virtual memory: 4773 megabytes
-    Info: Processing ended: Tue Oct  4 19:00:26 2022
-    Info: Elapsed time: 00:00:01
+    Info: Processing ended: Fri Oct  7 16:47:06 2022
+    Info: Elapsed time: 00:00:02
     Info: Total CPU time (on all processors): 00:00:01
 
 

@@ -27,6 +27,7 @@
 int main(){
 	int* leds = (int*)0x14;
 	volatile int *buf = (int*)734;
+	unsigned int *status = (unsigned int*)730;
 	volatile int *key_addr = (int *)ACCEL_A;
 	volatile int *plaintext = (int *)ACCEL_B;
 	volatile int *cyphertext = (int *)ACCEL_C;
@@ -43,39 +44,41 @@ int main(){
 		for (int i = 0; i < 4; i++)
 			buf[i] = cyphertext[i];
 		*encryptor_lock = 0;
+		while(1) {
+			PRINT(LEDS, *status);
+			PRINT(SEVSEG, buf[0]);
+		}
 	}
 	else {
 		unsigned int counter = 1;
-		unsigned int status = 0;
 		*buf = 0;
 		while (*buf == 0);
 		while (*encryptor_lock != N_CORES);
-		status = counter; //0
+		*status = counter; //0
 		counter <<= 1;
 		*encryptor_lock = 1;
 		if (*encryptor_lock == 1) {
-			status |= counter; //1
+			*status |= counter; //1
 		}
 		counter <<= 1;
 		for (int i = 0; i < 4; i++) {
 			key_addr[i] = buf[i];
 			plaintext[i] = buf[i];
 			if (key_addr[i] == buf[i] && plaintext[i] == buf[i]) {
-				status |= counter; //2,3,4,5
+				*status |= counter; //2,3,4,5
 			}
 			counter <<= 1;
 		}
 		*ctrl_ptr = 1;
 		while (*ctrl_ptr != ACCEL_DONE);
-		status |= cyphertext[0] == 0x41de6075 ? counter : 0; //6
+		*status |= cyphertext[0] == 0x41de6075 ? counter : 0; //6
 		counter <<= 1;
-		status |= cyphertext[1] == 0xb7865f61 ? counter : 0; //7
+		*status |= cyphertext[1] == 0xb7865f61 ? counter : 0; //7
 		counter <<= 1;
-		status |= cyphertext[2] == 0x79657635 ? counter : 0; //8
+		*status |= cyphertext[2] == 0x79657635 ? counter : 0; //8
 		counter <<= 1;
-		status |= cyphertext[3] == 0x5a43f327 ? counter : 0; //9
-		PRINT(SEVSEG, cyphertext[0]);
-		PRINT(LEDS, status);
+		*status |= cyphertext[3] == 0x5a43f327 ? counter : 0; //9
+		*buf = cyphertext[0];
 	}
 	STOP;
 }

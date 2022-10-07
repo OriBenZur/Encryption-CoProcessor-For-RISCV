@@ -234,6 +234,7 @@ SEG7_LUT	SEG5(
 	wire [DATA_WIDTH-1:0] encryptor_data_out;
 	wire encryptor_select;
 	wire encryptor_we_mem_data;
+	wire lock_accelerator_rst_n;
 
 
 
@@ -270,7 +271,7 @@ always@* begin
 	for (i = 0; i < 2; i = i + 1) begin
 		if (cpu_encryptor_select[i])
 			val_mem_data_read[i] = lock_data_out[i];
-		else if (addr_mem_data[0] == `CORE_INDEX_ADDR)
+		else if (addr_mem_data[i] == `CORE_INDEX_ADDR)
 			val_mem_data_read[i] = i;
 		else
 			val_mem_data_read[i] = val_mem_data_read_ram[i];
@@ -426,7 +427,7 @@ always @ (negedge out_BUTTON_1 )
 `define LEDS_ADDR_LAST  32'h014
 wire leds_select;
 
-assign leds_select = (addr_mem_data[1]>=`LEDS_ADDR_START) & (addr_mem_data[1]<=`LEDS_ADDR_LAST);
+assign leds_select = (addr_mem_data[0]>=`LEDS_ADDR_START) & (addr_mem_data[0]<=`LEDS_ADDR_LAST);
 
 leds_mgmt leds_mgmt_display
 (
@@ -465,7 +466,7 @@ end
 
 
 `define ENCRYPTOR_ADDR_START 32'h024
-`define ENCRYPTOR_ADDR_LAST  32'h05E
+`define ENCRYPTOR_ADDR_LAST  32'h05F
 assign cpu_encryptor_select = '{(addr_mem_data[0]>=`ENCRYPTOR_ADDR_START) & (addr_mem_data[0]<=`ENCRYPTOR_ADDR_LAST), (addr_mem_data[1]>=`ENCRYPTOR_ADDR_START) & (addr_mem_data[1]<=`ENCRYPTOR_ADDR_LAST)};
 
 
@@ -482,7 +483,8 @@ lock #(.N_CLIENTS(32'd2), .LOCK_ADDR(32'h5C)) encryptor_lock
     .data_to_accel(encryptor_data_in), // input from the accelerator
     .addr_o(encryptor_addr_in),
     .wr_en_o(encryptor_we_mem_data), //Write enable
-    .accel_select_o(encryptor_select), 
+    .accel_select_o(encryptor_select),
+	.accelerator_rst_n(lock_accelerator_rst_n),
 
     .data_out(lock_data_out) // Output Data // fix
 );
@@ -490,7 +492,7 @@ lock #(.N_CLIENTS(32'd2), .LOCK_ADDR(32'h5C)) encryptor_lock
 
 encryptor #(.ENCRYPTOR_ADDR(`ENCRYPTOR_ADDR_START)) encryption_CoProcessor
 (
-	.rst_n(reset_n),
+	.rst_n(reset_n | lock_accelerator_rst_n),
 	.clk(clock_to_core),
 	.addr(encryptor_addr_in),
 	.data_in(encryptor_data_in),

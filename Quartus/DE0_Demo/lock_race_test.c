@@ -26,39 +26,47 @@
  */
 int main(){
 	int* leds = (int*)0x14;
-	volatile int *status = (int*)734;
+	volatile int *status = (int*)730;
+    volatile int *buf = (int*)734;
 	volatile int *key_addr = (int *)ACCEL_A;
 	volatile int *plaintext = (int *)ACCEL_B;
 	volatile int *cyphertext = (int *)ACCEL_C;
 	volatile int *ctrl_ptr = (int*)ACCEL_CTRL;
 	volatile int *encryptor_lock = (int*)LOCK;
 	if (CORE_INDEX == 0) {// core0
-        // *status = 1; // Extra instruction
+        // for (int i = 0; i < 1; i++); // Extra instruction
 		*encryptor_lock = 1;
-        if (*encryptor_lock == 0) {
-            for (int i = 0; i < 4; i++) {
-                key_addr[i] = 1;
-                plaintext[i] = 1;
-            }
-            *ctrl_ptr = 1;
-            while (*ctrl_ptr != ACCEL_DONE);
-            if (cyphertext[0] != 0x66e94bd4 || cyphertext[1] != 0xef8a2c3b || cyphertext[2] != 0x884cfa59 || cyphertext[3] != 0xca342b2e)
-                status = 0xFFFFFFFF;
-        }
-        while (1) PRINT(SEVSEG, *status);
-	}
-	else { //core1
-        // *status = 1; // Extra instruction
-        *encryptor_lock = 1;
-        if (*encryptor_lock == 1) {
+        if (*encryptor_lock == CORE_INDEX) {
             for (int i = 0; i < 4; i++) {
                 key_addr[i] = 0;
                 plaintext[i] = 0;
             }
             *ctrl_ptr = 1;
             while (*ctrl_ptr != ACCEL_DONE);
-            if (cyphertext[0] != 0x66e94bd4 || cyphertext[1] != 0xef8a2c3b || cyphertext[2] != 0x884cfa59 || cyphertext[3] != 0xca342b2e)
-                status = 0xFFFFFFFF;
+            *status = CORE_INDEX + 1;
+            *buf = cyphertext[0];
+            if ((*encryptor_lock == CORE_INDEX) && (cyphertext[0] != 0x66e94bd4 || cyphertext[1] != 0xef8a2c3b || cyphertext[2] != 0x884cfa59 || cyphertext[3] != 0xca342b2e))
+                *status = 0xFFFFFF;
+        }
+        while (1) {
+            PRINT(LEDS, *status);
+            PRINT(SEVSEG, *buf);
+        }
+	}
+	else { //core1
+        // for (int i = 0; i < 1; i++); // Extra instruction
+        *encryptor_lock = 1;
+        if (*encryptor_lock == CORE_INDEX) {
+            for (int i = 0; i < 4; i++) {
+                key_addr[i] = 1;
+                plaintext[i] = 1;
+            }
+            *ctrl_ptr = 1;
+            while (*ctrl_ptr != ACCEL_DONE);
+            *status = CORE_INDEX + 1;
+            *buf = cyphertext[0];
+            if ((*encryptor_lock == CORE_INDEX) && (cyphertext[0] != 0x3e1f51ca || cyphertext[1] != 0xaf003131 || cyphertext[2] != 0x12144f8a || cyphertext[3] != 0x7f857bf6))
+                *status = 0xFFFFFF;
         }
         while (1);
 	}

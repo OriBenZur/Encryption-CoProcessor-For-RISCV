@@ -19,6 +19,7 @@ module lock
     output logic [31:0] addr_o, // Address
     output logic wr_en_o, //Write enable
     output logic accel_select_o,
+    output logic accelerator_rst_n,
 
     output logic [31:0] data_out[0:N_CLIENTS - 1] // Output Data to cores
     );
@@ -27,7 +28,7 @@ module lock
     parameter logic [31:0] LOCK_ADDR = 32'd84;
 
     logic [31:0] lock;
-	logic lock_locked;
+	logic lock_locked, lock_locked_d;
 
     int i;
 	
@@ -48,25 +49,13 @@ module lock
         end
         
     end
-	 
-    // // lock-accelerator
-    // always_comb begin
-    //     if (lock != N_CLIENTS) begin 
-    //         addr_o = addr_in[lock];
-    //         wr_en_o = wr_en_in[lock];
-    //         accel_select_o = select_in[lock];
-    //     end
-    //     else begin
-    //         addr_o = 0;
-    //         wr_en_o = 0;
-    //         accel_select_o = 0;
-    //     end
-    // end
+
     
     // Lock logic
     always_ff @ (posedge clk or negedge rst_n) begin
         if (~rst_n) begin
             lock <= N_CLIENTS;
+            lock_locked_d <= 0;
         end
         else if (lock_locked) begin 
             lock <= (addr_in[lock] == LOCK_ADDR && wr_en_in[lock] && select_in[lock] && data_in[lock] == 32'h0000) ? N_CLIENTS : lock;  
@@ -79,5 +68,7 @@ module lock
                 end
             end
         end
+        lock_locked_d <= lock_locked;
+        accelerator_rst_n <= ~lock_locked & lock_locked_d;
     end
 endmodule

@@ -14,12 +14,15 @@
 
 #define N_CORES 2
 
+#define TEST_CORE 1
+
 #define PRINT(i, j) *((int *)(i)) = (j)
 #define STOP while(1)
 
 
 /**
  * @brief This test tests encryption on one core, while the other tries to write to the accelerator and read from it.
+ * 		The #define TEST_CORE determines which core is the one that performs the encryption
  * 
  * @return On the display, 1 == success, 0xFFFFFF == fail
  */
@@ -31,7 +34,7 @@ int main(){
 	volatile int *cyphertext = (int *)ACCEL_C;
 	volatile int *ctrl_ptr = (int*)ACCEL_CTRL;
 	volatile int *encryptor_lock = (int*)LOCK;
-	if (CORE_INDEX == 0) {// core0
+	if (CORE_INDEX == TEST_CORE) {
 		*encryptor_lock = 1;
 		for (int i = 0; i < 4; i++) {
 			key_addr[i] = 1;
@@ -40,15 +43,14 @@ int main(){
 		}
 		*ctrl_ptr = 1;
 		while (*ctrl_ptr != ACCEL_DONE);
-        while (1) PRINT(SEVSEG, *status);
 	}
-	else { //core1
-        status = 1;
+	else {
+        *status = 1;
         while(1) for (int i = 0; i < 4; i++) {
             key_addr[i] = 0x1234;
             plaintext[i] = 0x5678;
-            status = (key_addr[i] != 0 || plaintext[i] != 0) ? 0xFFFFFFFF : status;
+            *status = (key_addr[i] != 0 || plaintext[i] != 0) ? 0xFFFFFFFF : *status;
         }
 	}
-	STOP;
+	while (1) PRINT(SEVSEG, *status);
 }
