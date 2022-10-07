@@ -26,23 +26,14 @@ This repository is a work in progress.
 Device/Register | Address
 --- | --- 
 LEDs | [0x10,0x13]
---- | --- 
 7-Seg Dispaly | [0x14,0x17]
---- | --- 
 Core Index (0/1) | [0x20,0x23]
---- | --- 
 CoProcessor | [0x24,0x5F]
---- | --- 
 CoProcessor::Control Register | [0x24,0x27]
---- | --- 
 CoProcessor::Performance Counter | [0x28,0x2B]
---- | --- 
 CoProcessor::Key | [0x2C,0x3B]
---- | --- 
 CoProcessor::Plaintext | [0x3C,0x4B]
---- | --- 
 CoProcessor::Cyphertext | [0x4C,0x5B]
---- | --- 
 CoProcessor::Lock | [0x5C,0x5F]
 
 ## CoProcessor Interface
@@ -88,15 +79,10 @@ CoProcessor::Lock | [0x5C,0x5F]
 Information | Switches[2:8]
 --- | --- 
 addr_mem_prog | 0x1
---- | --- 
 val_mem_data_write | 0x2
---- | --- 
 val_mem_prog | 0x3
---- | --- 
 addr_mem_data | 0x4
---- | --- 
 val_mem_data_read | 0x5
---- | --- 
 CoProcessor::Performance Counter | default
 
 
