@@ -1,4 +1,5 @@
-# Introduction: AES Encryption unit + 2 RV32i Cores
+# AES Encryption unit + 2 RV32i Cores
+## Introduction
   In this project, I've built an encryption Co-Processor and connected it to two RISC-V cores. The encryption unit is implemented in systemverilog with Quartue enviroment.
   The CoProcessor interfaces with the processor exclusively via MMIO, and the CoProcessor doesn't have access to the core's memory.
   Project goals:
@@ -9,15 +10,15 @@
 ## Current State
   The Project is complete!
 
-# Requirements
+## Requirements
   This projects should be compiled and worked on in the "Quartus" enviroment.
   Quartus 21.1 is recommended, any later version and some later versions will probably work.
 
-# Setup and Compilation
+## Setup and Compilation
   To compile the project, open the file Quartus/DE0_Demo/DE0_top.qpf in Quartus and perform full compilation.
   To update the program loaded to the processor, go to Processing->Update Memory Initialization File and then run the Assembler and reload the sof to the FPGA.
 
-# Processor Devices and Interfaces
+## Processor Devices and Interfaces
   All the cores use MMIO to interface with the following devices: CoProcessor, LEDS, Seven-Segment display
   Reading and writing to those devices is done by writing to their appropriate memory address, and only core0 can write to the LEDs and Seven-Segment display
 
@@ -34,7 +35,7 @@ CoProcessor::Plaintext | [0x3C,0x4B]
 CoProcessor::Cyphertext | [0x4C,0x5B]
 CoProcessor::Lock | [0x5C,0x5F]
 
-## CoProcessor Interface
+### CoProcessor Interface
   To use the CoProcessor, one need to first acquire it's lock. To acquire the lock, the core needs to write the value 0x1 to the lock's address.
   To check if the core acquired the lock, compare the value in the lock's address and the core index. If they are equal then the core acquired the lock.
   While a core has the lock, the other can't write to the CoProcessor, and reading from it will return 0.
@@ -43,33 +44,33 @@ CoProcessor::Lock | [0x5C,0x5F]
   Values need to be written to the key and plaintext fields, and it's then activated by writing 1 to the ControlRegister.
   The Coprocessor finished when ControlRegister == 0x80000000.
 
-## The Core
+### The Core
   The RISC-V cores that power this project is a simple RV32i single-cycle core.
   To avoid memory conflicts, at reset, core0's RSP is set to 0 while core1's RSP is set to 512.
   The cores are powered by a 1Mhz clock.
 
 
-## Memory
+### Memory
   The design currently has 2KB of data memory and 8KB of program memory (notice the two different address spaces). Both memories are true dual-port
 
   The mif file Quartus/DE0_Demo/test.mif is loaded to the program memory and is then run by the processor.
 
   Because the core only supports register-based memory and doesn't support RAM (it appears it once did, but it no longer), the memory moduels use a 10Mhz clock. 
 
-## Lock
+### Lock
   The system has one lock which also serves as a mux to the CoProcessor.
 
-## CoProcessor
+### CoProcessor
   The AES encryption unit uses look-up tables to implement AES efficiently, and only supports encryption (not decryption).
 
 
-# Expanding The Project
+## Expanding The Project
   Feel free to expand the project further. Some things that can be done:
   1. Using a more advanced core (with memory support/pipelined/...)
   2. Adding decryption functionality to the CoProcessor
   3. Making a more efficient/better interface between the CoProcessor and the cores.
 
-## Debugging
+### Debugging
   I've found debugging very difficult when using Quartus Prime Lite, so the top level object has the ability to display information from the CPU on the 7Seg display.
   The values of switches[2:9] dictates what information will be displayed on the display. Switch[9] dictates which core will feed the display. Simplified chart that details the rest of the mechasim is below.
   
@@ -85,7 +86,7 @@ CoProcessor::Performance Counter | default
 
 
 <!--
-# OLD README
+## OLD README
 
  [![Build Status](https://travis-ci.com/4a1c0/RV32i-Verilog.svg?branch=master)](https://travis-ci.com/4a1c0/RV32i-Verilog)
 
