@@ -11,8 +11,9 @@
   The Project is complete!
 
 ## Requirements
-  This projects should be compiled and worked on in the "Quartus" enviroment.
-  Quartus 21.1 is recommended, any later version and some later versions will probably work.
+  1. This projects should be compiled and worked on in the "Quartus" enviroment. Quartus 21.1 is recommended, any later version and some later versions will probably work.
+  2. RISCV toolchain is needed for compiling programs to run on the CPU
+
 
 ## Setup and Compilation
   To compile the project, open the file Quartus/DE0_Demo/DE0_top.qpf in Quartus and perform full compilation.

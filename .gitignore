@@ -1,5 +1,2 @@
-Quartus/DE0_Demo/simulation/qsim/work/_lib1_8.qpg
-Quartus/DE0_Demo/simulation/qsim/work/_lib1_9.qpg
-Quartus/DE0_Demo/simulation/qsim/work/_lib1_19.qpg
-Quartus/DE0_Demo/simulation/qsim/work/_lib1_38.qpg
-Quartus/DE0_Demo/simulation/qsim/work/_lib1_40.qpg
+Quartus/DE0_Demo/simulation/qsim/work/*
+riscv-gnu-toolchain/*
