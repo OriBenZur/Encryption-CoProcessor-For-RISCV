@@ -1,5 +1,3 @@
-This repository is a work in progress.
-
 # Introduction: AES Encryption unit + 2 RV32i Cores
   In this project, I've built an encryption Co-Processor and connected it to two RISC-V cores. The encryption unit is implemented in systemverilog with Quartue enviroment.
   The CoProcessor interfaces with the processor exclusively via MMIO, and the CoProcessor doesn't have access to the core's memory.
