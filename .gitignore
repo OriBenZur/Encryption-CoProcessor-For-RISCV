@@ -1,5 +1,2 @@
 Quartus/DE0_Demo/simulation/qsim/work/*
 riscv-gnu-toolchain/*
-Quartus/DE0_Demo/simulation/*.vho
-Quartus/DE0_Demo/simulation/*.vht
-Quartus/DE0_Demo/simulation/*.vhd
