@@ -13,11 +13,17 @@
 ## Requirements
   1. This projects should be compiled and worked on in the "Quartus" enviroment. Quartus 21.1 is recommended, any later version and some later versions will probably work.
   2. RISCV toolchain is needed for compiling programs to run on the CPU
+  3. Some parts of the project (C file compilation) might require using the windows operating system or modying some parts of the project
 
 
 ## Setup and Compilation
   To compile the project, open the file Quartus/DE0_Demo/DE0_top.qpf in Quartus and perform full compilation.
-  To update the program loaded to the processor, go to Processing->Update Memory Initialization File and then run the Assembler and reload the sof to the FPGA.
+  
+  To compile a new program to run on the processor, use the "program_compile.ps1" powershell script. The C program that the script compiles can be changed.
+  The script generates the executable- "test" and also a detailed dump file- "test.dump" which can be used for debugging.
+  The script uses the program srec_cat.exe which is present in the scripts folder. Both the reference srec_cat and the script itself might cause problems for linux/mac users.
+
+  To update the program loaded to the processor, go to Processing->Update Memory Initialization File and then run the Assembler and reload the .sof on to the FPGA.
 
 ## Processor Devices and Interfaces
   All the cores use MMIO to interface with the following devices: CoProcessor, LEDS, Seven-Segment display
