@@ -1,1 +1,1 @@
-Warning (10268): Verilog HDL information at key_expander.sv(43): always construct contains both blocking and non-blocking assignments File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/key_expander.sv Line: 43
+Warning (10268): Verilog HDL information at double_front_encryptor.sv(90): always construct contains both blocking and non-blocking assignments File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/double_front_encryptor.sv Line: 90

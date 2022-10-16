@@ -1,2 +1,3 @@
 Quartus/DE0_Demo/simulation/qsim/work/*
+Quartus/DE0_Demo/db/*
 riscv-gnu-toolchain/*

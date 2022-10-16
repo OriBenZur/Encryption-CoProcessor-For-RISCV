@@ -34,16 +34,21 @@ CoProcessor::Performance Counter | [0x28,0x2B]
 CoProcessor::Key | [0x2C,0x3B]
 CoProcessor::Plaintext | [0x3C,0x4B]
 CoProcessor::Cyphertext | [0x4C,0x5B]
-CoProcessor::Lock | [0x5C,0x5F]
+CoProcessor::Lock (Optional) | [0x5C,0x5F]
 
 ### CoProcessor Interface
+  Each core can read and write to and from the CoProcessor independantly, as it keeps seperate registers for each core.
+  Values need to be written to the key and plaintext fields, and it's then activated by writing 1 to the ControlRegister.
+  The Coprocessor finished when ControlRegister == 0x80000000.
+  
+  A user can optinaly use a lock-mux module to regulate access to the accelerator and reduce the accelerator's size. defining the constant "USING_LOCK" in the file "DE0_TOP.v" and recompiling switches to lock mode.
   To use the CoProcessor, one need to first acquire it's lock. To acquire the lock, the core needs to write the value 0x1 to the lock's address.
   To check if the core acquired the lock, compare the value in the lock's address and the core index. If they are equal then the core acquired the lock.
   While a core has the lock, the other can't write to the CoProcessor, and reading from it will return 0.
-
   Once the lock is acquired, the accelerator can be used.
-  Values need to be written to the key and plaintext fields, and it's then activated by writing 1 to the ControlRegister.
-  The Coprocessor finished when ControlRegister == 0x80000000.
+
+  The default accelerator configuration doesn't use the lock, which means it uses the file "double_front_encryptor.sv" which implements the module df_encryptor.
+  To use the lock-mux module, the df_encryptor module needs to be switched out in favor of the "encryptor" module that's implemented in encryptor.sv. This is currently done automatically as described above.
 
 ### The Core
   The RISC-V cores that power this project is a simple RV32i single-cycle core.
@@ -53,6 +58,7 @@ CoProcessor::Lock | [0x5C,0x5F]
 
 ### Memory
   The design currently has 2KB of data memory and 8KB of program memory (notice the two different address spaces). Both memories are true dual-port
+  Because of the different address spaces, statically allocated variables and array aren't supported.
 
   The mif file Quartus/DE0_Demo/test.mif is loaded to the program memory and is then run by the processor.
 
@@ -67,13 +73,16 @@ CoProcessor::Lock | [0x5C,0x5F]
 
 ## Expanding The Project
   Feel free to expand the project further. Some things that can be done:
-  1. Using a more advanced core (with memory support/pipelined/...)
-  2. Adding decryption functionality to the CoProcessor
-  3. Making a more efficient/better interface between the CoProcessor and the cores.
+  1. Adding decryption capabilities to the accelerator
+  2. DMA support to the accelerator.
+  3. After adding DMA, the accelerator can keep queues of requests instead of one request from each core.
+  4. Adding proper memory support for the cores, and maybe using larger cores.
+
 
 ### Debugging
   I've found debugging very difficult when using Quartus Prime Lite, so the top level object has the ability to display information from the CPU on the 7Seg display.
   The values of switches[2:9] dictates what information will be displayed on the display. Switch[9] dictates which core will feed the display. Simplified chart that details the rest of the mechasim is below.
+  The debugging mechanism can be turned off by commenting the line "`define DEBUG" in the file "DE0_top.v"
   
 
 Information | Switches[2:8]

@@ -335,13 +335,10 @@ progMem mem_prog_de0 (
 
 `endif
 
+`define DEBUG
 
-// assign iDIG_0    = SW[2] ? iDIG_0_o : addr_mem_prog[0][3:0];
-// assign iDIG_1    = SW[2] ? iDIG_1_o : addr_mem_prog[0][7:4];
-// assign iDIG_2    = SW[2] ? iDIG_2_o : addr_mem_prog[0][11:8]; 
-// assign iDIG_3    = SW[2] ? iDIG_3_o : addr_mem_prog[0][I_ADDR_WIDTH-1:12];
-// assign iDIG_4    = SW[2] ? iDIG_4_o : 4'h0;
-// assign iDIG_5    = SW[2] ? iDIG_5_o : clock_to_core ? 4'b1 : 4'b0;
+`ifdef DEBUG
+
 
 always@* begin 
 	case(SW[8:2])
@@ -396,12 +393,16 @@ always@* begin
 	endcase
 end
 
-// assign iDIG_0    = SW[2] ? addr_mem_prog[0][3:0] 				:	val_mem_data_write[0][3:0];
-// assign iDIG_1    = SW[2] ? addr_mem_prog[0][7:4] 				: 	val_mem_data_write[0][7:4];
-// assign iDIG_2    = SW[2] ? addr_mem_prog[0][11:8] 				: 	val_mem_data_write[0][11:8]; 
-// assign iDIG_3    = SW[2] ? addr_mem_prog[0][I_ADDR_WIDTH-1:12]	: 	val_mem_data_write[0][15:12];
-// assign iDIG_4    = SW[2] ? 4'h0 								: 	val_mem_data_write[0][19:16];
-// assign iDIG_5    = SW[2] ? (clock_to_core ? 4'b1 : 4'b0) 		: 	val_mem_data_write[0][23:20];
+`else
+
+assign iDIG_0    = SW[2] ? addr_mem_prog[0][3:0] 				:	val_mem_data_write[0][3:0];
+assign iDIG_1    = SW[2] ? addr_mem_prog[0][7:4] 				: 	val_mem_data_write[0][7:4];
+assign iDIG_2    = SW[2] ? addr_mem_prog[0][11:8] 				: 	val_mem_data_write[0][11:8]; 
+assign iDIG_3    = SW[2] ? addr_mem_prog[0][I_ADDR_WIDTH-1:12]	: 	val_mem_data_write[0][15:12];
+assign iDIG_4    = SW[2] ? 4'h0 								: 	val_mem_data_write[0][19:16];
+assign iDIG_5    = SW[2] ? (clock_to_core ? 4'b1 : 4'b0) 		: 	val_mem_data_write[0][23:20];
+
+`endif
 
 assign reset_n   = BUTTON[0]; 
 assign clock_to_core = (SW[0] ?  (SW[1])? out_10hz:PLL_1MHzclock :virtual_clk);	 		 
@@ -465,6 +466,7 @@ always @(posedge PLL_1MHzclock or negedge reset_n) begin
 end
 
 
+`ifdef USING_LOCK
 `define ENCRYPTOR_ADDR_START 32'h024
 `define ENCRYPTOR_ADDR_LAST  32'h05F
 assign cpu_encryptor_select = '{(addr_mem_data[0]>=`ENCRYPTOR_ADDR_START) & (addr_mem_data[0]<=`ENCRYPTOR_ADDR_LAST), (addr_mem_data[1]>=`ENCRYPTOR_ADDR_START) & (addr_mem_data[1]<=`ENCRYPTOR_ADDR_LAST)};
@@ -501,4 +503,27 @@ encryptor #(.ENCRYPTOR_ADDR(`ENCRYPTOR_ADDR_START)) encryption_CoProcessor
 	.wr_en(encryptor_we_mem_data),
 	.ctr(ctr)
     );
+
+
+`else
+
+`define ENCRYPTOR_ADDR_START 32'h024
+`define ENCRYPTOR_ADDR_LAST  32'h05B
+assign cpu_encryptor_select = '{(addr_mem_data[0]>=`ENCRYPTOR_ADDR_START) & (addr_mem_data[0]<=`ENCRYPTOR_ADDR_LAST), (addr_mem_data[1]>=`ENCRYPTOR_ADDR_START) & (addr_mem_data[1]<=`ENCRYPTOR_ADDR_LAST)};
+
+
+df_encryptor #(.ENCRYPTOR_ADDR(`ENCRYPTOR_ADDR_START)) encryption_CoProcessor
+(
+	.rst_n(reset_n),
+	.clk(clock_to_core),
+	.addr(addr_mem_data),
+	.data_in(val_mem_data_write),
+	.data_out(lock_data_out),
+	.accel_select(cpu_encryptor_select),
+	.wr_en(we_mem_data),
+	.ctr(ctr)
+    );
+
+`endif
+
 endmodule

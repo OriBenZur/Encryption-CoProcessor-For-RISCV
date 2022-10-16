@@ -1,21 +1,24 @@
 `timescale 1ns/1ps
 
 // Module Declaration
-module encryptor
+module df_encryptor
 (
 	input logic rst_n, // Reset Neg
 	input logic clk, // Clk
-	input logic [31:0] addr, // Address
-	input logic wr_en, //Write enable
-	input logic accel_select,
-	input logic [31:0] data_in,
-	output logic [31:0] data_out, // Output Data
+	input logic [31:0] addr[0:NUM_OF_CLIENTS-1], // Address
+	input logic wr_en[0:NUM_OF_CLIENTS-1], //Write enable
+	input logic accel_select[0:NUM_OF_CLIENTS-1],
+	input logic [31:0] data_in[0:NUM_OF_CLIENTS-1],
+	output logic [31:0] data_out[0:NUM_OF_CLIENTS-1], // Output Data
 	output logic [15:0] ctr
 //	output int stage
     );
 	
 	parameter int ENCRYPTOR_ADDR = 32'h20;
 	parameter int KEY_SIZE = 4;
+	parameter int LOG_NUM_OF_CLIENTS = 1;
+	parameter int NUM_OF_CLIENTS = 2;
+	parameter int QUEUE_LENGTH = 2;
 
 	localparam int KEY_ADDR = {27'd0,ENCRYPTOR_ADDR[6:2]} + 32'd2;
 	localparam int PLAINTEXT_ADDR = {27'd0,ENCRYPTOR_ADDR[6:2]} + 32'd6;
@@ -25,51 +28,59 @@ module encryptor
     localparam int NUM_OF_ROUNDS = DEFAULT_NUM_OF_ROUNDS + KEY_SIZE - DEFAULT_KEY_SIZE;
     localparam int EXPANDED_KEY_SIZE = 4 * DEFAULT_NUM_OF_ROUNDS;
 	
-	logic go_bit;
-	logic go_bit_in;
-	logic done_bit;
+	logic [0:NUM_OF_CLIENTS-1] go_bit;
+	logic [0:NUM_OF_CLIENTS-1] go_bit_in;
+	logic [0:NUM_OF_CLIENTS-1] done_bit;
 	logic done_bit_in;
 
 	logic [15:0] counter;
-	logic [15:0] round_counter;
 	byte rc;
 	
 	logic [31:0] key[0:3];
-	logic [31:0] key_in[0:3];
+	logic [31:0] key_in[0:NUM_OF_CLIENTS-1][0:3];
 	logic [31:0] key_o;
+	logic [31:0] plaintext_in[0:NUM_OF_CLIENTS-1][0:3];
 	logic [31:0] plaintext[0:3];
-	logic [31:0] cyphertext[0:3];
-	int i;
+	logic [31:0] cyphertext[0:NUM_OF_CLIENTS-1][0:3];
+	logic [LOG_NUM_OF_CLIENTS:0] client_sel;
+	int i, j;
 
 	assign ctr = counter;
-	assign go_bit_in = (wr_en & accel_select & (addr[6:2] == ENCRYPTOR_ADDR[6:2]));
+	// assign go_bit_in = (wr_en & accel_select & (addr[6:2] == ENCRYPTOR_ADDR[6:2]));
 
+	always_comb begin
+		for (j = 0; j < NUM_OF_CLIENTS; j = j + 1) begin
+			go_bit_in[j] = (wr_en[j] & accel_select[j] & (addr[j][6:2] == ENCRYPTOR_ADDR[6:2]));
+		end
+	end
 	
 	// always_ff@(addr[6:2], key, plaintext, cyphertext, counter, done_bit, go_bit, counter) begin
 	always_comb begin
-		case(addr[6:2])
-		(ENCRYPTOR_ADDR[6:2] + 5'd0): data_out = {done_bit, 30'b0, go_bit};
-		(ENCRYPTOR_ADDR[6:2] + 5'd1): data_out = {16'b0, counter}; 
-		(ENCRYPTOR_ADDR[6:2] + 5'd2): data_out = key_in[0];
-		(ENCRYPTOR_ADDR[6:2] + 5'd3): data_out = key_in[1];
-		(ENCRYPTOR_ADDR[6:2] + 5'd4): data_out = key_in[2];
-		(ENCRYPTOR_ADDR[6:2] + 5'd5): data_out = key_in[3];
-		(ENCRYPTOR_ADDR[6:2] + 5'd6): data_out = plaintext[0];
-		(ENCRYPTOR_ADDR[6:2] + 5'd7): data_out = plaintext[1];
-		(ENCRYPTOR_ADDR[6:2] + 5'd8): data_out = plaintext[2];
-		(ENCRYPTOR_ADDR[6:2] + 5'd9): data_out = plaintext[3];
-		(ENCRYPTOR_ADDR[6:2] + 5'd10): data_out = cyphertext[0];
-		(ENCRYPTOR_ADDR[6:2] + 5'd11): data_out = cyphertext[1];
-		(ENCRYPTOR_ADDR[6:2] + 5'd12): data_out = cyphertext[2];
-		(ENCRYPTOR_ADDR[6:2] + 5'd13): data_out = cyphertext[3];
-		default: data_out = 32'b0;
+		for (j = 0; j < NUM_OF_CLIENTS; j=j+1) begin
+		case(addr[j][6:2])
+		(ENCRYPTOR_ADDR[6:2] + 5'd0): data_out[j] = {done_bit[j], 30'b0, go_bit[j]};
+		(ENCRYPTOR_ADDR[6:2] + 5'd1): data_out[j] = {16'b0, counter}; 
+		(ENCRYPTOR_ADDR[6:2] + 5'd2): data_out[j] = key_in[j][0];
+		(ENCRYPTOR_ADDR[6:2] + 5'd3): data_out[j] = key_in[j][1];
+		(ENCRYPTOR_ADDR[6:2] + 5'd4): data_out[j] = key_in[j][2];
+		(ENCRYPTOR_ADDR[6:2] + 5'd5): data_out[j] = key_in[j][3];
+		(ENCRYPTOR_ADDR[6:2] + 5'd6): data_out[j] = plaintext_in[j][0];
+		(ENCRYPTOR_ADDR[6:2] + 5'd7): data_out[j] = plaintext_in[j][1];
+		(ENCRYPTOR_ADDR[6:2] + 5'd8): data_out[j] = plaintext_in[j][2];
+		(ENCRYPTOR_ADDR[6:2] + 5'd9): data_out[j] = plaintext_in[j][3];
+		(ENCRYPTOR_ADDR[6:2] + 5'd10): data_out[j] = cyphertext[j][0];
+		(ENCRYPTOR_ADDR[6:2] + 5'd11): data_out[j] = cyphertext[j][1];
+		(ENCRYPTOR_ADDR[6:2] + 5'd12): data_out[j] = cyphertext[j][2];
+		(ENCRYPTOR_ADDR[6:2] + 5'd13): data_out[j] = cyphertext[j][3];
+		default: data_out[j] = 32'h0F0F;
 		endcase
+		end
 	end
 	
 
 	always@(posedge clk or negedge rst_n) begin
-	if(~rst_n) go_bit <= 1'b0;
-	else go_bit <=  go_bit_in ? 1'b1 : 1'b0;
+	if(~rst_n) go_bit <= '{default: '0};
+	else for (j = 0; j < NUM_OF_CLIENTS; j=j+1) go_bit[j] <=  (go_bit_in[j] || go_bit[j]) && ~done_bit[j] ? 1'b1 : 1'b0;
 	end
 	
 	// Counter Logic
@@ -77,10 +88,15 @@ module encryptor
 	// 48 > Counter > 0:	Working
 	// Counter == 48: 		Done
 	always_ff @(posedge clk or negedge rst_n) begin
-		if (~rst_n)
+		if (~rst_n) begin
 			counter <= 16'h00;
-		else if (go_bit_in)
+			client_sel <= '{default: '0};
+		end
+		else if (|go_bit && (done_bit_in || counter == 0)) begin
 			counter <= 16'h01;
+			for (j=1; j <= NUM_OF_CLIENTS; j=j+1)
+				if (go_bit[(j+client_sel) % NUM_OF_CLIENTS]) client_sel <= (j+client_sel)% NUM_OF_CLIENTS;
+		end
 		else if (done_bit_in || counter == 16'h00)
 			counter <= counter;
 		else
@@ -89,21 +105,23 @@ module encryptor
 
 	// Key and plaintext MMIO input
 	always_ff @(posedge clk or negedge rst_n) begin
+		for (j = 0; j < NUM_OF_CLIENTS; j = j+1) begin
 		if (~rst_n) begin
-			key_in <= '{default: '0};
-			plaintext <= '{default: '0};
+			key_in[j] <= '{default: '0};
+			plaintext_in[j] <= '{default: '0};
 		end
-		else if (wr_en & accel_select) begin
+		else if (wr_en[j] & accel_select[j]) begin
 			for (i = 0; i < 4; i++) begin
-				key_in[i] <= (addr[6:2] == (i + KEY_ADDR)) ? data_in : key_in[i];
-				plaintext[i] <= (addr[6:2] == (i + PLAINTEXT_ADDR)) ? data_in : plaintext[i];
+				key_in[j][i] <= (addr[j][6:2] == (i + KEY_ADDR)) ? data_in[j] : key_in[j][i];
+				plaintext_in[j][i] <= (addr[j][6:2] == (i + PLAINTEXT_ADDR)) ? data_in[j] : plaintext_in[j][i];
 			end
 		end
 		else begin
 			for (i = 0; i < 4; i++) begin
-				key_in[i] <= key_in[i];
-				plaintext[i] <= plaintext[i];
+				key_in[j][i] <= key_in[j][i];
+				plaintext_in[j][i] <= plaintext_in[j][i];
 			end
+		end
 		end
 	end
 
@@ -115,8 +133,10 @@ module encryptor
 		end
 		else begin
 			rc <= 1;
-			if (counter == 16'h01)
-				key <= '{key_in[0], key_in[1], key_in[2], key_in[3]};
+			if (counter == 16'h01) begin
+				key <= key_in[client_sel];
+				plaintext <= plaintext_in[client_sel];
+			end
 			else if (counter > 16'b01) begin
 				rc <= counter[1:0] == 1 ? ((rc < 8'h80) ? rc << 1 : ((rc << 1) ^ 9'h11b)) : rc;
 				key[0:2] <= key[1:3];
@@ -131,32 +151,32 @@ module encryptor
 	always@(posedge clk or negedge rst_n) begin
 	if (~rst_n) begin
 //		stage <= 0;
-		for (i = 0; i < 4; i = i + 1) cyphertext[i] <= 32'h0;
+		for (j = 0; j < NUM_OF_CLIENTS; j = j + 1) cyphertext[j] <= '{default: '0};
 	end
 	else if (counter[1:0] != 2 || done_bit_in);
 	else if (counter[15:2] == 0) begin
-		for (i = 0; i < 4; i = i + 1) cyphertext[i] <= plaintext[i] ^ key[i];
+		for (i = 0; i < 4; i = i + 1) cyphertext[client_sel][i] <= plaintext[i] ^ key[i];
 //		stage <= 1;
 	end
 	else if (counter[15:2] < 10) begin
-		cyphertext[0] <= A0[cyphertext[0][31:24]] ^ A1[cyphertext[1][23:16]] ^ A2[cyphertext[2][15:8]] ^ A3[cyphertext[3][7:0]] ^ key[0];
-		cyphertext[1] <= A0[cyphertext[1][31:24]] ^ A1[cyphertext[2][23:16]] ^ A2[cyphertext[3][15:8]] ^ A3[cyphertext[0][7:0]] ^ key[1];
-		cyphertext[2] <= A0[cyphertext[2][31:24]] ^ A1[cyphertext[3][23:16]] ^ A2[cyphertext[0][15:8]] ^ A3[cyphertext[1][7:0]] ^ key[2];
-		cyphertext[3] <= A0[cyphertext[3][31:24]] ^ A1[cyphertext[0][23:16]] ^ A2[cyphertext[1][15:8]] ^ A3[cyphertext[2][7:0]] ^ key[3];
+		cyphertext[client_sel][0] <= A0[cyphertext[client_sel][0][31:24]] ^ A1[cyphertext[client_sel][1][23:16]] ^ A2[cyphertext[client_sel][2][15:8]] ^ A3[cyphertext[client_sel][3][7:0]] ^ key[0];
+		cyphertext[client_sel][1] <= A0[cyphertext[client_sel][1][31:24]] ^ A1[cyphertext[client_sel][2][23:16]] ^ A2[cyphertext[client_sel][3][15:8]] ^ A3[cyphertext[client_sel][0][7:0]] ^ key[1];
+		cyphertext[client_sel][2] <= A0[cyphertext[client_sel][2][31:24]] ^ A1[cyphertext[client_sel][3][23:16]] ^ A2[cyphertext[client_sel][0][15:8]] ^ A3[cyphertext[client_sel][1][7:0]] ^ key[2];
+		cyphertext[client_sel][3] <= A0[cyphertext[client_sel][3][31:24]] ^ A1[cyphertext[client_sel][0][23:16]] ^ A2[cyphertext[client_sel][1][15:8]] ^ A3[cyphertext[client_sel][2][7:0]] ^ key[3];
 	end
 	else begin//if (counter[15:2] == 10) begin
-		cyphertext[0] <= ((s_box[cyphertext[0][31:24]] << 24) | (s_box[cyphertext[1][23:16]] << 16) | (s_box[cyphertext[2][15:8]] << 8) | {24'b0, s_box[cyphertext[3][7:0]]}) ^ key[0];
-		cyphertext[1] <= ((s_box[cyphertext[1][31:24]] << 24) | (s_box[cyphertext[2][23:16]] << 16) | (s_box[cyphertext[3][15:8]] << 8) | {24'b0, s_box[cyphertext[0][7:0]]}) ^ key[1];
-		cyphertext[2] <= ((s_box[cyphertext[2][31:24]] << 24) | (s_box[cyphertext[3][23:16]] << 16) | (s_box[cyphertext[0][15:8]] << 8) | {24'b0, s_box[cyphertext[1][7:0]]}) ^ key[2];
-		cyphertext[3] <= ((s_box[cyphertext[3][31:24]] << 24) | (s_box[cyphertext[0][23:16]] << 16) | (s_box[cyphertext[1][15:8]] << 8) | {24'b0, s_box[cyphertext[2][7:0]]}) ^ key[3];
+		cyphertext[client_sel][0] <= ((s_box[cyphertext[client_sel][0][31:24]] << 24) | (s_box[cyphertext[client_sel][1][23:16]] << 16) | (s_box[cyphertext[client_sel][2][15:8]] << 8) | {24'b0, s_box[cyphertext[client_sel][3][7:0]]}) ^ key[0];
+		cyphertext[client_sel][1] <= ((s_box[cyphertext[client_sel][1][31:24]] << 24) | (s_box[cyphertext[client_sel][2][23:16]] << 16) | (s_box[cyphertext[client_sel][3][15:8]] << 8) | {24'b0, s_box[cyphertext[client_sel][0][7:0]]}) ^ key[1];
+		cyphertext[client_sel][2] <= ((s_box[cyphertext[client_sel][2][31:24]] << 24) | (s_box[cyphertext[client_sel][3][23:16]] << 16) | (s_box[cyphertext[client_sel][0][15:8]] << 8) | {24'b0, s_box[cyphertext[client_sel][1][7:0]]}) ^ key[2];
+		cyphertext[client_sel][3] <= ((s_box[cyphertext[client_sel][3][31:24]] << 24) | (s_box[cyphertext[client_sel][0][23:16]] << 16) | (s_box[cyphertext[client_sel][1][15:8]] << 8) | {24'b0, s_box[cyphertext[client_sel][2][7:0]]}) ^ key[3];
 	end
 	end
 			
 	assign done_bit_in = (counter == 16'd43);
 	
 	always@(posedge clk or negedge rst_n)
-		if(~rst_n) done_bit <= 1'b0;
-		else done_bit <= go_bit_in ? 1'b0 : done_bit_in;
+		if(~rst_n) done_bit <= '{default: '0};
+		else done_bit[client_sel] <= go_bit_in[client_sel] ? 1'b0 : done_bit_in; //potential bug here
 
 	function int rotWord(int word);
 	    return {word[23:0], word[31:24]};

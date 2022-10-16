@@ -55,22 +55,6 @@ module key_expander
             // else if (i >= KEY_SIZE && KEY_SIZE > 6 && i % KEY_SIZE == 4) key_out <= key_N_i ^ subWord(key_i_1);
             else key_out <= key_i_1; // ^ key_N_i;
         end
-        // else if (counter == 0) begin
-        //     for (i = 1; i < NUM_OF_ROUNDS; i = i + 1) begin
-        //         rc[i] = (rc[i-1] < 8'h80) ? rc[i-1] << 1 : ((rc[i-1] << 1) ^ 9'h11b);
-        //     end
-        //     counter = counter + 1;
-        // end
-        // else if (counter == 1) begin
-        //     for (i = 0; i < EXPANDED_KEY_SIZE; i = i + 1) begin 
-        //         if (i < KEY_SIZE) expanded_key[i] = key[i];
-        //         else if (i % KEY_SIZE == 0) expanded_key[i] = expanded_key[i - KEY_SIZE] ^ subWord(rotWord(expanded_key[i-1])) ^ (rc[i / 4] << 24);
-        //         else if (i >= KEY_SIZE && KEY_SIZE > 6 && i % KEY_SIZE == 4) expanded_key[i] = expanded_key[i - KEY_SIZE] ^ subWord(expanded_key[i - 1]);
-        //         else expanded_key[i] = expanded_key[i - KEY_SIZE] ^ expanded_key[i - 1];
-        //     end
-        //     counter = counter + 1;
-        //     done = 1;
-        // end
     end
 	 
 	function int rotWord(int word);
