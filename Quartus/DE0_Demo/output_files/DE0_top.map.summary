@@ -1,10 +1,10 @@
-Analysis & Synthesis Status : Successful - Sun Oct 16 01:24:33 2022
+Analysis & Synthesis Status : Successful - Mon Oct 17 11:37:18 2022
 Quartus Prime Version : 21.1.1 Build 850 06/23/2022 SJ Lite Edition
 Revision Name : DE0_top
 Top-level Entity Name : DE0_top
 Family : MAX 10
-Total logic elements : 18,066
-    Total combinational functions : 15,461
+Total logic elements : 18,080
+    Total combinational functions : 15,475
     Dedicated logic registers : 3,469
 Total registers : 3469
 Total pins : 66

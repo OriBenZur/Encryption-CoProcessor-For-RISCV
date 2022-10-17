@@ -1,5 +1,5 @@
 Analysis & Synthesis report for DE0_top
-Sun Oct 16 01:24:34 2022
+Mon Oct 17 11:37:18 2022
 Quartus Prime Version 21.1.1 Build 850 06/23/2022 SJ Lite Edition
 
 
@@ -95,13 +95,13 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                     ;
 +------------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Sun Oct 16 01:24:33 2022       ;
+; Analysis & Synthesis Status        ; Successful - Mon Oct 17 11:37:18 2022       ;
 ; Quartus Prime Version              ; 21.1.1 Build 850 06/23/2022 SJ Lite Edition ;
 ; Revision Name                      ; DE0_top                                     ;
 ; Top-level Entity Name              ; DE0_top                                     ;
 ; Family                             ; MAX 10                                      ;
-; Total logic elements               ; 18,066                                      ;
-;     Total combinational functions  ; 15,461                                      ;
+; Total logic elements               ; 18,080                                      ;
+;     Total combinational functions  ; 15,475                                      ;
 ;     Dedicated logic registers      ; 3,469                                       ;
 ; Total registers                    ; 3469                                        ;
 ; Total pins                         ; 66                                          ;
@@ -271,16 +271,16 @@ https://fpgasoftware.intel.com/eula.
 +---------------------------------------------+---------------+
 ; Resource                                    ; Usage         ;
 +---------------------------------------------+---------------+
-; Estimated Total logic elements              ; 18,066        ;
+; Estimated Total logic elements              ; 18,080        ;
 ;                                             ;               ;
-; Total combinational functions               ; 15461         ;
+; Total combinational functions               ; 15475         ;
 ; Logic element usage by number of LUT inputs ;               ;
-;     -- 4 input functions                    ; 13403         ;
-;     -- 3 input functions                    ; 1706          ;
-;     -- <=2 input functions                  ; 352           ;
+;     -- 4 input functions                    ; 13405         ;
+;     -- 3 input functions                    ; 1711          ;
+;     -- <=2 input functions                  ; 359           ;
 ;                                             ;               ;
 ; Logic elements by mode                      ;               ;
-;     -- normal mode                          ; 14969         ;
+;     -- normal mode                          ; 14983         ;
 ;     -- arithmetic mode                      ; 492           ;
 ;                                             ;               ;
 ; Total registers                             ; 3469          ;
@@ -297,7 +297,7 @@ https://fpgasoftware.intel.com/eula.
 ;                                             ;               ;
 ; Maximum fan-out node                        ; clock_to_core ;
 ; Maximum fan-out                             ; 3414          ;
-; Total fan-out                               ; 74978         ;
+; Total fan-out                               ; 75015         ;
 ; Average fan-out                             ; 3.92          ;
 +---------------------------------------------+---------------+
 
@@ -307,7 +307,7 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+--------------------------------------------------------------------------------------------------------+------------------+--------------+
 ; Compilation Hierarchy Node                   ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name                                                                                    ; Entity Name      ; Library Name ;
 +----------------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+--------------------------------------------------------------------------------------------------------+------------------+--------------+
-; |DE0_top                                     ; 15461 (737)         ; 3469 (25)                 ; 73728       ; 0          ; 0            ; 0       ; 0         ; 66   ; 0            ; 0          ; |DE0_top                                                                                               ; DE0_top          ; work         ;
+; |DE0_top                                     ; 15475 (755)         ; 3469 (25)                 ; 73728       ; 0          ; 0            ; 0       ; 0         ; 66   ; 0            ; 0          ; |DE0_top                                                                                               ; DE0_top          ; work         ;
 ;    |PLL:PLL_instance|                        ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|PLL:PLL_instance                                                                              ; PLL              ; work         ;
 ;       |altpll:altpll_component|              ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|PLL:PLL_instance|altpll:altpll_component                                                      ; altpll           ; work         ;
 ;          |PLL_altpll:auto_generated|         ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|PLL:PLL_instance|altpll:altpll_component|PLL_altpll:auto_generated                            ; PLL_altpll       ; work         ;
@@ -322,27 +322,27 @@ https://fpgasoftware.intel.com/eula.
 ;          |TestPLL_altpll:auto_generated|     ; 0 (0)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|TestPLL:MemPLL|altpll:altpll_component|TestPLL_altpll:auto_generated                          ; TestPLL_altpll   ; work         ;
 ;    |button_debouncer:button_debouncer_inst0| ; 43 (43)             ; 26 (26)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|button_debouncer:button_debouncer_inst0                                                       ; button_debouncer ; work         ;
 ;    |button_debouncer:button_debouncer_inst1| ; 0 (0)               ; 5 (5)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|button_debouncer:button_debouncer_inst1                                                       ; button_debouncer ; work         ;
-;    |core:core0|                              ; 2687 (0)            ; 1163 (0)                  ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core0                                                                                    ; core             ; work         ;
-;       |controlUnit:controlUnit_inst|         ; 103 (103)           ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core0|controlUnit:controlUnit_inst                                                       ; controlUnit      ; work         ;
+;    |core:core0|                              ; 2684 (0)            ; 1163 (0)                  ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core0                                                                                    ; core             ; work         ;
+;       |controlUnit:controlUnit_inst|         ; 102 (102)           ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core0|controlUnit:controlUnit_inst                                                       ; controlUnit      ; work         ;
 ;       |crs_unit:crs_unit_inst|               ; 119 (55)            ; 107 (43)                  ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core0|crs_unit:crs_unit_inst                                                             ; crs_unit         ; work         ;
 ;          |timer:timer_inst|                  ; 64 (64)             ; 64 (64)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core0|crs_unit:crs_unit_inst|timer:timer_inst                                            ; timer            ; work         ;
-;       |executionUnit:exec_unit_inst|         ; 1733 (918)          ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core0|executionUnit:exec_unit_inst                                                       ; executionUnit    ; work         ;
-;          |alu:ALU|                           ; 675 (675)           ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core0|executionUnit:exec_unit_inst|alu:ALU                                               ; alu              ; work         ;
-;          |br:BR|                             ; 93 (93)             ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core0|executionUnit:exec_unit_inst|br:BR                                                 ; br               ; work         ;
+;       |executionUnit:exec_unit_inst|         ; 1731 (918)          ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core0|executionUnit:exec_unit_inst                                                       ; executionUnit    ; work         ;
+;          |alu:ALU|                           ; 672 (672)           ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core0|executionUnit:exec_unit_inst|alu:ALU                                               ; alu              ; work         ;
+;          |br:BR|                             ; 94 (94)             ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core0|executionUnit:exec_unit_inst|br:BR                                                 ; br               ; work         ;
 ;          |lis:LIS|                           ; 47 (47)             ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core0|executionUnit:exec_unit_inst|lis:LIS                                               ; lis              ; work         ;
 ;       |programCounter:program_counter_inst|  ; 17 (17)             ; 32 (32)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core0|programCounter:program_counter_inst                                                ; programCounter   ; work         ;
 ;       |regFile:reg_file_inst|                ; 715 (715)           ; 1024 (1024)               ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core0|regFile:reg_file_inst                                                              ; regFile          ; work         ;
-;    |core:core1|                              ; 2691 (0)            ; 1163 (0)                  ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core1                                                                                    ; core             ; work         ;
+;    |core:core1|                              ; 2692 (0)            ; 1163 (0)                  ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core1                                                                                    ; core             ; work         ;
 ;       |controlUnit:controlUnit_inst|         ; 100 (100)           ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core1|controlUnit:controlUnit_inst                                                       ; controlUnit      ; work         ;
 ;       |crs_unit:crs_unit_inst|               ; 119 (55)            ; 107 (43)                  ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core1|crs_unit:crs_unit_inst                                                             ; crs_unit         ; work         ;
 ;          |timer:timer_inst|                  ; 64 (64)             ; 64 (64)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core1|crs_unit:crs_unit_inst|timer:timer_inst                                            ; timer            ; work         ;
-;       |executionUnit:exec_unit_inst|         ; 1739 (922)          ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core1|executionUnit:exec_unit_inst                                                       ; executionUnit    ; work         ;
+;       |executionUnit:exec_unit_inst|         ; 1740 (922)          ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core1|executionUnit:exec_unit_inst                                                       ; executionUnit    ; work         ;
 ;          |alu:ALU|                           ; 676 (676)           ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core1|executionUnit:exec_unit_inst|alu:ALU                                               ; alu              ; work         ;
 ;          |br:BR|                             ; 94 (94)             ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core1|executionUnit:exec_unit_inst|br:BR                                                 ; br               ; work         ;
-;          |lis:LIS|                           ; 47 (47)             ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core1|executionUnit:exec_unit_inst|lis:LIS                                               ; lis              ; work         ;
+;          |lis:LIS|                           ; 48 (48)             ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core1|executionUnit:exec_unit_inst|lis:LIS                                               ; lis              ; work         ;
 ;       |programCounter:program_counter_inst|  ; 17 (17)             ; 32 (32)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core1|programCounter:program_counter_inst                                                ; programCounter   ; work         ;
 ;       |regFile:reg_file_inst|                ; 716 (716)           ; 1024 (1024)               ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|core:core1|regFile:reg_file_inst                                                              ; regFile          ; work         ;
-;    |df_encryptor:encryption_CoProcessor|     ; 9256 (9256)         ; 1053 (1053)               ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|df_encryptor:encryption_CoProcessor                                                           ; df_encryptor     ; work         ;
+;    |df_encryptor:encryption_CoProcessor|     ; 9254 (9254)         ; 1053 (1053)               ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|df_encryptor:encryption_CoProcessor                                                           ; df_encryptor     ; work         ;
 ;    |leds_mgmt:leds_mgmt_display|             ; 5 (5)               ; 34 (34)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|leds_mgmt:leds_mgmt_display                                                                   ; leds_mgmt        ; work         ;
 ;    |new_prog_mem:new_prog_mem_inst|          ; 0 (0)               ; 0 (0)                     ; 65536       ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|new_prog_mem:new_prog_mem_inst                                                                ; new_prog_mem     ; work         ;
 ;       |altsyncram:altsyncram_component|      ; 0 (0)               ; 0 (0)                     ; 65536       ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |DE0_top|new_prog_mem:new_prog_mem_inst|altsyncram:altsyncram_component                                ; altsyncram       ; work         ;
@@ -2019,21 +2019,21 @@ Note: In order to hide this table in the UI and the text report file, please set
 ;     ENA CLR           ; 2888                        ;
 ;     ENA CLR SLD       ; 120                         ;
 ;     plain             ; 31                          ;
-; cycloneiii_lcell_comb ; 15467                       ;
+; cycloneiii_lcell_comb ; 15481                       ;
 ;     arith             ; 492                         ;
 ;         2 data inputs ; 182                         ;
 ;         3 data inputs ; 310                         ;
-;     normal            ; 14975                       ;
+;     normal            ; 14989                       ;
 ;         0 data inputs ; 1                           ;
 ;         1 data inputs ; 21                          ;
-;         2 data inputs ; 154                         ;
-;         3 data inputs ; 1396                        ;
-;         4 data inputs ; 13403                       ;
+;         2 data inputs ; 161                         ;
+;         3 data inputs ; 1401                        ;
+;         4 data inputs ; 13405                       ;
 ; cycloneiii_pll        ; 2                           ;
 ; cycloneiii_ram_block  ; 64                          ;
 ;                       ;                             ;
-; Max LUT depth         ; 32.00                       ;
-; Average LUT depth     ; 15.95                       ;
+; Max LUT depth         ; 31.00                       ;
+; Average LUT depth     ; 15.86                       ;
 +-----------------------+-----------------------------+
 
 
@@ -2042,7 +2042,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:01:38     ;
+; Top            ; 00:02:04     ;
 +----------------+--------------+
 
 
@@ -2052,21 +2052,21 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 21.1.1 Build 850 06/23/2022 SJ Lite Edition
-    Info: Processing started: Sun Oct 16 01:22:35 2022
+    Info: Processing started: Mon Oct 17 11:34:46 2022
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off DE0_top -c DE0_top
 Warning (125092): Tcl Script File mem_test.qip not found
     Info (125063): set_global_assignment -name QIP_FILE mem_test.qip
 Info (20032): Parallel compilation is enabled and will use up to 4 processors
 Info (12248): Elaborating Platform Designer system entity "de0cv.qsys"
-Info (12250): 2022.10.16.01:22:47 Progress: Loading DE0_Demo/de0cv.qsys
-Info (12250): 2022.10.16.01:22:48 Progress: Reading input file
-Info (12250): 2022.10.16.01:22:48 Progress: Adding clk_0 [clock_source 17.0]
+Info (12250): 2022.10.17.11:35:03 Progress: Loading DE0_Demo/de0cv.qsys
+Info (12250): 2022.10.17.11:35:04 Progress: Reading input file
+Info (12250): 2022.10.17.11:35:04 Progress: Adding clk_0 [clock_source 17.0]
 Warning (12251): Clk_0: Used clock_source 21.1 (instead of 17.0)
-Info (12250): 2022.10.16.01:22:49 Progress: Parameterizing module clk_0
-Info (12250): 2022.10.16.01:22:49 Progress: Building connections
-Info (12250): 2022.10.16.01:22:49 Progress: Parameterizing connections
-Info (12250): 2022.10.16.01:22:49 Progress: Validating
-Info (12250): 2022.10.16.01:22:49 Progress: Done reading input file
+Info (12250): 2022.10.17.11:35:04 Progress: Parameterizing module clk_0
+Info (12250): 2022.10.17.11:35:04 Progress: Building connections
+Info (12250): 2022.10.17.11:35:04 Progress: Parameterizing connections
+Info (12250): 2022.10.17.11:35:04 Progress: Validating
+Info (12250): 2022.10.17.11:35:05 Progress: Done reading input file
 Info (12250): De0cv: Generating de0cv "de0cv" for QUARTUS_SYNTH
 Info (12250): De0cv: Done "de0cv" with 1 modules, 1 files
 Info (12249): Finished elaborating Platform Designer system entity "de0cv.qsys"
@@ -2393,9 +2393,9 @@ Info (12133): Instantiated megafunction "new_prog_mem:new_prog_mem_inst|altsyncr
 Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_2o22.tdf
     Info (12023): Found entity 1: altsyncram_2o22 File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/db/altsyncram_2o22.tdf Line: 28
 Info (12128): Elaborating entity "altsyncram_2o22" for hierarchy "new_prog_mem:new_prog_mem_inst|altsyncram:altsyncram_component|altsyncram_2o22:auto_generated" File: c:/intelfpga_lite/21.1/quartus/libraries/megafunctions/altsyncram.tdf Line: 792
-Critical Warning (127005): Memory depth (2048) in the design file differs from memory depth (1837) in the Memory Initialization File "C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/test.mif" -- setting initial value for remaining addresses to 0 File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/new_prog_mem.v Line: 94
+Critical Warning (127005): Memory depth (2048) in the design file differs from memory depth (1797) in the Memory Initialization File "C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/test.mif" -- setting initial value for remaining addresses to 0 File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/new_prog_mem.v Line: 94
 Info (12128): Elaborating entity "leds_mgmt" for hierarchy "leds_mgmt:leds_mgmt_display" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/DE0_top.v Line: 448
-Info (12128): Elaborating entity "df_encryptor" for hierarchy "df_encryptor:encryption_CoProcessor" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/DE0_top.v Line: 519
+Info (12128): Elaborating entity "df_encryptor" for hierarchy "df_encryptor:encryption_CoProcessor" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/DE0_top.v Line: 525
 Warning (10230): Verilog HDL assignment warning at double_front_encryptor.sv(98): truncated value with size 32 to match size of target (2) File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/double_front_encryptor.sv Line: 98
 Warning (10230): Verilog HDL assignment warning at double_front_encryptor.sv(141): truncated value with size 9 to match size of target (8) File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/double_front_encryptor.sv Line: 141
 Warning (10240): Verilog HDL Always Construct warning at double_front_encryptor.sv(151): inferring latch(es) for variable "j", which holds its previous value in one or more paths through the always construct File: C:/Project Mendelson/AES-128-for-RISCV-CPU/src/Encryptor/double_front_encryptor.sv Line: 151
@@ -2415,16 +2415,16 @@ Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 2 node(s), including 0 DDIO, 2 PLL, 0 transceiver and 0 LCELL
 Warning (21074): Design contains 1 input pin(s) that do not drive logic
     Warning (15610): No output dependent on input pin "MAX10_CLK2_50_2" File: C:/Project Mendelson/AES-128-for-RISCV-CPU/Quartus/DE0_Demo/DE0_top.v Line: 66
-Info (21057): Implemented 18481 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 18495 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 14 input pins
     Info (21059): Implemented 52 output pins
-    Info (21061): Implemented 18349 logic cells
+    Info (21061): Implemented 18363 logic cells
     Info (21064): Implemented 64 RAM segments
     Info (21065): Implemented 2 PLLs
 Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 84 warnings
-    Info: Peak virtual memory: 4899 megabytes
-    Info: Processing ended: Sun Oct 16 01:24:34 2022
-    Info: Elapsed time: 00:01:59
-    Info: Total CPU time (on all processors): 00:02:05
+    Info: Peak virtual memory: 4893 megabytes
+    Info: Processing ended: Mon Oct 17 11:37:18 2022
+    Info: Elapsed time: 00:02:32
+    Info: Total CPU time (on all processors): 00:02:00
 
 
